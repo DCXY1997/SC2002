@@ -26,10 +26,7 @@ public class AdminView extends MainView{
         System.out.println("(6) Approve Replenishment Requests");
         System.out.println("(7) Logout");
 	}
-    /**
-     * View Application of the AdminView. <p>
-     * see {@link AdminController} for more {@link Employee} management details.
-     */
+
     @Override
 	public void viewApp() { 
 		int opt = -1; 

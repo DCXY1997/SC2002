@@ -34,7 +34,7 @@ public class Staff implements Serializable {
         this.age = age;
     }
 
-    public void setPosition(StaffType role) {
+    public void setRole(StaffType role) {
         this.role = role;
     }
 

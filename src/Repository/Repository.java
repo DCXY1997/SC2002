@@ -153,7 +153,7 @@ public class Repository {
     	if(ADMIN.size() !=0 ) {
     		return false;
     	}
-		Admin admin = new Admin("Boss", "password", StaffType.ADMIN, Gender.FEMALE, 62, "boss");
+		Admin admin = new Admin("Boss", "password", Gender.FEMALE, 62, "boss");
 		Repository.ADMIN.put(admin.getHospitalId(), admin);
 		Repository.persistData(FileType.ADMIN);
 		

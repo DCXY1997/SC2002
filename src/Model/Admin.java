@@ -5,78 +5,20 @@ import java.io.Serializable;
 import src.Enum.Gender;
 import src.Enum.StaffType;
 
-public class Admin implements Serializable {
+public class Admin extends Staff implements Serializable {
     /**
      * For Java Serializable
      */
     private static final long serialVersionUID = 1L;
-    protected String name;
-    protected String password;
-    private int age;
-    protected StaffType role;
-    private Gender gender;
-    private String hospitalId;
 
     // Empty constructor
     public Admin() {
+        super();
+        this.role = StaffType.ADMIN;  // Always set the role to Admin
     }
 
-    // Getters and Setters
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void setPosition(StaffType role) {
-        this.role = role;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public void setHospitalId(String hospitalId) {
-        this.hospitalId = hospitalId;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public int getAge() {
-        return this.age;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public StaffType getRole() {
-        return this.role;
-    }
-
-    public Gender getGender() {
-        return this.gender;
-    }
-
-    public String getHospitalId() {
-        return this.hospitalId;
-    }
-
-    // Parameterized constructor
-    public Admin(String name, String password, StaffType role, Gender gender, int age, String hospitalId) {
-        this.name = name;
-        this.password = password;
-        this.age = age;
-        this.role = role;
-        this.gender = gender;
-        this.hospitalId = hospitalId;
+    // Parameterized constructor specifically for Admin
+    public Admin(String name, String password, Gender gender, int age, String hospitalId) {
+        super(name, password, StaffType.ADMIN, gender, age, hospitalId);  // Call parent class constructor with role ADMIN
     }
 }
