@@ -12,7 +12,6 @@ public class HMSApp {
 		Repository.readData(FileType.STAFF);
 		Repository.readData(FileType.PATIENT);
 		Repository.readData(FileType.MEDICINE);
-		Repository.initializeDummyAdmin();
 		Repository.initializeDummyStaff();
 		Helper.clearScreen();
 		printHMSTitle();

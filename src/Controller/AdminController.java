@@ -73,7 +73,7 @@ public class AdminController {
         // Persist data to file
         Repository.persistData(FileType.STAFF);
 
-        System.out.println("Staff added successfully!");
+        System.out.println("Staff added successfully! ID: " + hospitalId);
 	}
 
     public static boolean removeStaffAccount(String hospitalId) { 

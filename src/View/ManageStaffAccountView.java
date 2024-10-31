@@ -56,32 +56,52 @@ public class ManageStaffAccountView extends MainView{
         } while (opt != 4);
 	}
 	
-	private boolean promptAddStaffAccount() {
-		System.out.println("Enter staff hospitalId:");
-		String hospitalId = Helper.readString();
-		System.out.println("Enter staff name:");
+    private boolean promptAddStaffAccount() {
+        System.out.println("Enter staff name:");
         String name = Helper.readString();
-        System.out.println("Enter password:");
-        String password = "password";
-        int opt = -1;
-        opt = Helper.readInt();
+    
+        String password = "password"; // Default password
+    
         StaffType role = promptRole();
-        
-        if(role == null) {
-        	System.out.println("The position is null! Add staff unsuccessful!");
-        	return false;
+        if (role == null) {
+            System.out.println("Invalid role! Add staff unsuccessful!");
+            return false;
         }
-        
+    
         Gender gender = promptGender();
-        if(gender == null) return false;
-        
-        System.out.println("Enter the staff's age");
+        if (gender == null) {
+            System.out.println("Invalid gender! Add staff unsuccessful!");
+            return false;
+        }
+    
+        System.out.println("Enter the staff's age:");
         int age = Helper.readInt();
-        
+    
+        // Generate the hospital ID based on the role prefix
+        String hospitalId = generateHospitalId(role);
+    
         AdminController.addStaffAccount(name, password, gender, age, hospitalId, role);
         return true;
-        
-	}
+    }
+    
+    // Helper function to generate hospital ID based on role
+    private String generateHospitalId(StaffType role) {
+        String prefix = "";
+        switch (role) {
+            case DOCTOR:
+                prefix = "D";
+                break;
+            case PHARMACIST:
+                prefix = "P";
+                break;
+            case ADMIN:
+                prefix = "A";
+                break;
+        }
+        int uniqueId = Helper.generateUniqueId(Repository.STAFF);
+        return prefix + String.format("%03d", uniqueId); // e.g., D001
+    }
+    
 
 	private void printGenderMenu() {
         System.out.println("Please enter the staff's gender (1-2)");
@@ -111,12 +131,13 @@ public class ManageStaffAccountView extends MainView{
         System.out.println("Please enter the staff's role (1-2)");
         System.out.println("(1) Doctor");
         System.out.println("(2) Pharmacist");
+        System.out.println("(3) Admin");
     }
 
     private StaffType promptRole() {
         printRoleMenu();
         int choice = Helper.readInt(1, 3);
-        if (choice < 1 || choice > 3) {
+        if (choice < 1 || choice > 4) {
             return null;
         } else {
             switch (choice) {
@@ -124,6 +145,8 @@ public class ManageStaffAccountView extends MainView{
                     return StaffType.DOCTOR;
                 case 2:
                     return StaffType.PHARMACIST;
+                case 3:
+                    return StaffType.ADMIN;
                 default:
                     break;
             }

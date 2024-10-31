@@ -1,7 +1,11 @@
 package src.View;
 
 import src.Controller.AdminController;
+import src.Controller.UserController;
 import src.Helper.Helper;
+import src.Model.Admin;
+import src.Model.Staff;
+import src.Repository.Repository;
 
 public class AdminView extends MainView{
 	
@@ -24,7 +28,8 @@ public class AdminView extends MainView{
         System.out.println("(4) View Medication Inventory");
         System.out.println("(5) Add/Remove/Update Medication Inventory");
         System.out.println("(6) Approve Replenishment Requests");
-        System.out.println("(7) Logout");
+		System.out.println("(7) Change Password");
+        System.out.println("(8) Logout");
 	}
 
     @Override
@@ -32,7 +37,7 @@ public class AdminView extends MainView{
 		int opt = -1; 
 		do { 
             printActions();
-            opt = Helper.readInt(1,7);
+            opt = Helper.readInt(1,8);
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
@@ -65,20 +70,48 @@ public class AdminView extends MainView{
                 	// Helper.clearScreen();
                 	// manageBranchView.viewApp();
                 	// break;  
-                // case 8:
-                	// printBreadCrumbs("Fast Food App View > Login View > Admin View > Password Change View");
-                	// promptChangePassword();
-                	// break;
-                case 9:
+                case 7:
+                	printBreadCrumbs("Hospital Management App View > Login View > Admin View > Password Change View");
+                	promptChangePassword();
                 	break;
+                case 8:
+					break;
                 default:
                     System.out.println("Invalid option");
                     break;
             }
-            if (opt != 9) {
+            if (opt != 8) {
                 Helper.pressAnyKeyToContinue();
             }
-        } while (opt != 9);
+        } while (opt != 8);
 	}
+
+	private void promptChangePassword() {
+		System.out.println("Verify your loginID: ");
+		String loginId = Helper.readString();
+		System.out.println("Verify your password: ");
+		String password = Helper.readString();
+	
+		Staff staff = Repository.STAFF.get(loginId);
+	
+		// Check if the staff exists and verify the password
+		if (staff != null && staff.getPassword().equals(password)) {
+			System.out.println("Verification successful");
+	
+			System.out.println("Enter new password: ");
+			String newPassword = Helper.readString();
+			System.out.println("Re-enter new password: ");
+			String confirmPassword = Helper.readString();
+	
+			if (UserController.changePassword(staff, newPassword, confirmPassword)) {
+				System.out.println("Password changed successfully!");
+			} else {
+				System.out.println("Passwords do not match.");
+			}
+		} else {
+			System.out.println("Verification failed. Either the user ID or password is incorrect.");
+		}
+	}
+	
     
 }

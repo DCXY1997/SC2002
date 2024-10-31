@@ -22,7 +22,6 @@ public class Repository {
     private static final String folder = "Data";
     
     public static HashMap<String, Staff> STAFF = new HashMap<>();
-    public static HashMap<String, Admin> ADMIN= new HashMap<>();
 
     public static void persistData(FileType fileType) {
         writeSerializedObject(fileType);
@@ -36,7 +35,6 @@ public class Repository {
         persistData(FileType.STAFF);
         persistData(FileType.PATIENT);
         persistData(FileType.MEDICINE);
-        persistData(FileType.ADMIN);
     }
 
     private static boolean readSerializedObject(FileType fileType) {
@@ -60,9 +58,6 @@ public class Repository {
             case STAFF:
                 STAFF = new HashMap<>();
                 break;
-            case ADMIN:
-                ADMIN = new HashMap<>();
-                break;
         }
         writeSerializedObject(fileType); // Save the empty HashMap to a new file
         return true;
@@ -84,9 +79,6 @@ public class Repository {
             case STAFF:
                 STAFF = (HashMap<String, Staff>) object;
                 break;
-            case ADMIN:
-                ADMIN = (HashMap<String, Admin>) object;
-                break;
         }
 
         objectInputStream.close();
@@ -106,9 +98,7 @@ public class Repository {
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             if (fileType == FileType.STAFF) {
                 objectOutputStream.writeObject(STAFF);
-            } else if (fileType == FileType.ADMIN) {
-                objectOutputStream.writeObject(ADMIN);
-            }
+            } 
             objectOutputStream.close();
             fileOutputStream.close();
             return true;
@@ -122,11 +112,9 @@ public class Repository {
     public static boolean clearDatabase() {
         // Initialize empty data
         STAFF = new HashMap<>();
-        ADMIN = new HashMap<>();
         writeSerializedObject(FileType.STAFF);
         writeSerializedObject(FileType.PATIENT);
         writeSerializedObject(FileType.MEDICINE);
-        writeSerializedObject(FileType.ADMIN);
         return true;
     }
 
@@ -135,32 +123,20 @@ public class Repository {
             return false;
         }
 
-        Staff staff1 = new Staff("Alice Brown", "password123", StaffType.DOCTOR, Gender.FEMALE, 45, "D001");
-        Staff staff2 = new Staff("Bob Stone", "securePass", StaffType.DOCTOR, Gender.MALE, 40, "A002");
-        Staff staff3 = new Staff("Charlie White", "pass456", StaffType.PHARMACIST, Gender.MALE, 35, "N003");
+        Staff staff1 = new Staff("John Smith", "password", StaffType.DOCTOR, Gender.MALE, 45, "D001");
+        Staff staff2 = new Staff("Emily Clarke", "password", StaffType.DOCTOR, Gender.FEMALE, 38, "D002");
+        Staff staff3 = new Staff("Mark Lee", "password", StaffType.PHARMACIST, Gender.MALE, 29, "P001");
+        Staff staff4 = new Staff("Sarah Lee", "password", StaffType.ADMIN, Gender.FEMALE, 40, "A001");
 
         // Add to the repository
         Repository.STAFF.put(staff1.getHospitalId(), staff1);
         Repository.STAFF.put(staff2.getHospitalId(), staff2);
         Repository.STAFF.put(staff3.getHospitalId(), staff3);
+        Repository.STAFF.put(staff4.getHospitalId(), staff4);
     
         // Return true indicating dummy data is initialized
         return true;
 
-    }
-
-    public static boolean initializeDummyAdmin() {
-    	if(ADMIN.size() !=0 ) {
-    		return false;
-    	}
-		Admin admin = new Admin("Boss", "password", Gender.FEMALE, 62, "boss");
-		Repository.ADMIN.put(admin.getHospitalId(), admin);
-		Repository.persistData(FileType.ADMIN);
-		
-		return true;
-    }
-    
-
-  
+    }  
 }
 

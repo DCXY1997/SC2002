@@ -3,8 +3,7 @@ package src.Repository;
 public enum FileType {
     STAFF("Staff"),
     MEDICINE("Medicine"),
-    PATIENT("Patient"), 
-    ADMIN("Admin");
+    PATIENT("Patient"); 
 
     public final String fileName;
 

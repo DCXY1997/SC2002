@@ -61,6 +61,7 @@ public class DisplayStaffView extends MainView{
     private void printRoleMenu() {
         System.out.println("(1) DOCTOR ");
         System.out.println("(2) PHARMACIST ");
+        System.out.println("(3) ADMIN ");
     }
     /**
 	 * function to prompt to display staff by role
@@ -78,6 +79,9 @@ public class DisplayStaffView extends MainView{
 			case 2:
 				AdminController.displayStaffListByRole(StaffType.PHARMACIST);
 				return true;
+            case 3:
+				AdminController.displayStaffListByRole(StaffType.ADMIN);
+                return true;
 			default:
                 System.out.println("Invalid option");
                 return false;
