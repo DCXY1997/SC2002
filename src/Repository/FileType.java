@@ -2,8 +2,8 @@ package src.Repository;
 
 public enum FileType {
     STAFF("Staff"),
-    MEDICINE("Medicine"),
-    PATIENT("Patient"); 
+    INVENTORY("Inventory"),
+    REPLENISHMENT_REQUEST("Replenishment_Request"); 
 
     public final String fileName;
 

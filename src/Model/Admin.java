@@ -5,7 +5,7 @@ import java.io.Serializable;
 import src.Enum.Gender;
 import src.Enum.StaffType;
 
-public class Admin extends Staff implements Serializable {
+public class Admin extends Staff {
     /**
      * For Java Serializable
      */

@@ -1,7 +1,7 @@
 package src.View;
 
 import src.Controller.AdminController;
-import src.Controller.UserController;
+import src.Controller.StaffController;
 import src.Helper.Helper;
 import src.Model.Admin;
 import src.Model.Staff;
@@ -14,6 +14,10 @@ public class AdminView extends MainView{
 	 */
 	private DisplayStaffView displayStaffView = new DisplayStaffView();
     private ManageStaffAccountView manageStaffAccountView = new ManageStaffAccountView();
+	private DisplayAppointmentDetailView displayAppointmentDetailsView = new DisplayAppointmentDetailView();
+	private DisplayMedicationInventory displayMedicalInventoryView = new DisplayMedicationInventory();
+	private ManageMedicalInventory manageMedicalInventory = new ManageMedicalInventory();
+	private ManageReplenishmentRequestView manageReplenishmentRequestView = new ManageReplenishmentRequestView();
 	/**
      * View Actions of the AdminView.
      */
@@ -47,29 +51,22 @@ public class AdminView extends MainView{
                     Helper.clearScreen();
                     manageStaffAccountView.viewApp();
                     break;
-                // case 3:
-                    // Helper.clearScreen();
-                    // printBreadCrumbs("Fast Food App View > Login View > Admin View > Assign Manager View");
-                    // promptAssignManager();
-                    // break;
-                // case 4:
-                	// Helper.clearScreen();
-                	// printBreadCrumbs("Fast Food App View > Login View > Admin View > Promote Staff View");
-                	// promptPromoteStaff();
-                    // break;
-                // case 5:
-                	// Helper.clearScreen();
-                	// printBreadCrumbs("Fast Food App View > Login View > Admin View > Transfer Staff View");
-                	// promptTransferStaff();
-                    // break;
-                // case 6:
-                	// Helper.clearScreen();
-                	// managePaymentView.viewApp();
-                	// break;
-                // case 7:
-                	// Helper.clearScreen();
-                	// manageBranchView.viewApp();
-                	// break;  
+                case 3:
+                    Helper.clearScreen();
+                    displayAppointmentDetailsView.viewApp();
+                    break;
+                case 4:
+                	Helper.clearScreen();
+                	displayMedicalInventoryView.viewApp();
+                    break;
+                case 5:
+					Helper.clearScreen();
+					manageMedicalInventory.viewApp();
+					break;
+                case 6:
+                	Helper.clearScreen();
+                	manageReplenishmentRequestView.viewApp();
+                	break;
                 case 7:
                 	printBreadCrumbs("Hospital Management App View > Login View > Admin View > Password Change View");
                 	promptChangePassword();
@@ -103,7 +100,7 @@ public class AdminView extends MainView{
 			System.out.println("Re-enter new password: ");
 			String confirmPassword = Helper.readString();
 	
-			if (UserController.changePassword(staff, newPassword, confirmPassword)) {
+			if (StaffController.changePassword(staff, newPassword, confirmPassword)) {
 				System.out.println("Password changed successfully!");
 			} else {
 				System.out.println("Passwords do not match.");

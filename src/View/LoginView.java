@@ -1,6 +1,6 @@
 package src.View;
 
-import src.Controller.UserController;
+import src.Controller.StaffController;
 import src.Enum.StaffType;
 import src.Helper.Helper;
 import src.Repository.Repository;
@@ -61,7 +61,7 @@ public class LoginView extends MainView {
 		password = Helper.readString();
 		
 		
-		boolean loginSuccess = UserController.authenticate(loginId, password, staffType);
+		boolean loginSuccess = StaffController.authenticate(loginId, password, staffType);
 		if (loginSuccess) {
 			System.out.println("Login successful, welcome " +loginId);
 			

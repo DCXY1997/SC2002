@@ -1,14 +1,11 @@
 package src.Controller;
 
 import src.Enum.StaffType;
-import src.Model.Admin;
 import src.Model.Staff;
 import src.Repository.FileType;
 import src.Repository.Repository;
 
-public class UserController {
-	
-
+public class StaffController {
     public static boolean authenticate(String username, String password, StaffType role) {
         // Retrieve the Staff object from the STAFF map
         Staff staff = Repository.STAFF.get(username);
@@ -24,7 +21,7 @@ public class UserController {
         }
 
         // Verify role
-        if (staff.getRole() != role) {  // Compare staff role with expected role
+        if (staff.getRole() != role) { // Compare staff role with expected role
             return false; // Incorrect role
         }
 
@@ -32,7 +29,6 @@ public class UserController {
         return true;
     }
 
-	
     public static boolean changePassword(Staff staff, String password, String confirmPassword) {
         if (password.equals(confirmPassword)) {
             staff.setPassword(confirmPassword);
