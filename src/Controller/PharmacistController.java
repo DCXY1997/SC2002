@@ -1,0 +1,93 @@
+package src.Controller;
+
+import src.Repository.*;
+import src.Model.*;
+import src.Enum.*;
+import java.util.Scanner;
+import java.util.HashMap;
+import src.Helper.*;
+
+public class PharmacistController {
+	
+	Scanner sc = new Scanner(System.in);
+	
+	public static boolean authenticate(String id, String password)
+	{
+		Staff pharmacist = Repository.STAFF.get(id);
+		
+		if (pharmacist == null)
+			return false;
+		
+		if (!pharmacist.getPassword().equals(password))
+			return false;
+		
+		return true;
+	}
+	
+	public static boolean changePassword(Staff pharmacist, String password, String confirmPassword)
+	{
+		if (password.equals(confirmPassword))
+		{
+			pharmacist.setPassword(confirmPassword);
+			Repository.persistData(FileType.STAFF);
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public void changePrescriptionStatus(AppointmentOutcome appointmentOutcome, InventoryList inventory) {
+	    for (Medicine medicine : appointmentOutcome.getPrescribedMedicines()) {
+	        if (inventory.getMedicine().equals(medicine)) {
+	            int currentStock = inventory.getInitialStock(); 
+	            int medicineAmount = medicine.getMedicineAmount(); 
+	            
+	            if (currentStock >= medicineAmount) {
+	                inventory.setInitialStock(currentStock - medicineAmount);
+	                medicine.setStatus(MedicineStatus.DISPENSED); 
+	                //System.out.println("Updated status of " + medicine.getMedicineName() + " to DISPENSED. Remaining stock: " + (currentStock - medicineAmount));
+	            } else {
+	            	submitReplenishmentRequest(medicine);
+	                System.out.println("Not enough stock for " + medicine.getMedicineName() + ". Current stock: " + currentStock + ", Required: " + medicineAmount);
+	            }
+	        }
+	    }
+	}
+
+	
+	public String getLowStock(InventoryList inventory) {
+	    StringBuilder sb = new StringBuilder();
+	    
+	    // Check if the initial stock is less than the low stock level alert
+	    if (inventory.getInitialStock() < inventory.getLowStocklevelAlert()) {
+	        sb.append("Medicine: ").append(inventory.getMedicine().getMedicineName())
+	          .append(" | Stock: ").append(inventory.getInitialStock())
+	          .append(" | Alert Threshold: ").append(inventory.getLowStocklevelAlert())
+	          .append("\n");
+	    } else {
+	        sb.append("All medicines are above the alert threshold.");
+	    }
+	    
+	    return sb.toString();
+	}
+
+	
+	public void submitReplenishmentRequest(Medicine medicine)
+	{
+	    // Generate a unique ID for the replenishment request
+	    int uniqueId = Helper.generateUniqueId(Repository.INVENTORY);
+	    String requestId = String.format("R%03d", uniqueId); 
+
+	    // Prompt for replenishment amount
+	    System.out.println("Enter the replenishment amount: ");
+	    int amount = sc.nextInt();
+
+	    // Create a new replenishment request
+	    ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(requestId, medicine.getMedicineId(), amount, InventoryRequestStatus.PENDING);
+
+	    // Add the replenishment request to the repository
+	    Repository.REPLENISHMENT_REQUEST.put(replenishmentRequest.getRequestId(), replenishmentRequest);
+
+	}
+	
+}
