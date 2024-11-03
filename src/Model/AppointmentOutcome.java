@@ -7,14 +7,14 @@ import java.util.List;
 public class AppointmentOutcome {
 
     // Attributes
-    private int outcomeId;
+    private String outcomeId;
     private List<Medicine> prescribedMedicines;
     private List<Diagnosis> patientDiagnosis;
     private String doctorNotes;
     private LocalDateTime dateDiagnosed;
 
     // Constructor
-    public AppointmentOutcome(int outcomeId, List<Medicine> prescribedMedicines, List<Diagnosis> patientDiagnosis,
+    public AppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Diagnosis> patientDiagnosis,
             String doctorNotes, LocalDateTime dateDiagnosed) {
         this.outcomeId = outcomeId;
         this.prescribedMedicines = new ArrayList<>(prescribedMedicines); // Initialize with a copy
@@ -24,11 +24,11 @@ public class AppointmentOutcome {
     }
 
     // Getters and Setters
-    public int getOutcomeId() {
+    public String getOutcomeId() {
         return outcomeId;
     }
 
-    public void setOutcomeId(int outcomeId) {
+    public void setOutcomeId(String outcomeId) {
         this.outcomeId = outcomeId;
     }
 
