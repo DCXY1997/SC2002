@@ -47,7 +47,7 @@ public class PharmacistController {
 	                medicine.setStatus(MedicineStatus.DISPENSED); 
 	                //System.out.println("Updated status of " + medicine.getMedicineName() + " to DISPENSED. Remaining stock: " + (currentStock - medicineAmount));
 	            } else {
-	            	submitReplenishmentRequest(medicine);
+	            	submitReplenishmentRequest(medicine.getMedicineId());
 	                System.out.println("Not enough stock for " + medicine.getMedicineName() + ". Current stock: " + currentStock + ", Required: " + medicineAmount);
 	            }
 	        }
@@ -72,8 +72,14 @@ public class PharmacistController {
 	}
 
 	
-	public void submitReplenishmentRequest(Medicine medicine)
+	public int submitReplenishmentRequest(String medicineId)
 	{
+		InventoryList inventoryItem = Repository.INVENTORY.get(medicineId);
+	    if (inventoryItem == null) {
+	        System.out.println("Invalid medicine ID. Please check the ID and try again.");
+	        return 0; // Exit the method if the ID is invalid
+	    }
+	    
 	    // Generate a unique ID for the replenishment request
 	    int uniqueId = Helper.generateUniqueId(Repository.INVENTORY);
 	    String requestId = String.format("R%03d", uniqueId); 
@@ -83,11 +89,13 @@ public class PharmacistController {
 	    int amount = sc.nextInt();
 
 	    // Create a new replenishment request
-	    ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(requestId, medicine.getMedicineId(), amount, InventoryRequestStatus.PENDING);
+	    ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(requestId, medicineId, amount, InventoryRequestStatus.PENDING);
 
 	    // Add the replenishment request to the repository
 	    Repository.REPLENISHMENT_REQUEST.put(replenishmentRequest.getRequestId(), replenishmentRequest);
-
+	    System.out.println("Replenishment request is sent to the admin.\n");
+	    
+	    return 1;
 	}
 	
 }
