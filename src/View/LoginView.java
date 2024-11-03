@@ -2,7 +2,7 @@ package src.View;
 
 import src.Controller.PatientController;
 import src.Controller.StaffController;
-import src.Controller.UserController;
+//import src.Controller.UserController;
 import src.Enum.StaffType;
 import src.Helper.Helper;
 
@@ -10,6 +10,7 @@ public class LoginView extends MainView {
 
 	private AdminView adminView = new AdminView();
 	private PatientView patientView = new PatientView();
+	private PharmacistView pharmacistView = new PharmacistView();
 
 	@Override
 	protected void printActions() {
@@ -77,6 +78,8 @@ public class LoginView extends MainView {
 				if (staffType == StaffType.ADMIN) {
 					adminView.viewApp();
 				}
+				else if (staffType == StaffType.PHARMACIST)
+					pharmacistView.viewApp();
 			} else {
 				System.out.println("Invalid username/password or employee position");
 			}
