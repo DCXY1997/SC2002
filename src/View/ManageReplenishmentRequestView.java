@@ -25,7 +25,7 @@ public class ManageReplenishmentRequestView extends MainView {
                 case 1:
                     Helper.clearScreen();
                     printBreadCrumbs("Hospital Management App View > Login View > Admin View > Display Replenishment Request View");
-                    String pendingRequests = InventoryController.displayPendingReplenishmentRequests();
+                    String pendingRequests = InventoryController.findPendingReplenishmentRequests();
                     
                     if (pendingRequests.contains("No pending replenishment requests")) {
                         System.out.println("No pending replenishment requests available.");
@@ -54,7 +54,7 @@ public class ManageReplenishmentRequestView extends MainView {
         } while (opt != 2);
     }
 
-    private void manageReplenishmentRequest(String requestId) {
+    public void manageReplenishmentRequest(String requestId) {
         ReplenishmentRequest request = InventoryController.getReplenishmentRequestById(requestId);
         if (request == null) {
             System.out.println("Request ID not found.");

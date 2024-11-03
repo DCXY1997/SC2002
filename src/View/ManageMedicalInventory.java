@@ -76,13 +76,13 @@ public class ManageMedicalInventory extends MainView{
         return true;
     }
     
-    private String generateMedicalInventoryId(String name) {
+    public String generateMedicalInventoryId(String name) {
         String prefix = "";
         int uniqueId = Helper.generateUniqueId(Repository.INVENTORY);
         return prefix + String.format("%03d", uniqueId); 
     }
 
-    private boolean promptRemoveMedicalInventory() {
+    public boolean promptRemoveMedicalInventory() {
     System.out.println("Enter the medical inventory item id you want to remove: ");
     String medicineId = Helper.readString();
     

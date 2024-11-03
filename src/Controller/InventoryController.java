@@ -99,7 +99,7 @@ public class InventoryController {
         }
     }
     
-    public static String displayPendingReplenishmentRequests() {
+    public static String findPendingReplenishmentRequests() {
         StringBuilder pendingRequests = new StringBuilder();
     
         if (Repository.REPLENISHMENT_REQUEST.isEmpty()) {
