@@ -1,5 +1,6 @@
 package src.Controller;
 
+import src.Model.MedicalRecord;
 import src.Model.Patient;
 import src.Repository.FileType;
 import src.Repository.Repository;
@@ -55,4 +56,30 @@ public class PatientController {
             System.out.println("Patient not found.");
         }
     }
+    
+    public static void displayMedicalRecord(String loginId) {
+        Patient patient = Repository.PATIENT.get(loginId);
+
+        if (patient != null) {
+            MedicalRecord medicalRecord = patient.getMedicalRecord();
+
+            if (medicalRecord != null) {
+                System.out.println("Medical Record ID: " + medicalRecord.getRecordID());
+                System.out.println("Patient Name: " + patient.getName());
+                
+                if (medicalRecord.getApptOutcome().isEmpty()) {
+                    System.out.println("No appointment outcomes available.");
+                } else {
+                    for (AppointOutcome outcome : medicalRecord.getApptOutcome()) {
+                        System.out.println("Appointment Outcome: " + outcome); // Customize this output as needed
+                    }
+                }
+            } else {
+                System.out.println("No medical record found for this patient.");
+            }
+        } else {
+            System.out.println("Patient not found.");
+        }
+    }
+
 }
