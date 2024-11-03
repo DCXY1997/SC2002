@@ -10,9 +10,14 @@ public class HMSApp {
     // Repository.clearDatabase();
     Repository.readData(FileType.STAFF);
     Repository.readData(FileType.PATIENT);
-    Repository.readData(FileType.MEDICINE);
+    Repository.readData(FileType.INVENTORY);
+    Repository.readData(FileType.REPLENISHMENT_REQUEST);
+    Repository.readData(FileType.APPOINTMENT_OUTCOME);
     Repository.initializeDummyStaff();
     Repository.initializeDummyPatient();
+    Repository.initializeDummyInventory();
+    Repository.initializeDummyReplenishmentRequest();
+    Repository.initializeDummyAppointmentOutcome();
     Helper.clearScreen();
     printHMSTitle();
     HospitalManagementAppView hospitalManagementAppView = new HospitalManagementAppView();
