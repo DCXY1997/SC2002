@@ -123,8 +123,8 @@ public class DoctorView extends MainView{
 
     private void promptAppointmentRequests(Doctor doctor){
         List<Appointment> appointList = doctorController.getRequestedAppointments(doctor);
-        int indexinput = 0;
-        String ARinput = "";
+        int indexinput;
+        String ARinput;
         do { 
             for (int i=0; i<=appointList.size(); i++){
                 System.out.println(i + ":");
