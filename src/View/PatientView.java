@@ -170,12 +170,12 @@ public class PatientView extends MainView {
 		// Retrieve and display personal information using the PatientController
 		PatientController.displayPersonalInformation(loginId);
 	}
-	
-	private void viewMedicalRecord() {
-		System.out.println("Enter your login ID: ");
-		String loginId = Helper.readString();
-		
-		PatientController.displayMedicalRecord(loginId);
-	}
+
+	// private void viewMedicalRecord() {
+	// System.out.println("Enter your login ID: ");
+	// String loginId = Helper.readString();
+
+	// PatientController.displayMedicalRecord(loginId);
+	// }
 
 }

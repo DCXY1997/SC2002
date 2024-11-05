@@ -19,6 +19,7 @@ public class Doctor extends Staff {
     public Doctor() {
         super();
         this.role = StaffType.DOCTOR;
+        this.appointList = AppointmentList.getInstance(); // Use singleton instance
     }
 
     // Parameterized constructor
@@ -26,7 +27,8 @@ public class Doctor extends Staff {
             List<Specialization> docSpecialization, AppointmentList appointList, List<Schedule> availability) {
         super(name, password, StaffType.DOCTOR, gender, age, hospitalId);
         this.docSpecialization = docSpecialization != null ? new ArrayList<>(docSpecialization) : new ArrayList<>();
-        this.appointList = appointList != null ? appointList : new AppointmentList();
+        this.appointList = AppointmentList.getInstance(); // Use singleton instance
+        // this.appointList = appointList != null ? appointList : new AppointmentList();
         this.availability = availability != null ? new ArrayList<>(availability) : new ArrayList<>();
     }
 

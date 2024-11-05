@@ -7,14 +7,14 @@ public class Medicine implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // Attributes
-    private int medicineId;
+    private String medicineId;
     private String medicineName;
     private MedicineStatus status;
     private float medicinePrice;
     private String medicineDescription;
 
     // Constructor
-    public Medicine(int medicineId, String medicineName, MedicineStatus status, float medicinePrice,
+    public Medicine(String medicineId, String medicineName, MedicineStatus status, float medicinePrice,
             String medicineDescription) {
         this.medicineId = medicineId;
         this.medicineName = medicineName;
@@ -24,11 +24,11 @@ public class Medicine implements Serializable {
     }
 
     // Getters and Setters
-    public int getMedicineId() {
+    public String getMedicineId() {
         return medicineId;
     }
 
-    public void setMedicineId(int medicineId) {
+    public void setMedicineId(String medicineId) {
         this.medicineId = medicineId;
     }
 

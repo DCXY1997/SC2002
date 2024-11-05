@@ -1,17 +1,37 @@
 package src.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MedicalRecord {
-	public String recordID;
-	//public ArrayList<AppointOutcome> apptOutcome;
-	
-	MedicalRecord(String recordID, Patient patient){
+	private String recordID;
+	private List<AppointmentOutcome> apptOutcomes;
+
+	// Constructor
+	public MedicalRecord(String recordID) { // Removed Patient parameter as it wasn't used
 		this.recordID = recordID;
-		this.apptOutcome = new ArrayList();
+		this.apptOutcomes = new ArrayList<>(); // Corrected syntax and used generics
 	}
-	
-	public String getRecordID() { return recordID; }
-	public void setRecordID(String recordID) { this.recordID = recordID; }
-	
-	public AppointOutcom getApptOutcome() { return apptOutcome; }
-	public void addApptOutcome(AppointOutcom apptOutcome) { this.apptOutcome.add(apptOutcome); }
+
+	// Getter for recordID
+	public String getRecordID() {
+		return recordID;
+	}
+
+	// Setter for recordID
+	public void setRecordID(String recordID) {
+		this.recordID = recordID;
+	}
+
+	// Getter for appointment outcomes
+	public List<AppointmentOutcome> getApptOutcomes() {
+		return new ArrayList<>(apptOutcomes);
+	}
+
+	// Method to add an appointment outcome
+	public void addApptOutcome(AppointmentOutcome apptOutcome) {
+		if (apptOutcome != null) {
+			this.apptOutcomes.add(apptOutcome);
+		}
+	}
 }

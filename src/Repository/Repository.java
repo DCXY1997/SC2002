@@ -10,14 +10,15 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import src.Enum.Gender;
 import src.Enum.StaffType;
-import src.Model.Patient;
-import src.Model.Staff;
+import src.Model.*;
 
 public class Repository {
     private static final String folder = "Data";
 
     public static HashMap<String, Staff> STAFF = new HashMap<>();
     public static HashMap<String, Patient> PATIENT = new HashMap<>();
+    public static HashMap<String, InventoryList> INVENTORY = new HashMap<>();
+    public static HashMap<String, ReplenishmentRequest> REPLENISHMENT_REQUEST = new HashMap<>();
 
     public static void persistData(FileType fileType) {
         writeSerializedObject(fileType);
@@ -30,7 +31,58 @@ public class Repository {
     public static void saveAllFiles() {
         persistData(FileType.STAFF);
         persistData(FileType.PATIENT);
-        persistData(FileType.MEDICINE);
+        persistData(FileType.INVENTORY);
+        persistData(FileType.REPLENISHMENT_REQUEST);
+    }
+
+    public static boolean clearDatabase() {
+        // Initialize empty data
+        STAFF = new HashMap<>();
+        PATIENT = new HashMap<>();
+        INVENTORY = new HashMap<>();
+        REPLENISHMENT_REQUEST = new HashMap<>();
+        writeSerializedObject(FileType.STAFF);
+        writeSerializedObject(FileType.PATIENT);
+        writeSerializedObject(FileType.INVENTORY);
+        writeSerializedObject(FileType.REPLENISHMENT_REQUEST);
+        return true;
+    }
+
+    private static boolean writeSerializedObject(FileType fileType) {
+        String fileExtension = ".dat";
+        String filePath = "./src/Repository/" + folder + "/" + fileType.fileName + fileExtension;
+        try {
+            // Create the directory if it doesn't exist
+            new File("./src/Repository/" + folder).mkdirs();
+
+            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+            switch (fileType) {
+                case STAFF:
+                    objectOutputStream.writeObject(STAFF);
+                    break;
+                case PATIENT:
+                    objectOutputStream.writeObject(PATIENT);
+                    break;
+                case INVENTORY:
+                    objectOutputStream.writeObject(INVENTORY);
+                    break;
+                case REPLENISHMENT_REQUEST:
+                    objectOutputStream.writeObject(REPLENISHMENT_REQUEST);
+                    break;
+                default:
+                    System.out.println("Unsupported file type: " + fileType);
+                    return false;
+            }
+            objectOutputStream.close();
+            fileOutputStream.close();
+            return true;
+        } catch (Exception err) {
+            System.out.println("Error writing " + fileType.fileName + ": " + err.getMessage());
+            err.printStackTrace();
+            return false;
+        }
     }
 
     private static boolean readSerializedObject(FileType fileType) {
@@ -54,9 +106,6 @@ public class Repository {
                 case STAFF:
                     STAFF = new HashMap<>();
                     break;
-                case PATIENT:
-                    PATIENT = new HashMap<>();
-                    break;
             }
             writeSerializedObject(fileType); // Save the empty HashMap to a new file
             return true;
@@ -78,9 +127,6 @@ public class Repository {
                 case STAFF:
                     STAFF = (HashMap<String, Staff>) object;
                     break;
-                case PATIENT:
-                    PATIENT = (HashMap<String, Patient>) object;
-                    break;
             }
 
             objectInputStream.close();
@@ -92,36 +138,14 @@ public class Repository {
         return true;
     }
 
-    private static boolean writeSerializedObject(FileType fileType) {
-        String fileExtension = ".dat";
-        String filePath = "./src/Repository/" + folder + "/" + fileType.fileName + fileExtension;
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            if (fileType == FileType.STAFF) {
-                objectOutputStream.writeObject(STAFF);
-            } else if (fileType == FileType.PATIENT) {
-                objectOutputStream.writeObject(PATIENT);
-            }
-            objectOutputStream.close();
-            fileOutputStream.close();
-            return true;
-
-        } catch (Exception err) {
-            System.out.println("Error: " + err.getMessage());
-            return false;
-        }
-    }
-
-    public static boolean clearDatabase() {
-        // Initialize empty data
-        STAFF = new HashMap<>();
-        PATIENT = new HashMap<>();
-        writeSerializedObject(FileType.STAFF);
-        writeSerializedObject(FileType.PATIENT);
-        writeSerializedObject(FileType.MEDICINE);
-        return true;
-    }
+    // public static boolean clearDatabase() {
+    // // Initialize empty data
+    // STAFF = new HashMap<>();
+    // writeSerializedObject(FileType.STAFF);
+    // writeSerializedObject(FileType.PATIENT);
+    // writeSerializedObject(FileType.MEDICINE);
+    // return true;
+    // }
 
     public static boolean initializeDummyStaff() {
         if (!Repository.STAFF.isEmpty()) {

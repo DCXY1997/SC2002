@@ -12,6 +12,10 @@ public class AdminView extends MainView {
 	 */
 	private DisplayStaffView displayStaffView = new DisplayStaffView();
 	private ManageStaffAccountView manageStaffAccountView = new ManageStaffAccountView();
+	private DisplayAppointmentDetailView displayAppointmentDetailsView = new DisplayAppointmentDetailView();
+	private DisplayMedicationInventory displayMedicalInventoryView = new DisplayMedicationInventory();
+	private ManageMedicalInventory manageMedicalInventory = new ManageMedicalInventory();
+	private ManageReplenishmentRequestView manageReplenishmentRequestView = new ManageReplenishmentRequestView();
 
 	/**
 	 * View Actions of the AdminView.
