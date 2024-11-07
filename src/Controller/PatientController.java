@@ -5,6 +5,11 @@ import src.Repository.FileType;
 import src.Repository.Repository;
 
 public class PatientController {
+
+    public static Patient getPatientById(String loginId) {
+        return Repository.PATIENT.get(loginId);
+    }
+
     public static boolean authenticate(String id, String password) {
         // Retrieve the Patient object from the PATIENT map
         Patient patient = Repository.PATIENT.get(id);
@@ -58,14 +63,11 @@ public class PatientController {
 
     // public static void displayMedicalRecord(String loginId) {
     // Patient patient = Repository.PATIENT.get(loginId);
-
     // if (patient != null) {
     // MedicalRecord medicalRecord = patient.getMedicalRecord();
-
     // if (medicalRecord != null) {
     // System.out.println("Medical Record ID: " + medicalRecord.getRecordID());
     // System.out.println("Patient Name: " + patient.getName());
-
     // if (medicalRecord.getApptOutcome().isEmpty()) {
     // System.out.println("No appointment outcomes available.");
     // } else {
@@ -81,5 +83,4 @@ public class PatientController {
     // System.out.println("Patient not found.");
     // }
     // }
-
 }

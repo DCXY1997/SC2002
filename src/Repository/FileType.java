@@ -5,7 +5,9 @@ public enum FileType {
     INVENTORY("Inventory"),
     REPLENISHMENT_REQUEST("Replenishment_Request"),
     PATIENT("Patient"),
-    MEDICINE("Medicine");
+    MEDICINE("Medicine"),
+    APPOINTMENT_OUTCOME("Appointment_Outcome"),
+    APPOINTMENT_LIST("Appointment_List");
 
     public final String fileName;
 

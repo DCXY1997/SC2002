@@ -4,178 +4,222 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import src.Controller.DoctorController;
-import src.Enum.AppointmentStatus;
 import src.Helper.Helper;
-import src.Model.Appointment;
 import src.Model.Doctor;
 import src.Model.Patient;
 import src.Model.Schedule;
+import src.Model.Specialization;
 
-public class DoctorView extends MainView{
-    private DoctorController doctorController;
-    public DoctorView(DoctorController doctorController){
-        this.doctorController = doctorController;
+public class DoctorView extends MainView {
+
+    private Doctor doctor;
+    private DisplayDoctorAppointment displayDoctorAppointmentView;
+
+    public DoctorView(Doctor doctor) {
+        this.doctor = doctor;
+        if (doctor != null) {
+            this.displayDoctorAppointmentView = new DisplayDoctorAppointment(doctor);
+        } else {
+            System.out.println("Error: Doctor is null in DoctorView.");
+        }
     }
 
-    Doctor dummy = new Doctor(); //Just here for syntax, but parameter parsing will be based on the Doctor class tied to the HospitalID
-
     @Override
-	public void printActions(){
-		Helper.clearScreen();
+    public void printActions() {
+        Helper.clearScreen();
         printBreadCrumbs("Hospital Management App View > Login View > Doctor View");
         System.out.println("What would you like to do ?");
-        System.out.println("(1) View All Current Patients");
-        System.out.println("(2) View Patient Medical Records");
-        System.out.println("(3) Update Patient Medical Records");
-        System.out.println("(4) View Personal Schedule");
-        System.out.println("(5) Set Availability for Appointments");
-        System.out.println("(6) Accept or Decline Appointment Requests");
-        System.out.println("(7) View Upcoming Appointments");
-		System.out.println("(8) Record Appointment Outcome");
-        System.out.println("(9) Logout");
-	}
+        // System.out.println("(1) View All Current Patients");
+        // System.out.println("(2) View Patient Medical Records");
+        // System.out.println("(3) Update Patient Medical Records");
+        System.out.println("(1) View Personal Schedule");
+        System.out.println("(2) Set Availability for Appointments");
+        System.out.println("(3) Handle Appointments");
+        // System.out.println("(4) Record Appointment Outcome");
+        System.out.println("(4) View Personal Information");
+        System.out.println("(5) Add Specialization");
+        System.out.println("(6) Logout");
+    }
 
     @Override
-	public void viewApp(){ 
-		int opt = -1; 
-		do { 
+    public void viewApp() {
+        int opt = -1;
+        do {
             printActions();
-            opt = Helper.readInt(1,8);
+            opt = Helper.readInt(1, 11);
             switch (opt) {
+                // case 1:
+                // Helper.clearScreen();
+                // displayAllPatients(doctor.getHospitalId()); // Pass hospitalId
+                // break;
+                // case 2:
+                // Helper.clearScreen();
+                // promptGetPatientRecords();
+                // break;
+                // case 3:
+                // Helper.clearScreen();
+                // // promptUpdatePatientRecords();
+                // break;
                 case 1:
                     Helper.clearScreen();
-                    displayAllPatients(dummy);
+                    printBreadCrumbs(
+                            "Hospital Management App View > Doctor View > View Personal Schedule");
+                    promptDisplaySchedule(doctor.getHospitalId()); // Pass hospitalId
                     break;
                 case 2:
                     Helper.clearScreen();
-                    promptGetPatientRecords();
+                    printBreadCrumbs(
+                            "Hospital Management App View > Doctor View > Set Availability");
+                    promptAddAvailability(doctor);
                     break;
                 case 3:
                     Helper.clearScreen();
-                    //promptUpdatePatientRecords();
+                    displayDoctorAppointmentView.viewApp();
                     break;
+
+                // case 8:
+                //     Helper.clearScreen();
+                //     printBreadCrumbs(
+                //             "Hospital Management App View > Doctor View > Record Appointment Outcome");
+                //     promptRecordOutcome();
+                //     break;
                 case 4:
-                	Helper.clearScreen();
-                	displaySchedule(dummy);
+                    Helper.clearScreen();
+                    printBreadCrumbs(
+                            "Hospital Management App View > Doctor View > View Personal Information");
+                    promptPersonalInformation();
                     break;
                 case 5:
-					Helper.clearScreen();
-					promptSetAvailibility(dummy);
-					break;
-                case 6:
-                	Helper.clearScreen();
-                	promptAppointmentRequests(dummy);
-                	break;
-                case 7:
                     Helper.clearScreen();
-                	displayUpcomingAppointments(dummy);
-                	break;
-                case 8:
-					promptRecordOutcome();
-                case 9:
+                    printBreadCrumbs(
+                            "Hospital Management App View > Doctor View > Add Specialization");
+                    promptSpecialization(doctor);
+                    break;
+                case 6:
                     break;
                 default:
                     System.out.println("Invalid option");
                     break;
             }
-            if (opt != 8) {
+            if (opt != 6) {
                 Helper.pressAnyKeyToContinue();
             }
-        } while (opt != 8);
-	}
+        } while (opt != 6);
+    }
 
-    public void displayAllPatients(Doctor doctor){
-        List<Patient> patientlist = doctorController.getAllPatients(doctor);
-        for (Patient patient:patientlist){
-            System.out.println("Patient ID: "+ patient.getPatientId());
+    public void displayAllPatients(String hospitalId) {
+        List<Patient> patientList = DoctorController.getAllPatients(hospitalId); // Update to get patients by hospitalId
+        for (Patient patient : patientList) {
+            System.out.println("Patient ID: " + patient.getPatientId());
             System.out.println("Patient Name: " + patient.getName());
         }
     }
 
-    private void promptGetPatientRecords(){
-        System.out.println("Key in PatientID of Patient");
-        int pid = Helper.readInt();
-        //printPatientRecords(doctorController.getPatientRecords(pid));
-    }
+    private void promptDisplaySchedule(String hospitalId) {
+        // Retrieve the schedule using the DoctorController method
+        List<Schedule> docSchedule = DoctorController.getSchedule(doctor, hospitalId);
 
-    //private void printPatientRecords(MedicalRecord record){
-
-    //}
-
-
-    private void displaySchedule(Doctor doctor){
-        List<Schedule> docSchedule = doctorController.getSchedule(doctor);
-        for(Schedule schedule: docSchedule){
+        // Print each schedule's start and end times
+        for (Schedule schedule : docSchedule) {
             System.out.println("From " + schedule.getStartTime() + " to " + schedule.getEndTime());
         }
     }
 
-    private void promptSetAvailibility(Doctor doctor){
-        System.out.println("Key in Availibility date and time from(format: yyyy-mm-dd hh:mm):");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");Helper.readString();
-        String availibility = Helper.readString();
-        LocalDateTime from = LocalDateTime.parse(availibility, formatter);
-        System.out.println("Key in Availibility date and time to(format: yyyy-mm-dd hh:mm):");
-        availibility = Helper.readString();
-        LocalDateTime to = LocalDateTime.parse(availibility, formatter);
-        doctorController.setAvailibility(doctor, from, to);
+    // FIX: IMPROVE THIS SO ITS MORE INTUITIVE + SEPARATE INTO DIFFERENT VIEW FILE
+    private void promptAddAvailability(Doctor doctor) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        // Prompt for the "from" date
+        System.out.println("Key in Availability start date (format: yyyy-MM-dd):");
+        String startDate = Helper.readString();
+        System.out.println("Key in Availability start time (format: HH:mm):");
+        String startTime = Helper.readString();
+        LocalDateTime from = LocalDateTime.parse(startDate + " " + startTime, formatter);
+
+        // Prompt for the "to" date
+        System.out.println("Key in Availability end date (format: yyyy-MM-dd):");
+        String endDate = Helper.readString();
+        System.out.println("Key in Availability end time (format: HH:mm):");
+        String endTime = Helper.readString();
+        LocalDateTime to = LocalDateTime.parse(endDate + " " + endTime, formatter);
+
+        // Set the availability
+        DoctorController.addAvailibility(doctor, from, to);
     }
 
-    private void promptAppointmentRequests(Doctor doctor){
-        List<Appointment> appointList = doctorController.getRequestedAppointments(doctor);
-        int indexinput;
-        String ARinput;
-        do { 
-            for (int i=0; i<=appointList.size(); i++){
-                System.out.println(i + ":");
-                printAppointment(appointList.get(i));
+    private void promptPersonalInformation() {
+        // Retrieve and display personal information using the DoctorController
+        DoctorController.displayPersonalInformation(doctor.getHospitalId());
+    }
+
+    public void promptSpecialization(Doctor doctor) {
+        String specialization = null;
+
+        // List of predefined specializations
+        System.out.println("Please select a specialization from the list below:");
+        System.out.println("1. Cardiology");
+        System.out.println("2. Dermatology");
+        System.out.println("3. Neurology");
+        System.out.println("4. Pediatrics");
+        System.out.println("5. Orthopedics");
+        System.out.println("6. General Surgery");
+
+        System.out.print("Enter the number of your choice: ");
+        int choice = Helper.readInt(1, 7);
+
+        if (choice >= 1 && choice <= 6) {
+            // Assign the selected predefined specialization
+            Specialization specializationObj = null;
+            switch (choice) {
+                case 1:
+                    specializationObj = new Specialization("Cardiology", "Cardiology is a branch of medicine that deals with heart conditions.");
+                    break;
+                case 2:
+                    specializationObj = new Specialization("Dermatology", "Dermatology is the branch of medicine focused on skin diseases.");
+                    break;
+                case 3:
+                    specializationObj = new Specialization("Neurology", "Neurology is the branch of medicine that deals with the nervous system.");
+                    break;
+                case 4:
+                    specializationObj = new Specialization("Pediatrics", "Pediatrics is the branch of medicine dealing with children and infants.");
+                    break;
+                case 5:
+                    specializationObj = new Specialization("Orthopedics", "Orthopedics is the branch of medicine concerned with the musculoskeletal system.");
+                    break;
+                case 6:
+                    specializationObj = new Specialization("General Surgery", "General surgery involves surgery of the abdominal organs, skin, and soft tissues.");
+                    break;
             }
-            System.out.println("Enter index of appointment: ");
-            System.out.println("Enter -1 to exit");
-            indexinput = Helper.readInt();
-            if(indexinput<0){
-                break;
+
+            // Now add the specialization to the Doctor instance
+            if (specializationObj != null) {
+                DoctorController.addSpecialization(doctor, specializationObj);
+                System.out.println("Specialization " + specializationObj.getSpecializationName() + " has been added to Doctor " + doctor.getName());
             }
-            System.out.println("Enter A to Accept or R to Reject this appointment: ");
-            ARinput = Helper.readString();
-
-            if (ARinput.equals("A")) {
-                System.out.println("Appointment accepted: ");
-                appointList.get(indexinput).setStatus(AppointmentStatus.CONFIRMED);
-            } else if (ARinput.equals("R")) {
-                System.out.println("Appointment rejected: ");
-                appointList.get(indexinput).setStatus(AppointmentStatus.CANCELLED);
-            }
-            appointList.remove(indexinput);
-        } while (indexinput != -1);
-
-    }
-
-    private void displayUpcomingAppointments(Doctor doctor){
-        List<Appointment> appointList = doctorController.getUpcomingAppointments(doctor);
-        for(Appointment appointment: appointList){
-            printAppointment(appointment);
-        }
-    }
-
-    private void printAppointment(Appointment appointment){
-        System.out.println(appointment.getAppointmentId());
-        System.out.println(appointment.getAppointmentDate());
-        System.out.println(appointment.getPatient());
-        System.out.println(appointment.getAttendingDoctor());
-        System.out.println();
-    }
-
-    private void promptRecordOutcome(){
-        int id;
-        System.out.println("Enter AppointmentID: ");
-        id = Helper.readInt();
-        if(doctorController.getAppointmentById(id) == null){
-            System.out.println("Invalid AppointmentID");
+        } else {
+            System.out.println("Invalid choice. Please try again.");
             return;
         }
-        System.out.println("Please enter Appointment Outcome: ");
-        //incomplete stuff AppointmentOutcome outcome = AppointmentOutcome(int outcomeId, List<Medicine> prescribedMedicines, List<Diagnosis> patientDiagnosis, String doctorNotes, LocalDateTime dateDiagnosed);
-
     }
+
+    // NOT FIXED
+    // private void promptRecordOutcome() {
+    //     int id;
+    //     System.out.println("Enter AppointmentID: ");
+    //     id = Helper.readInt();
+    //     if (DoctorController.getAppointmentById(id) == null) {
+    //         System.out.println("Invalid AppointmentID");
+    //         return;
+    //     }
+    //     System.out.println("Please enter Appointment Outcome: ");
+    //     // incomplete stuff AppointmentOutcome outcome = AppointmentOutcome(int
+    //     // outcomeId, List<Medicine> prescribedMedicines, List<Diagnosis>
+    //     // patientDiagnosis, String doctorNotes, LocalDateTime dateDiagnosed);
+    // }
+    private void promptGetPatientRecords() {
+        System.out.println("Key in PatientID of Patient");
+        int pid = Helper.readInt();
+        // printPatientRecords(DoctorController.getPatientRecords(pid));
+    }
+
 }

@@ -1,6 +1,13 @@
 package src.Model;
 
-public class Specialization {
+import java.io.Serializable;
+
+public class Specialization implements Serializable {
+
+    /**
+     * For Java Serializable
+     */
+    private static final long serialVersionUID = 1L;
 
     // Attributes
     private String specializationName;
@@ -28,5 +35,11 @@ public class Specialization {
 
     public void setSpecializationDescription(String specializationDescription) {
         this.specializationDescription = specializationDescription;
+    }
+
+    // Override toString to display meaningful information about the specialization
+    @Override
+    public String toString() {
+        return "Specialization: " + specializationName + " - " + specializationDescription;
     }
 }

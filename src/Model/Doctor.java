@@ -6,6 +6,7 @@ import src.Enum.Gender;
 import src.Enum.StaffType;
 
 public class Doctor extends Staff {
+
     /**
      * For Java Serializable
      */
@@ -40,7 +41,7 @@ public class Doctor extends Staff {
     // Method to add a specialization
     public void addSpecialization(Specialization specialization) {
         if (specialization != null) {
-            this.docSpecialization.add(specialization);
+            this.docSpecialization.add(specialization); // Add specialization to the doctor's list
         }
     }
 
@@ -59,10 +60,39 @@ public class Doctor extends Staff {
         return availability;
     }
 
+    public void setAvailability(List<Schedule> availability) {
+        this.availability = availability;
+    }
+
     // Method to add availability to the schedule
     public void addAvailability(Schedule schedule) {
         if (schedule != null) {
             this.availability.add(schedule);
         }
+    }
+
+    // Override toString method to return meaningful information about the doctor
+    @Override
+    public String toString() {
+        return "Doctor[ID=" + super.getHospitalId() + ", Name=" + name + "]";
+    }
+
+    // Override equals to compare doctors by their hospitalId
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Doctor doctor = (Doctor) obj;
+        return super.getHospitalId().equals(doctor.getHospitalId());  // Compare by hospitalId
+    }
+
+    // Override hashCode to be consistent with equals
+    @Override
+    public int hashCode() {
+        return super.getHospitalId().hashCode();  // Use hospitalId for hashCode
     }
 }
