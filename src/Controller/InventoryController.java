@@ -99,40 +99,81 @@ public class InventoryController {
         }
     }
     
-    public static String findPendingReplenishmentRequests() {
-        StringBuilder pendingRequests = new StringBuilder();
+    public static String findAllReplenishmentRequests() {
+        StringBuilder requests = new StringBuilder();
     
-        if (Repository.REPLENISHMENT_REQUEST.isEmpty()) {
-            return "No replenishment requests found.";
-        }
-    
-        pendingRequests.append("Pending Replenishment Requests:\n");
-        pendingRequests.append("------------------------------------------------------------\n");
+        requests.append("Replenishment Requests:\n");
+        requests.append("------------------------------------------------------------\n");
     
         boolean hasPendingRequests = false;
+        boolean hasApprovedRequests = false;
+        boolean hasRejectedRequests = false;
     
-        // Loop through all requests in the repository
+        // Pending Requests Section
+        requests.append("Pending Replenishment Requests:\n");
+        requests.append("------------------------------------------------------------\n");
         for (Map.Entry<String, ReplenishmentRequest> entry : Repository.REPLENISHMENT_REQUEST.entrySet()) {
             ReplenishmentRequest request = entry.getValue();
     
-            // Check if the status is PENDING
             if (request.getStatus() == InventoryRequestStatus.PENDING) {
                 hasPendingRequests = true;
-                pendingRequests.append("Request ID: ").append(request.getRequestId()).append("\n");
-                pendingRequests.append("Medicine ID: ").append(request.getMedicineId()).append("\n");
-                pendingRequests.append("Requested Stock Level: ").append(request.getStockLevel()).append("\n");
-                pendingRequests.append("Status: ").append(request.getStatus()).append("\n");
-                pendingRequests.append("------------------------------------------------------------\n");
+                requests.append("Request ID: ").append(request.getRequestId()).append("\n");
+                requests.append("Medicine ID: ").append(request.getMedicineId()).append("\n");
+                requests.append("Requested Stock Level: ").append(request.getStockLevel()).append("\n");
+                requests.append("Status: ").append(request.getStatus()).append("\n");
+                requests.append("------------------------------------------------------------\n");
             }
         }
-    
         if (!hasPendingRequests) {
-            return "No pending replenishment requests found.";
+            requests.append("No pending replenishment requests found.\n");
+            requests.append("------------------------------------------------------------\n");
         }
     
-        return pendingRequests.toString();
+        // Approved Requests Section
+        requests.append("\nApproved Replenishment Requests:\n");
+        requests.append("------------------------------------------------------------\n");
+        for (Map.Entry<String, ReplenishmentRequest> entry : Repository.REPLENISHMENT_REQUEST.entrySet()) {
+            ReplenishmentRequest request = entry.getValue();
+    
+            if (request.getStatus() == InventoryRequestStatus.APPROVED) {
+                hasApprovedRequests = true;
+                requests.append("Request ID: ").append(request.getRequestId()).append("\n");
+                requests.append("Medicine ID: ").append(request.getMedicineId()).append("\n");
+                requests.append("Requested Stock Level: ").append(request.getStockLevel()).append("\n");
+                requests.append("Status: ").append(request.getStatus()).append("\n");
+                requests.append("------------------------------------------------------------\n");
+            }
+        }
+        if (!hasApprovedRequests) {
+            requests.append("No approved replenishment requests found.\n");
+            requests.append("------------------------------------------------------------\n");
+        }
+    
+        // Rejected Requests Section
+        requests.append("\nRejected Replenishment Requests:\n");
+        requests.append("------------------------------------------------------------\n");
+        for (Map.Entry<String, ReplenishmentRequest> entry : Repository.REPLENISHMENT_REQUEST.entrySet()) {
+            ReplenishmentRequest request = entry.getValue();
+    
+            if (request.getStatus() == InventoryRequestStatus.REJECTED) {
+                hasRejectedRequests = true;
+                requests.append("Request ID: ").append(request.getRequestId()).append("\n");
+                requests.append("Medicine ID: ").append(request.getMedicineId()).append("\n");
+                requests.append("Requested Stock Level: ").append(request.getStockLevel()).append("\n");
+                requests.append("Status: ").append(request.getStatus()).append("\n");
+                requests.append("------------------------------------------------------------\n");
+            }
+        }
+        if (!hasRejectedRequests) {
+            requests.append("No rejected replenishment requests found.\n");
+            requests.append("------------------------------------------------------------\n");
+        }
+    
+        return requests.toString();
     }
     
+    
+       
     public static boolean approveReplenishmentRequest(String requestId) {
         ReplenishmentRequest request = Repository.REPLENISHMENT_REQUEST.get(requestId);
         if (request == null) {

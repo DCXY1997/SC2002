@@ -11,48 +11,48 @@ public class ManageReplenishmentRequestView extends MainView {
     protected void printActions() {
         Helper.clearScreen();
         printBreadCrumbs("Hospital Management App View > Login View > Admin View > Replenishment Request View");
-        System.out.println("(1) View Pending Replenishment Requests");
+        System.out.println("(1) View Replenishment Requests");
         System.out.println("(2) Back");
     }
 
     @Override
-    public void viewApp() {
-        int opt = -1;
-        do {
-            printActions();
-            opt = Helper.readInt(1, 2);
-            switch (opt) {
-                case 1:
-                    Helper.clearScreen();
-                    printBreadCrumbs("Hospital Management App View > Login View > Admin View > Display Replenishment Request View");
-                    String pendingRequests = InventoryController.findPendingReplenishmentRequests();
-                    
-                    if (pendingRequests.contains("No pending replenishment requests")) {
-                        System.out.println("No pending replenishment requests available.");
-                    } else {
-                        System.out.println(pendingRequests);
+public void viewApp() {
+    int opt = -1;
+    do {
+        printActions();
+        opt = Helper.readInt(1, 2);
+        switch (opt) {
+            case 1:
+                Helper.clearScreen();
+                printBreadCrumbs("Hospital Management App View > Login View > Admin View > Display Replenishment Request View");
 
-                        System.out.println("\n(1) Manage a pending request");
-                        System.out.println("(2) Back");
+                // Display all requests as returned by findAllReplenishmentRequests()
+                String allRequests = InventoryController.findAllReplenishmentRequests();
+                System.out.println(allRequests);
 
-                        int choice = Helper.readInt(1, 2);
-                        if (choice == 1) {
-                            System.out.println("Enter the Request ID to manage:");
-                            String requestId = Helper.readString();
-                            manageReplenishmentRequest(requestId);
-                        }
-                    }
-                    Helper.pressAnyKeyToContinue();
-                    break;
-                case 2:
-                    Helper.pressAnyKeyToContinue();
-                    break;
-                default:
-                    System.out.println("Invalid option");
-                    break;
-            }
-        } while (opt != 2);
-    }
+                System.out.println("\n(1) Manage a pending request");
+                System.out.println("(2) Back");
+
+                int choice = Helper.readInt(1, 2);
+                if (choice == 1) {
+                    System.out.println("Enter the Request ID to manage:");
+                    String requestId = Helper.readString();
+                    manageReplenishmentRequest(requestId);
+                }
+                
+                Helper.pressAnyKeyToContinue();
+                break;
+                
+            case 2:
+                Helper.pressAnyKeyToContinue();
+                break;
+                
+            default:
+                System.out.println("Invalid option");
+                break;
+        }
+    } while (opt != 2);
+}
 
     public void manageReplenishmentRequest(String requestId) {
         ReplenishmentRequest request = InventoryController.getReplenishmentRequestById(requestId);
