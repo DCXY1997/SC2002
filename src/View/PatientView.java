@@ -53,7 +53,7 @@ public class PatientView extends MainView {
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
-                    // displayStaffView.viewApp();
+                    viewMedicalRecord();
                     break;
                 case 2:
                     Helper.clearScreen();
@@ -61,6 +61,7 @@ public class PatientView extends MainView {
                     break;
                 case 3:
                     Helper.clearScreen();
+                    viewPastAppointmentOutcome();
                     break;
                 case 4:
                     printBreadCrumbs(
@@ -158,9 +159,17 @@ public class PatientView extends MainView {
         PatientController.displayPersonalInformation(loginId);
     }
 
-    // private void viewMedicalRecord() {
-    // System.out.println("Enter your login ID: ");
-    // String loginId = Helper.readString();
-    // PatientController.displayMedicalRecord(loginId);
-    // }
+    private void viewMedicalRecord() {
+        String loginId = patient.getPatientId();
+
+        // Retrieve and display personal information using the PatientController
+        PatientController.displayPatientRecord(loginId);
+    }
+    
+    private void viewPastAppointmentOutcome() {
+        String loginId = patient.getPatientId();
+
+        // Retrieve and display personal information using the PatientController
+        PatientController.viewPastAppointmentOutcome(loginId);
+    }
 }
