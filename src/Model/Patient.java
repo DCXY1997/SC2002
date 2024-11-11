@@ -34,7 +34,6 @@ public class Patient implements Serializable {
         this.gender = gender;
         this.contactInformation = contactInformation;
         this.bloodType = bloodType;
-        this.medicalRecord = new MedicalRecord("1");
         // this.appointList = new AppointmentList();
     }
 

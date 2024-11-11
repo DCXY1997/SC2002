@@ -1,9 +1,12 @@
 package src.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Treatment {
+public class Treatment implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     // Attributes
     private int treatmentId; // Reference to the associated diagnosis

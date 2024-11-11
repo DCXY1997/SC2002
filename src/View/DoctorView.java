@@ -4,22 +4,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
 import src.Controller.DoctorController;
 import src.Helper.Helper;
 import src.Model.Appointment;
 import src.Model.AppointmentOutcome;
 import src.Model.Diagnosis;
 import src.Model.Doctor;
-import src.Model.InventoryList;
 import src.Model.MedicalRecord;
 import src.Model.Medicine;
 import src.Model.Patient;
 import src.Model.Schedule;
 import src.Model.Specialization;
 import src.Model.Treatment;
-import src.Repository.FileType;
 import src.Repository.Repository;
 
 public class DoctorView extends MainView {
@@ -266,15 +262,24 @@ public class DoctorView extends MainView {
 
         int selectedIndex = Helper.readInt(1, docAppointments.size()) - 1;
         Appointment appointment = docAppointments.get(selectedIndex);
-
+        Patient patient = Repository.PATIENT.get(appointment.getPatient().getPatientId());
         // Prompt for diagnosis details
         System.out.println("Enter Diagnosis:");
         String diagnosisName = Helper.readString();
         System.out.println("Enter Description:");
         String description = Helper.readString();
-        Diagnosis diagnosis = new Diagnosis(1, diagnosisName, description);
 
+        MedicalRecord medicalRecord = patient.getMedicalRecord();
+        // Getting previous diagnosis ID
+        int diagId = 0;
+        if (medicalRecord != null) {
+            int lastpatientApptOutc = patient.getMedicalRecord().getApptOutcomes().size()-1;
+            int lastpatientDiag = patient.getMedicalRecord().getApptOutcomes().get(lastpatientApptOutc).getPatientDiagnosis().size()-1;
+            diagId = patient.getMedicalRecord().getApptOutcomes().get(lastpatientApptOutc).getPatientDiagnosis().get(lastpatientDiag).getDiagnosisId();
+        }
+        Diagnosis diagnosis = new Diagnosis(diagId+1, diagnosisName, description);
         // Prompt for medications and create a unique treatment
+
         List<Medicine> prescribedMedicines = new ArrayList<>();
         List<String> frequencies = new ArrayList<>();
 
@@ -300,7 +305,7 @@ public class DoctorView extends MainView {
         String note = Helper.readString();
 
         // Create a unique Treatment for each record
-        Treatment treatment = new Treatment(1, prescribedMedicines, frequencies);
+        Treatment treatment = new Treatment(diagId, prescribedMedicines, frequencies);
 
         // Add the treatment to the diagnosis
         diagnosis.addTreatment(treatment);
@@ -316,15 +321,15 @@ public class DoctorView extends MainView {
 
         // Set the outcome and update the medical record
         appointment.setOutcome(outcome);
-        MedicalRecord medicalRecord = appointment.getPatient().getMedicalRecord();
+        
         if (medicalRecord == null) {
-            medicalRecord = new MedicalRecord("MR" + appointment.getPatient().getPatientId());
-            appointment.getPatient().setMedicalRecord(medicalRecord);
+            medicalRecord = new MedicalRecord("MR" + patient.getPatientId());
+            patient.setMedicalRecord(medicalRecord);
         }
         medicalRecord.addApptOutcome(outcome);
 
         // Save the updated patient data back to the repository
-        Repository.PATIENT.put(appointment.getPatient().getPatientId(), appointment.getPatient());
+        Repository.PATIENT.put(patient.getPatientId(), patient);
 
         System.out.println("Outcome recorded successfully.");
     }

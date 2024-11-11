@@ -25,6 +25,9 @@ public class Repository {
     public static HashMap<String, AppointmentOutcome> APPOINTMENT_OUTCOME = new HashMap<>();
     public static HashMap<String, Appointment> APPOINTMENT_LIST = new HashMap<>();
     public static HashMap<String, Medicine> MEDICINE = new HashMap<>();
+    public static HashMap<String, MedicalRecord> MEDICAL_RECORD = new HashMap<>();
+    public static HashMap<String, Diagnosis> DIAGNOSIS = new HashMap<>();
+    public static HashMap<String, Treatment> TREATMENT = new HashMap<>();
 
     public static void persistData(FileType fileType) {
         writeSerializedObject(fileType);
@@ -42,6 +45,9 @@ public class Repository {
         persistData(FileType.APPOINTMENT_OUTCOME);
         persistData(FileType.APPOINTMENT_LIST);
         persistData(FileType.MEDICINE);
+        persistData(FileType.MEDICAL_RECORD);
+        persistData(FileType.DIAGNOSIS);
+        persistData(FileType.TREATMENT);
     }
 
     public static boolean clearDatabase() {
@@ -51,6 +57,11 @@ public class Repository {
         INVENTORY = new HashMap<>();
         REPLENISHMENT_REQUEST = new HashMap<>();
         MEDICINE = new HashMap<>();
+        APPOINTMENT_LIST = new HashMap<>();
+        APPOINTMENT_OUTCOME = new HashMap<>();
+        MEDICAL_RECORD = new HashMap<>();
+        DIAGNOSIS = new HashMap<>();
+        TREATMENT = new HashMap<>();
         writeSerializedObject(FileType.STAFF);
         writeSerializedObject(FileType.PATIENT);
         writeSerializedObject(FileType.INVENTORY);
@@ -58,6 +69,9 @@ public class Repository {
         writeSerializedObject(FileType.APPOINTMENT_OUTCOME);
         writeSerializedObject(FileType.APPOINTMENT_LIST);
         writeSerializedObject(FileType.MEDICINE);
+        writeSerializedObject(FileType.MEDICAL_RECORD);
+        writeSerializedObject(FileType.DIAGNOSIS);
+        writeSerializedObject(FileType.TREATMENT);
         return true;
     }
 
@@ -92,6 +106,16 @@ public class Repository {
                     break;
                 case MEDICINE:
                 	objectOutputStream.writeObject(MEDICINE);
+                    break;
+                case MEDICAL_RECORD:
+                    objectOutputStream.writeObject(MEDICAL_RECORD);
+                    break;
+                case DIAGNOSIS:
+                    objectOutputStream.writeObject(DIAGNOSIS);
+                    break;
+                case TREATMENT:
+                    objectOutputStream.writeObject(TREATMENT);
+                    break;
                 default:
                     System.out.println("Unsupported file type: " + fileType);
                     return false;
@@ -142,6 +166,17 @@ public class Repository {
                 case APPOINTMENT_LIST:
                     APPOINTMENT_LIST = new HashMap<>();
                     break;
+                case MEDICINE:
+                	    MEDICINE = new HashMap<>();
+                case MEDICAL_RECORD:
+                    MEDICAL_RECORD = new HashMap<>();
+                    break;
+                case DIAGNOSIS:
+                    DIAGNOSIS = new HashMap<>();
+                    break;
+                case TREATMENT:
+                    TREATMENT = new HashMap<>();
+                    break;
                 default:
                     System.out.println("Unsupported file type: " + fileType);
                     return false;
@@ -180,6 +215,18 @@ public class Repository {
                     break;
                 case APPOINTMENT_LIST:
                     APPOINTMENT_LIST = (HashMap<String, Appointment>) object;
+                    break;
+                case MEDICINE:
+                    MEDICINE = (HashMap<String, Medicine>) object;
+                    break;
+                case MEDICAL_RECORD:
+                    MEDICAL_RECORD = (HashMap<String, MedicalRecord>) object;
+                    break;
+                case DIAGNOSIS:
+                    DIAGNOSIS = (HashMap<String, Diagnosis>) object;
+                    break;
+                case TREATMENT:
+                    TREATMENT = (HashMap<String, Treatment>) object;
                     break;
                 default:
                     System.out.println("Unsupported file type: " + fileType);

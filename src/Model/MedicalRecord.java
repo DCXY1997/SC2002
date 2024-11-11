@@ -1,9 +1,12 @@
 package src.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicalRecord {
+public class MedicalRecord implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 	private String recordID;
 	private List<AppointmentOutcome> apptOutcomes;
 

@@ -17,13 +17,17 @@ public class HMSApp {
         Repository.readData(FileType.REPLENISHMENT_REQUEST);
         Repository.readData(FileType.APPOINTMENT_OUTCOME);
         Repository.readData(FileType.APPOINTMENT_LIST);
+        Repository.readData(FileType.MEDICINE);
+        Repository.readData(FileType.MEDICAL_RECORD);
+        Repository.readData(FileType.DIAGNOSIS);
+        Repository.readData(FileType.TREATMENT);
 
         // Initialize dummy data if needed
-        Repository.initializeDummyPatient();
-        Repository.initializeDummyStaff();
-        Repository.initializeDummyInventory();
-        Repository.initializeDummyReplenishmentRequest();
-        Repository.initializeDummyAppointmentOutcome();
+        //Repository.initializeDummyPatient();
+        //Repository.initializeDummyStaff();
+        //Repository.initializeDummyInventory();
+        //Repository.initializeDummyReplenishmentRequest();
+        //Repository.initializeDummyAppointmentOutcome();
 
         // Save all data after initialization
         Repository.saveAllFiles(); // Add this line
@@ -32,6 +36,7 @@ public class HMSApp {
         printHMSTitle();
         HospitalManagementAppView hospitalManagementAppView = new HospitalManagementAppView();
         hospitalManagementAppView.viewApp();
+        Repository.saveAllFiles(); // Add this line
     }
 
     private static void printHMSTitle() {
