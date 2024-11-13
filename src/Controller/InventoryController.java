@@ -16,8 +16,8 @@ import src.Repository.Repository;
 
 public class InventoryController {
 
-    public static void addMedicalInventory(String medicineId, String medicineName, float medicinePrice, String medicineDescription, int medicineStock, int medicineLowStock) {
-        Medicine medicine = new Medicine(medicineId, medicineName, medicinePrice, medicineDescription);
+    public static void addMedicalInventory(String medicineId, String medicineName, float medicinePrice, int medicineAmount, String medicineDescription, int medicineStock, int medicineLowStock) {
+        Medicine medicine = new Medicine(medicineId, medicineName, medicinePrice, medicineAmount, medicineDescription);
 		InventoryList inventoryList= new InventoryList(medicine, medicineStock, medicineLowStock);
         
         //Update Hash Map
@@ -99,81 +99,40 @@ public class InventoryController {
         }
     }
     
-    public static String findAllReplenishmentRequests() {
-        StringBuilder requests = new StringBuilder();
+    public static String checkPendingReplenishmentRequests() {
+        StringBuilder pendingRequests = new StringBuilder();
     
-        requests.append("Replenishment Requests:\n");
-        requests.append("------------------------------------------------------------\n");
+        if (Repository.REPLENISHMENT_REQUEST.isEmpty()) {
+            return "No replenishment requests found.";
+        }
+    
+        pendingRequests.append("Pending Replenishment Requests:\n");
+        pendingRequests.append("------------------------------------------------------------\n");
     
         boolean hasPendingRequests = false;
-        boolean hasApprovedRequests = false;
-        boolean hasRejectedRequests = false;
     
-        // Pending Requests Section
-        requests.append("Pending Replenishment Requests:\n");
-        requests.append("------------------------------------------------------------\n");
+        // Loop through all requests in the repository
         for (Map.Entry<String, ReplenishmentRequest> entry : Repository.REPLENISHMENT_REQUEST.entrySet()) {
             ReplenishmentRequest request = entry.getValue();
     
+            // Check if the status is PENDING
             if (request.getStatus() == InventoryRequestStatus.PENDING) {
                 hasPendingRequests = true;
-                requests.append("Request ID: ").append(request.getRequestId()).append("\n");
-                requests.append("Medicine ID: ").append(request.getMedicineId()).append("\n");
-                requests.append("Requested Stock Level: ").append(request.getStockLevel()).append("\n");
-                requests.append("Status: ").append(request.getStatus()).append("\n");
-                requests.append("------------------------------------------------------------\n");
+                pendingRequests.append("Request ID: ").append(request.getRequestId()).append("\n");
+                pendingRequests.append("Medicine ID: ").append(request.getMedicineId()).append("\n");
+                pendingRequests.append("Requested Stock Level: ").append(request.getStockLevel()).append("\n");
+                pendingRequests.append("Status: ").append(request.getStatus()).append("\n");
+                pendingRequests.append("------------------------------------------------------------\n");
             }
         }
+    
         if (!hasPendingRequests) {
-            requests.append("No pending replenishment requests found.\n");
-            requests.append("------------------------------------------------------------\n");
+            return "No pending replenishment requests found.";
         }
     
-        // Approved Requests Section
-        requests.append("\nApproved Replenishment Requests:\n");
-        requests.append("------------------------------------------------------------\n");
-        for (Map.Entry<String, ReplenishmentRequest> entry : Repository.REPLENISHMENT_REQUEST.entrySet()) {
-            ReplenishmentRequest request = entry.getValue();
-    
-            if (request.getStatus() == InventoryRequestStatus.APPROVED) {
-                hasApprovedRequests = true;
-                requests.append("Request ID: ").append(request.getRequestId()).append("\n");
-                requests.append("Medicine ID: ").append(request.getMedicineId()).append("\n");
-                requests.append("Requested Stock Level: ").append(request.getStockLevel()).append("\n");
-                requests.append("Status: ").append(request.getStatus()).append("\n");
-                requests.append("------------------------------------------------------------\n");
-            }
-        }
-        if (!hasApprovedRequests) {
-            requests.append("No approved replenishment requests found.\n");
-            requests.append("------------------------------------------------------------\n");
-        }
-    
-        // Rejected Requests Section
-        requests.append("\nRejected Replenishment Requests:\n");
-        requests.append("------------------------------------------------------------\n");
-        for (Map.Entry<String, ReplenishmentRequest> entry : Repository.REPLENISHMENT_REQUEST.entrySet()) {
-            ReplenishmentRequest request = entry.getValue();
-    
-            if (request.getStatus() == InventoryRequestStatus.REJECTED) {
-                hasRejectedRequests = true;
-                requests.append("Request ID: ").append(request.getRequestId()).append("\n");
-                requests.append("Medicine ID: ").append(request.getMedicineId()).append("\n");
-                requests.append("Requested Stock Level: ").append(request.getStockLevel()).append("\n");
-                requests.append("Status: ").append(request.getStatus()).append("\n");
-                requests.append("------------------------------------------------------------\n");
-            }
-        }
-        if (!hasRejectedRequests) {
-            requests.append("No rejected replenishment requests found.\n");
-            requests.append("------------------------------------------------------------\n");
-        }
-    
-        return requests.toString();
+        return pendingRequests.toString();
     }
     
-    
-       
     public static boolean approveReplenishmentRequest(String requestId) {
         ReplenishmentRequest request = Repository.REPLENISHMENT_REQUEST.get(requestId);
         if (request == null) {
@@ -214,5 +173,34 @@ public class InventoryController {
 
     public static ReplenishmentRequest getReplenishmentRequestById(String requestId) {
         return Repository.REPLENISHMENT_REQUEST.get(requestId);
+    }
+    
+    public static String checkAllInventory(int all) {
+        StringBuilder allInventory = new StringBuilder();
+
+        // Check if the inventory is empty
+        if (Repository.INVENTORY.isEmpty()) {
+            return "No inventory found.";
+        }
+
+        allInventory.append("\nMedicine Inventory:\n");
+        allInventory.append("------------------------------------------------------------\n");
+
+        // Iterate through all inventory items in the repository
+        for (Map.Entry<String, InventoryList> entry : Repository.INVENTORY.entrySet()) {
+            InventoryList inventory = entry.getValue();
+            if (all==1 || (all==0)&&(inventory.getInitialStock() < inventory.getLowStocklevelAlert()))
+            {
+            	allInventory.append("Medicine ID: ").append(inventory.getMedicine().getMedicineId()).append("\n");
+                allInventory.append("Medicine Name: ").append(inventory.getMedicine().getMedicineName()).append("\n");
+                allInventory.append("Stock Level: ").append(inventory.getInitialStock()).append("\n");
+                allInventory.append("Alert Threshold: ").append(inventory.getLowStocklevelAlert()).append("\n");
+                if (inventory.getInitialStock() < inventory.getLowStocklevelAlert())
+                	allInventory.append("[STOCK STATUS: ").append("LOW]").append("\n");
+                allInventory.append("------------------------------------------------------------\n");
+            }  
+        }
+
+        return allInventory.toString();
     }
 }

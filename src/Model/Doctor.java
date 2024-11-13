@@ -23,11 +23,10 @@ public class Doctor extends Staff {
 
     // Parameterized constructor
     public Doctor(String name, String password, Gender gender, int age, String hospitalId,
-            List<Specialization> docSpecialization, List<Schedule> availability) {
+            List<Specialization> docSpecialization, AppointmentList appointList, List<Schedule> availability) {
         super(name, password, StaffType.DOCTOR, gender, age, hospitalId);
         this.docSpecialization = docSpecialization != null ? new ArrayList<>(docSpecialization) : new ArrayList<>();
-         // Use the singleton instance of AppointmentList
-        this.appointList = AppointmentList.getInstance();
+        this.appointList = appointList != null ? appointList : new AppointmentList();
         this.availability = availability != null ? new ArrayList<>(availability) : new ArrayList<>();
     }
 
