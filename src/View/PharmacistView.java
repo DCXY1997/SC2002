@@ -18,11 +18,11 @@ public class PharmacistView extends MainView{
 		printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View");
 		System.out.println("What would you like to do? ");
 		System.out.println("(1) View Appointment Outcome Record");
-		//System.out.println("(2) Update Prescription Status");
-		System.out.println("(2) Monitor Inventory Lists");
-		System.out.println("(3) Submit Replenishment Request");
-		System.out.println("(4) Change Password");
-		System.out.println("(5) Logout");
+		System.out.println("(2) Update Prescription Status");
+		System.out.println("(3) View Medication Inventory");
+		System.out.println("(4) Submit Replenishment Request");
+		System.out.println("(5) Change Password");
+		System.out.println("(6) Logout");
 	}
 	
 	public void viewApp()
@@ -31,33 +31,38 @@ public class PharmacistView extends MainView{
 		do
 		{
 			printActions();
-			opt = Helper.readInt(1, 5);
+			opt = Helper.readInt(1, 6);
 			Helper.clearScreen();
 			switch (opt) 
 			{
 			case 1:
+				Helper.clearScreen();
 				appointmentOutcomeView.viewApp();
 				break;
 			case 2:
-				inventoryView.viewApp();
+				Helper.clearScreen();
+				appointmentOutcomeView.displayPrescriptionStatus();
 				break;
 			case 3:
-				System.out.println("Enter the medicine ID: ");
-				String medicineId = Helper.readString();
-				pharmacistController.submitReplenishmentRequest(medicineId);
+				Helper.clearScreen();
+				inventoryView.viewApp();
 				break;
 			case 4:
+				Helper.clearScreen();
+				inventoryView.displayReplenishmentRequest();
+				break;
+			case 5:
 				printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > Password Change View");
 				promptChangePassword();
 				break;
-			case 5:
+			case 6:
 				break;
 			default:
-				System.out.println("Invalid Option;");
+				System.out.println("Invalid Option.");
 			}
-			/*if (opt!=5)
-				Helper.pressAnyKeyToContinue();*/
-		}while(opt !=5);
+			if (opt!=6)
+				Helper.pressAnyKeyToContinue();
+		}while(opt !=6);
 	}
 	
 	private void promptChangePassword() {

@@ -1,6 +1,7 @@
 package src.View;
 
 import java.util.Map;
+import java.util.Scanner;
 
 import src.Enum.InventoryRequestStatus;
 import src.Helper.Helper;
@@ -12,8 +13,8 @@ public class InventoryView extends MainView{
 	
 	protected void printActions() {
         Helper.clearScreen();
-        printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > Inventory View");
-        System.out.println("(1) View All Inventory");
+        printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > Medication Inventory View");
+        System.out.println("(1) View All Medication Inventory");
         System.out.println("(2) Back");
     }
 	
@@ -26,26 +27,13 @@ public class InventoryView extends MainView{
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
-                    printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > Display All Inventory");
-                    String inventory = InventoryController.displayAllInventory();
+                    printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > View All Medication Inventory");
+                    String inventory = InventoryController.checkAllInventory(1);
                     
                     if (inventory.contains("No inventory found")) {
-                        System.out.println("No inventory available.");
+                        System.out.println("No medication inventory available.");
                     } else {
-                        System.out.println(inventory);
-                        do
-                        {
-                        	System.out.println("\n(1) Submit Replenishment Request");
-                            System.out.println("(2) Back");
-
-                            int choice = Helper.readInt(1, 2);
-                            if (choice == 1) {
-                            	PharmacistController pharmacistController = new PharmacistController();
-                            	System.out.println("Enter the Medicine ID to replenish:");
-                                String medicineId = Helper.readString();
-                                valid = pharmacistController.submitReplenishmentRequest(medicineId);
-                            }
-                        }while (valid==0);
+                        System.out.println(inventory);   
                     }
                     Helper.pressAnyKeyToContinue();
                     break;
@@ -59,5 +47,39 @@ public class InventoryView extends MainView{
         } while (opt != 2);
     }
 
-	
+	public void displayReplenishmentRequest()
+	{
+		Scanner sc = new Scanner(System.in);
+		int opt = -1;
+		do
+		{
+			Helper.clearScreen();
+			printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > Submit Replenishment Request");
+			System.out.println("(1) Submit Replenishment Request");
+	        System.out.println("(2) Back");
+			opt = Helper.readInt(1, 2);
+			switch (opt)
+			{
+				case 1: 
+					String inventory = InventoryController.checkAllInventory(0);
+					if (inventory.contains("No inventory found")) {
+                        System.out.println("No low stock medication inventory available.");
+                        break;
+                    } else {
+                        System.out.println(inventory);   
+                    }
+					System.out.println("Enter the medicine ID to replenish: ");
+					String medicineId = Helper.readString();
+					Helper.clearScreen();
+			        PharmacistController.submitReplenishmentRequest(medicineId);
+					break;
+				case 2:
+					Helper.pressAnyKeyToContinue();
+					break;
+				default:
+					System.out.println("Invalid input!\n");
+					
+			}	
+		}while(opt != 2);
+	}
 }

@@ -3,7 +3,7 @@ package src.View;
 import java.util.Map; 
 import src.Model.*;
 import src.Controller.*;
-import java.util.List;
+import java.util.*;
 import src.Helper.Helper;
 import src.Repository.*;
 import src.Enum.*;
@@ -14,7 +14,7 @@ public class AppointmentOutcomeView extends MainView{
 	protected void printActions() {
         Helper.clearScreen();
         printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > Appointment Outcome View");
-        System.out.println("(1) View Pending Medicine Prescription");
+        System.out.println("(1) View Appointment Outcome");
         System.out.println("(2) Back");
     }
 	
@@ -26,23 +26,16 @@ public class AppointmentOutcomeView extends MainView{
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
-                    printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > Display Pending Medicine Prescription");
+                    printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > View Appointment Outcome");
                     String pendingRequests = AppointmentOutcomeController.checkPendingMedicinePrescription();
                     
-                    if (pendingRequests.contains("No pending medicine prescription found.")) {
-                        System.out.println("No pending medicine prescription available.");
-                    } else {
+                    if (pendingRequests.contains("No pending medicine prescription found.")) 
+                    {
+                        System.out.println("No appointment outcome with pending medicine prescription available.");
+                    } 
+                    else 
+                    {
                         System.out.println(pendingRequests);
-
-                        System.out.println("\n(1) Manage a pending prescription");
-                        System.out.println("(2) Back");
-
-                        int choice = Helper.readInt(1, 2);
-                        if (choice == 1) {
-                            System.out.println("Enter the Outcome ID to manage:");
-                            String requestId = Helper.readString();
-                            managePendingMedicinePrescription(requestId);
-                        }
                     }
                     Helper.pressAnyKeyToContinue();
                     break;
@@ -55,64 +48,6 @@ public class AppointmentOutcomeView extends MainView{
             }
         } while (opt != 2);
     }
-	
-	private void managePendingMedicinePrescription(String outcomeId) {
-		int stockLevel = 0;
-	    // Retrieve the appointment outcome using the provided ID
-	    AppointmentOutcome outcome = Repository.APPOINTMENT_OUTCOME.get(outcomeId);
-	    if (outcome == null) {
-	        System.out.println("Outcome ID not found.");
-	        return;
-	    }
-
-	    // Display details of prescribed medicines and check for pending statuses
-	    boolean hasPendingMedicine = false;
-	    System.out.println("Prescribed Medicines for Appointment Outcome ID: " + outcomeId);
-	    for (Medicine medicine : outcome.getPrescribedMedicines()) {
-	    	if (medicine.getStatus() == MedicineStatus.PENDING)
-	    	{
-	    		// Get the inventory details for the current medicine
-		        InventoryList inventoryItem = Repository.INVENTORY.get(medicine.getMedicineId());
-		        stockLevel = (inventoryItem != null) ? inventoryItem.getInitialStock() : 0; // If null, assume stock is 0
-
-		        System.out.println("Medicine ID: " + medicine.getMedicineId());
-		        System.out.println("Medicine Name: " + medicine.getMedicineName());
-		        System.out.println("Current Status: " + medicine.getStatus());
-		        System.out.println("Amount Prescribed: " + medicine.getMedicineAmount());
-		        System.out.println("Amount Available in Stock: " + stockLevel);
-		        System.out.println("------------------------------------------------------------");
-
-		        hasPendingMedicine = true;
-	    	} 
-	    }
-
-	    if (!hasPendingMedicine) {
-	        System.out.println("No pending medicines found for this appointment outcome.");
-	        return;
-	    }
-
-	    System.out.println("\nEnter the Medicine ID to be approved: ");
-	    String medicineIdToApprove = Helper.readString();
-
-	    boolean medicineApproved = false;
-	    // Approve the specific medicine if found and pending
-	    InventoryList inventoryItem = Repository.INVENTORY.get(medicineIdToApprove);
-	    stockLevel = (inventoryItem != null) ? inventoryItem.getInitialStock() : 0;
-	    for (Medicine medicine : outcome.getPrescribedMedicines()) {
-	        if (medicine.getMedicineId().equals(medicineIdToApprove) && medicine.getStatus() == MedicineStatus.PENDING && (stockLevel>=medicine.getMedicineAmount())) {
-	            medicine.setStatus(MedicineStatus.DISPENSED);
-	            System.out.println("Medicine ID " + medicine.getMedicineId() + " has been approved.");
-	            medicineApproved = true;
-	            break;
-	        }
-	    }
-
-	    if (!medicineApproved) {
-	        System.out.println("Medicine ID "+medicineIdToApprove+" is not approved.");
-	    } else {
-	        System.out.println("Prescription approval process completed.");
-	    }
-	}
 
 
 	public void displayAllPendingOutcome() {
@@ -153,5 +88,35 @@ public class AppointmentOutcomeView extends MainView{
 	        System.out.println("No pending prescriptions found.");
 	    }
 	}
+	
+	public void displayPrescriptionStatus()
+	{
+		Scanner sc = new Scanner(System.in);
+		int opt = -1;
+		do
+		{
+			Helper.clearScreen();
+			printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > Manage Prescription Status");
+			System.out.println("(1) Update Prescription Status");
+	        System.out.println("(2) Back");
+			opt = Helper.readInt(1, 2);
+			switch (opt)
+			{
+				case 1: 
+					System.out.println("Enter the appointment outcome ID: ");
+					String outcomeId = Helper.readString();
+					Helper.clearScreen();
+			        AppointmentOutcomeController.managePendingMedicinePrescription(outcomeId);
+					break;
+				case 2:
+					Helper.pressAnyKeyToContinue();
+					break;
+				default:
+					System.out.println("Invalid input!");
+					
+			}	
+		}while(opt != 2);
+	}
+    
 
 }
