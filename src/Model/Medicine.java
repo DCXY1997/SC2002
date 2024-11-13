@@ -4,6 +4,7 @@ import java.io.Serializable;
 import src.Enum.MedicineStatus;
 
 public class Medicine implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     // Attributes
@@ -22,6 +23,15 @@ public class Medicine implements Serializable {
         this.medicineAmount = medicineAmount;
         this.medicineDescription = medicineDescription;
         this.status = MedicineStatus.PENDING;
+    }
+
+    public Medicine(Medicine clone) {
+        this.medicineId = clone.medicineId;
+        this.medicineName = clone.medicineName;
+        this.medicinePrice = clone.medicinePrice;
+        this.medicineAmount = clone.medicineAmount;
+        this.medicineDescription = clone.medicineDescription;
+        this.status = clone.status;
     }
 
     // Getters and Setters
@@ -64,14 +74,12 @@ public class Medicine implements Serializable {
     public void setMedicineDescription(String medicineDescription) {
         this.medicineDescription = medicineDescription;
     }
-    
-    public void setMedicineAmount(int medicineAmount)
-    {
-    	this.medicineAmount = medicineAmount;
+
+    public void setMedicineAmount(int medicineAmount) {
+        this.medicineAmount = medicineAmount;
     }
-    
-    public int getMedicineAmount()
-    {
-    	return medicineAmount;
+
+    public int getMedicineAmount() {
+        return medicineAmount;
     }
 }
