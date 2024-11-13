@@ -175,7 +175,7 @@ public class InventoryController {
         return Repository.REPLENISHMENT_REQUEST.get(requestId);
     }
     
-    public static String displayAllInventory() {
+    public static String checkAllInventory(int all) {
         StringBuilder allInventory = new StringBuilder();
 
         // Check if the inventory is empty
@@ -183,20 +183,22 @@ public class InventoryController {
             return "No inventory found.";
         }
 
-        allInventory.append("All Inventory:\n");
+        allInventory.append("\nMedicine Inventory:\n");
         allInventory.append("------------------------------------------------------------\n");
 
         // Iterate through all inventory items in the repository
         for (Map.Entry<String, InventoryList> entry : Repository.INVENTORY.entrySet()) {
             InventoryList inventory = entry.getValue();
-
-            allInventory.append("Medicine ID: ").append(inventory.getMedicine().getMedicineId()).append("\n");
-            allInventory.append("Medicine Name: ").append(inventory.getMedicine().getMedicineName()).append("\n");
-            allInventory.append("Stock Level: ").append(inventory.getInitialStock()).append("\n");
-            allInventory.append("Alert Threshold: ").append(inventory.getLowStocklevelAlert()).append("\n");
-            if (inventory.getInitialStock() < inventory.getLowStocklevelAlert())
-            	allInventory.append("Stock Status: ").append("LOW").append("\n");
-            allInventory.append("------------------------------------------------------------\n");
+            if (all==1 || (all==0)&&(inventory.getInitialStock() < inventory.getLowStocklevelAlert()))
+            {
+            	allInventory.append("Medicine ID: ").append(inventory.getMedicine().getMedicineId()).append("\n");
+                allInventory.append("Medicine Name: ").append(inventory.getMedicine().getMedicineName()).append("\n");
+                allInventory.append("Stock Level: ").append(inventory.getInitialStock()).append("\n");
+                allInventory.append("Alert Threshold: ").append(inventory.getLowStocklevelAlert()).append("\n");
+                if (inventory.getInitialStock() < inventory.getLowStocklevelAlert())
+                	allInventory.append("[STOCK STATUS: ").append("LOW]").append("\n");
+                allInventory.append("------------------------------------------------------------\n");
+            }  
         }
 
         return allInventory.toString();

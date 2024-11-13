@@ -55,7 +55,7 @@ public class PharmacistController {
 	}
 
 	
-	public String getLowStock(InventoryList inventory) {
+	/*public String getLowStock(InventoryList inventory) {
 	    StringBuilder sb = new StringBuilder();
 	    
 	    // Check if the initial stock is less than the low stock level alert
@@ -69,15 +69,33 @@ public class PharmacistController {
 	    }
 	    
 	    return sb.toString();
-	}
+	}*/
 
 	
-	public int submitReplenishmentRequest(String medicineId)
+	public static void submitReplenishmentRequest(String medicineId)
 	{
+		int opt = -1;
+		Scanner sc = new Scanner(System.in);
 		InventoryList inventoryItem = Repository.INVENTORY.get(medicineId);
 	    if (inventoryItem == null) {
-	        System.out.println("Invalid medicine ID. Please check the ID and try again.");
-	        return 0; // Exit the method if the ID is invalid
+	        System.out.println("Invalid medicine ID. Please check the ID and try again.\n");
+	        return; // Exit the method if the ID is invalid
+	    }
+	    else if (inventoryItem.getInitialStock() > inventoryItem.getLowStocklevelAlert())
+	    {
+	    	System.out.println("\nNotice: The medicine ID is not in low stock.");
+	    	do
+	    	{	
+		    	System.out.println("(1) Continue Submit Replenishment Request");
+		        System.out.println("(2) Back");
+		        opt = Helper.readInt();
+		        if (opt == 2)
+		        {
+		        	Helper.pressAnyKeyToContinue();
+		        	return;
+		        }
+	    	}while(opt<1 || opt>2);
+	    	
 	    }
 	    
 	    // Generate a unique ID for the replenishment request
@@ -86,7 +104,7 @@ public class PharmacistController {
 
 	    // Prompt for replenishment amount
 	    System.out.println("Enter the replenishment amount: ");
-	    int amount = sc.nextInt();
+	    int amount = Helper.readInt();
 
 	    // Create a new replenishment request
 	    ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(requestId, medicineId, amount, InventoryRequestStatus.PENDING);
@@ -94,8 +112,6 @@ public class PharmacistController {
 	    // Add the replenishment request to the repository
 	    Repository.REPLENISHMENT_REQUEST.put(replenishmentRequest.getRequestId(), replenishmentRequest);
 	    System.out.println("Replenishment request is sent to the admin.\n");
-	    
-	    return 1;
 	}
 	
 }
