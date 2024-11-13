@@ -1,10 +1,11 @@
 package src.Model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppointmentOutcome {
+public class AppointmentOutcome implements Serializable{
 
     // Attributes
     private String outcomeId;
@@ -12,6 +13,7 @@ public class AppointmentOutcome {
     private List<Diagnosis> patientDiagnosis;
     private String doctorNotes;
     private LocalDateTime dateDiagnosed;
+    private static final long serialVersionUID = 1L;
 
     // Constructor
     public AppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Diagnosis> patientDiagnosis,

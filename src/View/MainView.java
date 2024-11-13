@@ -1,5 +1,7 @@
 package src.View;
 
+import src.Repository.Repository;
+
 public abstract class MainView {
 	/**
 	 * Abstract method for View Actions

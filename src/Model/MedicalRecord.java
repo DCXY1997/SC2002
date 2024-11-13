@@ -1,11 +1,13 @@
 package src.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MedicalRecord {
+public class MedicalRecord implements Serializable {
 	private String recordID;
 	private List<AppointmentOutcome> apptOutcomes;
+	private static final long serialVersionUID = 1L;
 
 	// Constructor
 	public MedicalRecord(String recordID) { // Removed Patient parameter as it wasn't used

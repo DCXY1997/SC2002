@@ -24,6 +24,7 @@ public class Repository {
     public static HashMap<String, ReplenishmentRequest> REPLENISHMENT_REQUEST = new HashMap<>();
     public static HashMap<String, AppointmentOutcome> APPOINTMENT_OUTCOME = new HashMap<>();
     public static HashMap<String, Appointment> APPOINTMENT_LIST = new HashMap<>();
+    public static HashMap<String, Medicine> MEDICINE = new HashMap<>();
 
     public static void persistData(FileType fileType) {
         writeSerializedObject(fileType);
@@ -40,6 +41,7 @@ public class Repository {
         persistData(FileType.REPLENISHMENT_REQUEST);
         persistData(FileType.APPOINTMENT_OUTCOME);
         persistData(FileType.APPOINTMENT_LIST);
+        persistData(FileType.MEDICINE);
     }
 
     public static boolean clearDatabase() {
@@ -48,12 +50,14 @@ public class Repository {
         PATIENT = new HashMap<>();
         INVENTORY = new HashMap<>();
         REPLENISHMENT_REQUEST = new HashMap<>();
+        MEDICINE = new HashMap<>();
         writeSerializedObject(FileType.STAFF);
         writeSerializedObject(FileType.PATIENT);
         writeSerializedObject(FileType.INVENTORY);
         writeSerializedObject(FileType.REPLENISHMENT_REQUEST);
         writeSerializedObject(FileType.APPOINTMENT_OUTCOME);
         writeSerializedObject(FileType.APPOINTMENT_LIST);
+        writeSerializedObject(FileType.MEDICINE);
         return true;
     }
 
@@ -86,6 +90,8 @@ public class Repository {
                 case APPOINTMENT_LIST:
                     objectOutputStream.writeObject(APPOINTMENT_LIST);
                     break;
+                case MEDICINE:
+                	objectOutputStream.writeObject(MEDICINE);
                 default:
                     System.out.println("Unsupported file type: " + fileType);
                     return false;
@@ -316,5 +322,6 @@ public class Repository {
         // Return true indicating dummy data is initialized
         return true;
     }
+
 
 }

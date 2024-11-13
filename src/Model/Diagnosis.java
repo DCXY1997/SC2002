@@ -1,15 +1,17 @@
 package src.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Diagnosis {
+public class Diagnosis implements Serializable{
 
     // Attributes
     private int diagnosisId;
     private String diagnosisName;
     private String description;
-    private List<Treatment> treatment; // List of treatments associated with the diagnosis
+    private List<Treatment> treatment;
+    private static final long serialVersionUID = 1L;// List of treatments associated with the diagnosis
 
     // Constructor
     public Diagnosis(int diagnosisId, String diagnosisName, String description) {

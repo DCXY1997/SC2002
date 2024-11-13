@@ -1,20 +1,20 @@
 package src.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Treatment {
+public class Treatment implements Serializable{
 
     // Attributes
-    private int treatmentId;
-    private Diagnosis diagnosis; // Reference to the associated diagnosis
+    private int treatmentId; // Reference to the associated diagnosis
     private List<Medicine> medications; // List of medications for the treatment
-    private String frequency;
+    private List<String> frequency;
+    private static final long serialVersionUID = 1L;
 
     // Constructor
-    public Treatment(int treatmentId, Diagnosis diagnosis, List<Medicine> medications, String frequency) {
+    public Treatment(int treatmentId, List<Medicine> medications, List<String> frequency) {
         this.treatmentId = treatmentId;
-        this.diagnosis = diagnosis;
         this.medications = new ArrayList<>(medications); // Initialize with a copy of the medications
         this.frequency = frequency;
     }
@@ -26,14 +26,6 @@ public class Treatment {
 
     public void setTreatmentId(int treatmentId) {
         this.treatmentId = treatmentId;
-    }
-
-    public Diagnosis getDiagnosis() {
-        return diagnosis;
-    }
-
-    public void setDiagnosis(Diagnosis diagnosis) {
-        this.diagnosis = diagnosis;
     }
 
     public List<Medicine> getMedications() {
@@ -50,11 +42,11 @@ public class Treatment {
         this.medications.remove(medicine);
     }
 
-    public String getFrequency() {
+    public List<String> getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(String frequency) {
+    public void setFrequency(List<String> frequency) {
         this.frequency = frequency;
     }
 }

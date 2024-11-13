@@ -15,6 +15,10 @@ public class Medicine implements Serializable {
     private int medicineAmount;
     private String medicineDescription;
 
+    
+    public Medicine() {
+    	
+    }
     // Constructor
     public Medicine(String medicineId, String medicineName, float medicinePrice, int medicineAmount, String medicineDescription) {
         this.medicineId = medicineId;
