@@ -55,6 +55,7 @@ public class Repository {
         writeSerializedObject(FileType.PATIENT);
         writeSerializedObject(FileType.INVENTORY);
         writeSerializedObject(FileType.REPLENISHMENT_REQUEST);
+        writeSerializedObject(FileType.APPOINTMENT_OUTCOME);
         return true;
     }
 
