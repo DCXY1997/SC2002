@@ -250,35 +250,45 @@ public class Repository {
             return false;
         }
 
-     // Create sample Medicine objects
+        // Create sample Medicine objects
         Medicine medicine1 = new Medicine("001", "Paracetamol", 5, 10, "To treat fever");
-        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, 15, "To treat fever");
+        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, 15, "To treat inflammation");
 
-        // Create a list of prescribed medicines
-        List<Medicine> prescribedMedicinesList1 = Arrays.asList(medicine1, medicine2);
-        List<Medicine> prescribedMedicinesList2 = Arrays.asList(medicine1);
+        // Create independent copies of the medicines for each AppointmentOutcome
+        List<Medicine> prescribedMedicinesList1 = Arrays.asList(new Medicine(medicine1), new Medicine(medicine2));
+        List<Medicine> prescribedMedicinesList2 = Arrays.asList(new Medicine(medicine1));
 
-     // Create dummy Diagnosis objects
+        // Create dummy Diagnosis objects
         Diagnosis diagnosis1 = new Diagnosis(101, "Hypertension", "High blood pressure requiring regular monitoring");
         Diagnosis diagnosis2 = new Diagnosis(102, "Diabetes Type 2", "Chronic condition affecting blood sugar regulation");
 
         // Add Diagnosis objects to a list
         List<Diagnosis> diagnosisList1 = Arrays.asList(diagnosis1, diagnosis2);
-
         List<Diagnosis> diagnosisList2 = Arrays.asList(diagnosis2);
 
-
         // Create dummy AppointmentOutcome instances
-        AppointmentOutcome appointmentOutcome1 = new AppointmentOutcome("101", prescribedMedicinesList1, diagnosisList1, "Patient needs rest and fluids.", LocalDateTime.now());
+        AppointmentOutcome appointmentOutcome1 = new AppointmentOutcome(
+            "101", 
+            prescribedMedicinesList1, 
+            diagnosisList1, 
+            "Patient needs rest and fluids.", 
+            LocalDateTime.now()
+        );
 
-        AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome("102", prescribedMedicinesList2, diagnosisList2, "Prescribed light medication and rest.", LocalDateTime.now().minusDays(1));
+        AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome(
+            "102", 
+            prescribedMedicinesList2, 
+            diagnosisList2, 
+            "Prescribed light medication and rest.", 
+            LocalDateTime.now().minusDays(1)
+        );
 
         // Add to the repository
         Repository.APPOINTMENT_OUTCOME.put(appointmentOutcome1.getOutcomeId(), appointmentOutcome1);
         Repository.APPOINTMENT_OUTCOME.put(appointmentOutcome2.getOutcomeId(), appointmentOutcome2);
 
-
         // Return true indicating dummy data is initialized
         return true;
-    } 
+    }
+
 }
