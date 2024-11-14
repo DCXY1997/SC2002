@@ -1,12 +1,7 @@
 package src.View;
 
-import java.util.Map;
 import java.util.Scanner;
-
-import src.Enum.InventoryRequestStatus;
 import src.Helper.Helper;
-import src.Model.*;
-import src.Repository.Repository;
 import src.Controller.*;
 
 public class InventoryView extends MainView{
@@ -20,7 +15,6 @@ public class InventoryView extends MainView{
 	
 	public void viewApp() {
         int opt = -1;
-        int valid = 0;
         do {
             printActions();
             opt = Helper.readInt(1, 2);
@@ -51,9 +45,10 @@ public class InventoryView extends MainView{
 	{
 		Scanner sc = new Scanner(System.in);
 		int opt = -1;
+        Helper.clearScreen();
 		do
 		{
-			Helper.clearScreen();
+            Helper.clearScreen();
 			printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > Submit Replenishment Request");
 			System.out.println("(1) Submit Replenishment Request");
 	        System.out.println("(2) Back");
@@ -61,6 +56,8 @@ public class InventoryView extends MainView{
 			switch (opt)
 			{
 				case 1: 
+                    Helper.clearScreen();
+                    printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > Submit Replenishment Request");
 					String inventory = InventoryController.checkAllInventory(0);
 					if (inventory.contains("No inventory found")) {
                         System.out.println("No low stock medication inventory available.");
@@ -70,7 +67,7 @@ public class InventoryView extends MainView{
                     }
 					System.out.println("Enter the medicine ID to replenish: ");
 					String medicineId = Helper.readString();
-					Helper.clearScreen();
+					//Helper.clearScreen();
 			        PharmacistController.submitReplenishmentRequest(medicineId);
 					break;
 				case 2:
