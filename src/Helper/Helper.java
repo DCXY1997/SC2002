@@ -98,6 +98,21 @@ public class Helper {
         }
     }
 
+    public static double readFloat() {
+       
+        while (true) {
+            try {
+                float userInput = -1;
+                userInput = sc.nextFloat();
+                sc.nextLine(); // Consume newline left-over
+                return userInput;
+            } catch (InputMismatchException e) {
+                sc.nextLine();
+                System.out.println("Invalid Input, Enter an float!!");
+            }
+        }
+    }
+
     /**
      * Reads a new line of string 
      * @return user input as string
