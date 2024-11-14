@@ -45,7 +45,7 @@ public class AppointmentOutcomeController {
 	            for (Medicine medicine : pendingMedicines) {
 	            	pendingRequests.append("Medicine ID: ").append(medicine.getMedicineId()).append("\n");
 	                pendingRequests.append("Medicine Name: ").append(medicine.getMedicineName()).append("\n");
-	                pendingRequests.append("Amount: ").append(medicine.getMedicineAmount()).append("\n");
+	                pendingRequests.append("Amount: ").append("0").append("\n");
 	                pendingRequests.append("Status: ").append(medicine.getStatus()).append("\n");
 	                pendingRequests.append("------------------------------------------------------------\n");
 	                
@@ -66,7 +66,9 @@ public class AppointmentOutcomeController {
 	    AppointmentOutcome outcome = Repository.APPOINTMENT_OUTCOME.get(outcomeId);
 	    if (outcome == null) 
 	    {
-	        System.out.println("Outcome ID not found.");
+	        System.out.println("Outcome ID not found.\n");
+			Helper.pressAnyKeyToContinue();
+			//Helper.clearScreen();
 	        return;
 	    }
 
@@ -82,7 +84,7 @@ public class AppointmentOutcomeController {
 	            System.out.println("Medicine ID: " + medicine.getMedicineId());
 	            System.out.println("Medicine Name: " + medicine.getMedicineName());
 	            System.out.println("Current Status: " + medicine.getStatus());
-	            System.out.println("Amount Prescribed: " + medicine.getMedicineAmount());
+	            System.out.println("Amount Prescribed: " + 0);
 	            System.out.println("Amount Available in Stock: " + stockLevel);
 	            System.out.println("------------------------------------------------------------");
 
@@ -114,14 +116,14 @@ public class AppointmentOutcomeController {
 	                InventoryList inventoryItem = Repository.INVENTORY.get(medicineIdToApprove);
 	                stockLevel = (inventoryItem != null) ? inventoryItem.getInitialStock() : 0;
 
-	                if (stockLevel < medicine.getMedicineAmount()) 
+	                if (stockLevel < 0) 
 	                {
 	                    System.out.println("Medicine ID " + medicineIdToApprove + " does not have enough stock level.");
 	                }
 	                else 
 	                {
 	                    medicine.setStatus(MedicineStatus.DISPENSED);
-	                    int newStockLevel = stockLevel - medicine.getMedicineAmount();
+	                    int newStockLevel = stockLevel - 0;
 	                    inventoryItem.setInitialStock(newStockLevel);
 	                    Repository.INVENTORY.put(medicineIdToApprove, inventoryItem);
 	                    System.out.println("Medicine ID " + medicine.getMedicineId() + " has been approved.");
@@ -136,7 +138,10 @@ public class AppointmentOutcomeController {
 
 	    // Print message only if no matching medicine was found after checking all items
 	    if (!medicineFound) 
-	        System.out.println("Medicine ID " + medicineIdToApprove + " not found.\n");
+		{
+			System.out.println("Medicine ID " + medicineIdToApprove + " not found.\n");
+		}
+		Helper.pressAnyKeyToContinue();
 	}
 
 

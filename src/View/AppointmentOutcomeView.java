@@ -103,9 +103,10 @@ public class AppointmentOutcomeView extends MainView{
 			switch (opt)
 			{
 				case 1: 
+					Helper.clearScreen();
+					printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > Manage Prescription Status");
 					System.out.println("Enter the appointment outcome ID: ");
 					String outcomeId = Helper.readString();
-					Helper.clearScreen();
 			        AppointmentOutcomeController.managePendingMedicinePrescription(outcomeId);
 					break;
 				case 2:

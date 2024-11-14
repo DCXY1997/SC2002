@@ -1,7 +1,6 @@
 package src.View;
 
 import src.Controller.*;
-import src.Model.*;
 import src.Helper.Helper;
 import src.Model.Staff;
 import src.Repository.Repository;
@@ -9,7 +8,7 @@ import src.Repository.Repository;
 public class PharmacistView extends MainView{
 	
 	private AppointmentOutcomeView appointmentOutcomeView = new AppointmentOutcomeView();
-	private PharmacistController pharmacistController = new PharmacistController();
+	//private PharmacistController pharmacistController = new PharmacistController();
 	private InventoryView inventoryView = new InventoryView();
 	
 	public void printActions()

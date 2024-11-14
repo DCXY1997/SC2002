@@ -10,7 +10,6 @@ import src.Enum.*;
 import src.Model.*;
 import src.Enum.Gender;
 import src.Enum.StaffType;
-import src.Controller.*;
 
 import java.io.IOException;
 import java.io.EOFException;
@@ -209,13 +208,13 @@ public class Repository {
         }
 
         // Dummy data based on provided table
-        Medicine paracetamol = new Medicine("001", "Paracetamol", 5, 10, "To treat fever");
+        Medicine paracetamol = new Medicine("001", "Paracetamol", 5, "To treat fever");
         InventoryList inventoryParacetamol = new InventoryList(paracetamol, 100, 20);
 
-        Medicine ibuprofen = new Medicine("002", "Ibuprofen", 4, 15, "To treat fever");
+        Medicine ibuprofen = new Medicine("002", "Ibuprofen", 4, "To treat fever");
         InventoryList inventoryIbuprofen = new InventoryList(ibuprofen, 5, 10);
 
-        Medicine amoxicillin = new Medicine("003", "Amoxicillin", 3, 7, "To treat fever");
+        Medicine amoxicillin = new Medicine("003", "Amoxicillin", 3, "To treat fever");
         InventoryList inventoryAmoxicillin = new InventoryList(amoxicillin, 75, 15);
 
         // Add to INVENTORY with String keys
@@ -251,8 +250,8 @@ public class Repository {
         }
 
         // Create sample Medicine objects
-        Medicine medicine1 = new Medicine("001", "Paracetamol", 5, 10, "To treat fever");
-        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, 15, "To treat inflammation");
+        Medicine medicine1 = new Medicine("001", "Paracetamol", 5, "To treat fever");
+        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, "To treat inflammation");
 
         // Create independent copies of the medicines for each AppointmentOutcome
         List<Medicine> prescribedMedicinesList1 = Arrays.asList(new Medicine(medicine1), new Medicine(medicine2));

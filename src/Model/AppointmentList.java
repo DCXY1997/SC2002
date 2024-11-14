@@ -12,7 +12,7 @@ public class AppointmentList {
     private final List<Appointment> appointments;
 
     // Private constructor to prevent external instantiation
-    private AppointmentList() {
+    public AppointmentList() {
         this.appointments = new ArrayList<>();
     }
 
