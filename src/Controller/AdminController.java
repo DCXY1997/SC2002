@@ -1,15 +1,22 @@
 package src.Controller;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import src.Enum.AppointmentStatus;
 import src.Enum.Gender;
 import src.Enum.StaffType;
 import src.Helper.Helper;
+import src.Model.Appointment;
+import src.Model.AppointmentList;
+import src.Model.InventoryList;
+import src.Model.Medicine;
 import src.Model.Staff;
 import src.Repository.FileType;
 import src.Repository.Repository;
 
 public class AdminController {
+
     public static boolean displayStaffListByRole(StaffType role) {
     	ArrayList<Staff> staffNameList = new ArrayList<Staff>();
     	//can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
@@ -174,6 +181,88 @@ public class AdminController {
         Repository.persistData(FileType.STAFF);
         return true;
     }
+
+    // Method to retrieve appointment details as a formatted String
+    public static String getAppointmentDetails(int appointmentId) {
+        List<Appointment> appointments = AppointmentList.getInstance().getAppointments();  // Access singleton appointment list
+        for (Appointment appointment : appointments) {
+            if (appointment.getAppointmentId() == appointmentId) {
+                return formatAppointmentDetails(appointment);
+            }
+        }   
+        return "Appointment with ID " + appointmentId + " not found.";
+    }
+
+    // Helper method to format appointment details into a String
+    private static String formatAppointmentDetails(Appointment appointment) {
+        StringBuilder details = new StringBuilder();
+        details.append("Appointment ID: ").append(appointment.getAppointmentId()).append("\n");
+        details.append("Patient ID: ").append(appointment.getPatient().getPatientId()).append("\n");
+        details.append("Doctor ID: ").append(appointment.getAttendingDoctor().getHospitalId()).append("\n");
+        details.append("Status: ").append(appointment.getStatus()).append("\n");
+        details.append("Date & Time: ").append(appointment.getAppointmentDate()).append("\n");
     
+        if (appointment.getStatus() == AppointmentStatus.COMPLETED && appointment.getOutcome() != null) {
+            details.append("Outcome: ").append(appointment.getOutcome().getDoctorNotes()).append("\n");
+        }
+    
+        return details.toString();
+        }
+        
+    public static String getInventoryRecord() {
+        StringBuilder inventoryDetails = new StringBuilder();
+        
+        if (Repository.INVENTORY.isEmpty()) {
+            return "No inventory records found.";
+        }
+        
+        inventoryDetails.append("Medical Inventory:\n");
+        inventoryDetails.append("------------------------------------------------------------\n");
+        
+        for (Map.Entry<String, InventoryList> entry : Repository.INVENTORY.entrySet()) {
+            InventoryList inventoryItem = entry.getValue();
+            Medicine medicine = inventoryItem.getMedicine();
+               
+            inventoryDetails.append("Medicine ID: ").append(medicine.getMedicineId()).append("\n");
+            inventoryDetails.append("Medicine Name: ").append(medicine.getMedicineName()).append("\n");
+            inventoryDetails.append("Medicine Price: $").append(medicine.getMedicinePrice()).append("\n");
+            inventoryDetails.append("Medicine Description: ").append(medicine.getMedicineDescription()).append("\n");
+            inventoryDetails.append("Initial Stock: ").append(inventoryItem.getInitialStock()).append("\n");
+            inventoryDetails.append("Low Stock Level Alert: ").append(inventoryItem.getLowStocklevelAlert()).append("\n");
+            inventoryDetails.append("------------------------------------------------------------\n");
+        }
+        
+        return inventoryDetails.toString();
+    }
+
+    public boolean approveReplenishmentRequests(String medicalId, int stockCount){
+        // Check if the specified medicalId exists in INVENTORY
+        if (!Repository.INVENTORY.containsKey(medicalId)) {
+            System.out.println("Medical ID not found in inventory.");
+            return false;
+        }
+
+        // Retrieve the InventoryList item associated with the medicalId
+        InventoryList inventoryItem = Repository.INVENTORY.get(medicalId);
+
+        // Check if the initialStock is lower than the lowStockLevelAlert
+    if (inventoryItem.getInitialStock() < inventoryItem.getLowStocklevelAlert()) {
+        // Update the stock level by adding stockCount to the current initialStock
+        int updatedStock = inventoryItem.getInitialStock() + stockCount;
+        inventoryItem.setInitialStock(updatedStock);
+
+        // Update the INVENTORY map in the repository
+        Repository.INVENTORY.put(medicalId, inventoryItem);
+        
+        // Persist the changes to the data file
+        Repository.persistData(FileType.INVENTORY);
+
+        System.out.println("Stock level updated successfully for Medicine ID: " + medicalId);
+        return true;
+        } else {
+        System.out.println("Replenishment not needed: Stock level is above alert threshold.");
+        return false;
+    }
+}
 
 }

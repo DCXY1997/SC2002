@@ -4,7 +4,6 @@ import src.Repository.*;
 import src.Model.*;
 import src.Enum.*;
 import java.util.Scanner;
-import java.util.HashMap;
 import src.Helper.*;
 
 public class PharmacistController {
@@ -40,7 +39,7 @@ public class PharmacistController {
 	    for (Medicine medicine : appointmentOutcome.getPrescribedMedicines()) {
 	        if (inventory.getMedicine().equals(medicine)) {
 	            int currentStock = inventory.getInitialStock(); 
-	            int medicineAmount = medicine.getMedicineAmount(); 
+	            int medicineAmount = 0; 
 	            
 	            if (currentStock >= medicineAmount) {
 	                inventory.setInitialStock(currentStock - medicineAmount);
@@ -79,11 +78,12 @@ public class PharmacistController {
 		InventoryList inventoryItem = Repository.INVENTORY.get(medicineId);
 	    if (inventoryItem == null) {
 	        System.out.println("Invalid medicine ID. Please check the ID and try again.\n");
+			Helper.pressAnyKeyToContinue();
 	        return; // Exit the method if the ID is invalid
 	    }
 	    else if (inventoryItem.getInitialStock() > inventoryItem.getLowStocklevelAlert())
 	    {
-	    	System.out.println("\nNotice: The medicine ID is not in low stock.");
+	    	System.out.println("Notice: The medicine ID is not in low stock.");
 	    	do
 	    	{	
 		    	System.out.println("(1) Continue Submit Replenishment Request");
@@ -112,6 +112,7 @@ public class PharmacistController {
 	    // Add the replenishment request to the repository
 	    Repository.REPLENISHMENT_REQUEST.put(replenishmentRequest.getRequestId(), replenishmentRequest);
 	    System.out.println("Replenishment request is sent to the admin.\n");
+		Helper.pressAnyKeyToContinue();
 	}
 	
 }
