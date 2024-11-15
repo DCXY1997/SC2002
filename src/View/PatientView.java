@@ -3,7 +3,6 @@ package src.View;
 import src.Controller.PatientController;
 import src.Helper.Helper;
 import src.Model.Patient;
-import src.Repository.Repository;
 
 public class PatientView extends MainView {
 
@@ -106,12 +105,11 @@ public class PatientView extends MainView {
     }
 
     private void promptUpdateContactInformation() {
-        System.out.println("Enter your login ID: ");
-        String loginId = Helper.readString();
+        // String loginId = patient.getPatientId();
+        System.out.println("Welcome, " + patient.getName());
 
-        // Retrieve the patient from the repository
-        Patient patient = Repository.PATIENT.get(loginId);
-
+        // // Retrieve the patient from the repository
+        // Patient patient = Repository.PATIENT.get(loginId);
         if (patient != null) {
             System.out.println("Enter new contact information:");
             String newContactInformation = Helper.readString();
@@ -125,14 +123,14 @@ public class PatientView extends MainView {
     }
 
     private void promptUpdatePassword() {
-        System.out.println("Verify your login ID: ");
-        String loginId = Helper.readString();
+        // String loginId = patient.getPatientId();
+        System.out.println("Welcome, " + patient.getName());
+
         System.out.println("Verify your password: ");
         String password = Helper.readString();
 
         // Retrieve the patient from the repository
-        Patient patient = Repository.PATIENT.get(loginId);
-
+        // Patient patient = Repository.PATIENT.get(loginId);
         if (patient != null && patient.getPassword().equals(password)) {
             System.out.println("Verification successful.");
             System.out.println("Enter new password: ");

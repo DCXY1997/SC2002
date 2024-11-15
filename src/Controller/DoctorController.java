@@ -1,8 +1,7 @@
 package src.Controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import src.Enum.AppointmentStatus;
 import src.Model.Appointment;
 import src.Model.AppointmentList;
@@ -45,132 +44,139 @@ public class DoctorController {
         }
     }
 
-    public static void addAvailibility(Doctor doctor, LocalDateTime from, LocalDateTime to) {
-        Schedule schedule = new Schedule(from, to);
-
-        // Load existing staff data from the .dat file
+    public static void addAvailability(Doctor doctor, LocalDateTime from, LocalDateTime to) {
+        Schedule newSchedule = new Schedule(from, to);
         Repository.readData(FileType.STAFF);
 
-        // Check if the doctor exists in the repository
         if (Repository.STAFF.containsKey(doctor.getHospitalId())) {
-            // Retrieve the existing doctor from the HashMap
             Doctor existingDoctor = (Doctor) Repository.STAFF.get(doctor.getHospitalId());
+            List<Schedule> availability = existingDoctor.getAvailability();
 
-            // Add the new specialization to the existing doctor
-            existingDoctor.addAvailability(schedule);
+            List<Schedule> conflictingSchedules = new ArrayList<>();
 
-            // Update the doctor in the STAFF HashMap
-            Repository.STAFF.put(existingDoctor.getHospitalId(), existingDoctor);
+            // Check for overlapping schedules
+            for (Schedule schedule : availability) {
+                if (from.isBefore(schedule.getEndTime()) && to.isAfter(schedule.getStartTime())) {
+                    conflictingSchedules.add(schedule);
+                }
+            }
 
-            // Persist the updated STAFF data back to the .dat file
-            Repository.persistData(FileType.STAFF);
-
-            System.out.println("Availability " + schedule.getStartTime() + " to " + schedule.getEndTime() + " added successfully to Doctor " + doctor.getName());
+            if (!conflictingSchedules.isEmpty()) {
+                // Display conflicting schedules
+                System.out.println("\nConflicting time ranges found:");
+                for (Schedule conflict : conflictingSchedules) {
+                    System.out.println("From " + conflict.getStartTime() + " to " + conflict.getEndTime());
+                }
+                System.out.println("Failed to add to schedule!\n");
+            } else {
+                // No conflicts; add the new schedule
+                existingDoctor.addAvailability(newSchedule);
+                Repository.STAFF.put(existingDoctor.getHospitalId(), existingDoctor);
+                Repository.persistData(FileType.STAFF);
+                System.out.println("Availability " + newSchedule.getStartTime() + " to " + newSchedule.getEndTime() + " added successfully to Doctor " + doctor.getName());
+            }
         } else {
             System.out.println("Error: Doctor with ID " + doctor.getHospitalId() + " does not exist in the repository.");
         }
     }
 
     public static boolean updateDoctorAvailability(Doctor doctor, LocalDateTime startTime, LocalDateTime endTime, List<Schedule> filteredSchedules) {
-        List<Schedule> updatedSchedule = new ArrayList<>();
-        boolean scheduleUpdated = false;
-
+        // List<Schedule> updatedSchedule = new ArrayList<>();
+        // boolean scheduleUpdated = false;
         System.out.println("Doctor's availability size: " + filteredSchedules.size());
+        // for (Schedule schedule : filteredSchedules) {
+        //     // Check if the appointment fits within the available time slot
+        //     boolean isStartTimeValid = startTime.isEqual(schedule.getStartTime()) || startTime.isAfter(schedule.getStartTime());
+        //     boolean isEndTimeValid = endTime.isBefore(schedule.getEndTime()) || endTime.isEqual(schedule.getEndTime());
+        //     if (isStartTimeValid && isEndTimeValid) {
+        //         scheduleUpdated = true;
+        //         System.out.println("Schedule fits! Appointment start: " + startTime + " to end: " + endTime);
+        //         // Split the availability into slots around the appointment time
+        //         if (startTime.isAfter(schedule.getStartTime())) {
+        //             Schedule newStartSlot = new Schedule(schedule.getStartTime(), startTime);
+        //             if (!updatedSchedule.contains(newStartSlot)) {
+        //                 updatedSchedule.add(newStartSlot);
+        //             }
+        //         }
+        //         if (endTime.isBefore(schedule.getEndTime())) {
+        //             Schedule newEndSlot = new Schedule(endTime, schedule.getEndTime());
+        //             if (!updatedSchedule.contains(newEndSlot)) {
+        //                 updatedSchedule.add(newEndSlot);
+        //             }
+        //         }
+        //     } else {
+        //         updatedSchedule.add(schedule);
+        //     }
+        // }
+        // if (!scheduleUpdated) {
+        //     return false;
+        // }
 
-        for (Schedule schedule : filteredSchedules) {
-            // Check if the appointment fits within the available time slot
-            boolean isStartTimeValid = startTime.isEqual(schedule.getStartTime()) || startTime.isAfter(schedule.getStartTime());
-            boolean isEndTimeValid = endTime.isBefore(schedule.getEndTime()) || endTime.isEqual(schedule.getEndTime());
+        List<Schedule> doctorAvailability = new ArrayList<>(doctor.getAvailability());
+        doctorAvailability.addAll(filteredSchedules);
 
-            if (isStartTimeValid && isEndTimeValid) {
-                scheduleUpdated = true;  // The appointment fits within this schedule
-                System.out.println("Schedule fits! Appointment start: " + startTime + " to end: " + endTime);
-
-                // Split the availability into slots around the appointment time
-                if (startTime.isAfter(schedule.getStartTime())) {
-                    updatedSchedule.add(new Schedule(schedule.getStartTime(), startTime));  // Before appointment                    
-                }
-                if (endTime.isBefore(schedule.getEndTime())) {
-                    updatedSchedule.add(new Schedule(endTime, schedule.getEndTime()));  // After appointment
-                }
-            } else {
-                // If the appointment doesn't fit in this time slot, leave the schedule unchanged
-                updatedSchedule.add(schedule);
-            }
-        }
-
-        if (!scheduleUpdated) {
-            return false;
-        }
-
-        // Set the updated schedule to the doctor's availability list
-        doctor.setAvailability(updatedSchedule);
-
+        // doctorAvailability.sort(Comparator.comparing(Schedule::getStartTime));
+        // List<Schedule> mergedSchedule = new ArrayList<>();
+        // // Initialize current slot as the first slot
+        // Schedule currentSlot = doctorAvailability.get(0);
+        // for (int i = 1; i < doctorAvailability.size(); i++) {
+        //     Schedule nextSlot = doctorAvailability.get(i);
+        //     // Check if the slots are directly consecutive or overlapping
+        //     if (!nextSlot.getStartTime().isAfter(currentSlot.getEndTime())) {
+        //         // Extend the current slot to include nextSlot if nextSlot's end time is later
+        //         currentSlot = new Schedule(currentSlot.getStartTime(),
+        //                 nextSlot.getEndTime().isAfter(currentSlot.getEndTime()) ? nextSlot.getEndTime() : currentSlot.getEndTime());
+        //     } else {
+        //         // If there's a gap, add the current slot to merged list and reset current slot
+        //         mergedSchedule.add(currentSlot);
+        //         currentSlot = nextSlot;
+        //     }
+        // }
+        // // Add the last processed slot
+        // mergedSchedule.add(currentSlot);
+        // mergedSchedule = new ArrayList<>(new HashSet<>(mergedSchedule));
+        doctor.setAvailability(filteredSchedules);
         // Persist the updated availability
         Repository.readData(FileType.STAFF);
         Repository.STAFF.put(doctor.getHospitalId(), doctor);
         Repository.persistData(FileType.STAFF);
-
         return true;
     }
 
-    public static List<Appointment> getRequestedAppointments(Doctor doctor, String hospitalId) {
+    public static List<Appointment> getRequestedAppointments(Doctor doctor) {
         List<Appointment> appointments = new ArrayList<>();
         for (Appointment appointment : AppointmentList.getInstance().getAppointments()) {
             if (appointment.getAttendingDoctor().equals(doctor)
                     && appointment.getStatus().equals(AppointmentStatus.PENDING)
-                    && doctor.getHospitalId().equals(hospitalId)) {
+                    && doctor.getHospitalId().equals(doctor.getHospitalId())) {
                 appointments.add(appointment);
             }
         }
         return appointments;
     }
 
-    // public static List<Appointment> getUpcomingAppointments(Doctor doctor, String hospitalId) {
-    //     List<Appointment> appointments = new ArrayList<>();
-    //     for (Appointment appointment : AppointmentList.getInstance().getAppointments()) {
-    //         if (appointment.getAttendingDoctor().equals(doctor)
-    //                 && appointment.getAppointmentDate().isAfter(LocalDateTime.now())
-    //                 && doctor.getHospitalId().equals(hospitalId)) {
-    //             // hospital
-    //             appointments.add(appointment);
-    //         }
-    //     }
-    //     return appointments;
-    // }
-    // public static Appointment getAppointmentById(int id) {
-    //     for (Appointment appointment : AppointmentList.getInstance().getAppointments()) {
-    //         if (appointment.getAppointmentId() == id) {
-    //             return appointment;
-    //         }
-    //     }
-    //     return null;
-    // }
     public static void displayPersonalInformation(String loginId) {
         Doctor doctor = (Doctor) Repository.STAFF.get(loginId);
 
         if (doctor != null) {
-            System.out.println("Doctor ID: " + doctor.getHospitalId() + "\n");
-            System.out.println("Name: " + doctor.getName() + "\n");
-            System.out.println("Age: " + doctor.getAge() + "\n");
-            System.out.println("Gender: " + doctor.getGender() + "\n");
+            System.out.println("Doctor ID: " + doctor.getHospitalId());
+            System.out.println("Name: " + doctor.getName());
+            System.out.println("Age: " + doctor.getAge());
+            System.out.println("Gender: " + doctor.getGender());
 
-            // System.out.println("Specialization: " + doctor.getDocSpecialization());
+            List<Specialization> specializations = doctor.getDocSpecialization();
             System.out.println("Doctor's Specialization List: ");
-            for (Specialization specialization : doctor.getDocSpecialization()) {
-                System.out.println(specialization);  // This will now print the meaningful toString() output
+            if (specializations.isEmpty()) {
+                System.out.println("NIL");
+            } else {
+                for (Specialization specialization : specializations) {
+                    System.out.println(specialization);
+                }
             }
-
-            // remove this later
-            System.out.println("Doctor's Availability List: ");
-            for (Schedule schedule : doctor.getAvailability()) {
-                System.out.println(schedule);  // This will now print the meaningful toString() output
-            }
-
-            System.out.println("Appointment List: " + doctor.getAppointList());
         } else {
             System.out.println("Doctor not found.");
         }
+
     }
 
     public static void addSpecialization(Doctor doctor, Specialization specialization) {
@@ -182,12 +188,19 @@ public class DoctorController {
                 // Retrieve the existing doctor from the HashMap
                 Doctor existingDoctor = (Doctor) Repository.STAFF.get(doctor.getHospitalId());
 
-                existingDoctor.addSpecialization(specialization);
+                // Check if the specialization already exists for the doctor
+                if (existingDoctor.getDocSpecialization().contains(specialization)) {
+                    System.out.println("Error: Doctor already has the specialization " + specialization.getSpecializationName() + ".");
+                } else {
+                    // Add the specialization if it doesn't exist
+                    existingDoctor.addSpecialization(specialization);
 
-                Repository.STAFF.put(existingDoctor.getHospitalId(), existingDoctor);
-                Repository.persistData(FileType.STAFF);
+                    // Update the repository with the modified doctor
+                    Repository.STAFF.put(existingDoctor.getHospitalId(), existingDoctor);
+                    Repository.persistData(FileType.STAFF);
 
-                System.out.println("Specialization " + specialization.getSpecializationName() + " added successfully to Doctor " + existingDoctor.getName());
+                    System.out.println("Specialization " + specialization.getSpecializationName() + " added successfully to Doctor " + existingDoctor.getName());
+                }
             } else {
                 System.out.println("Error: Doctor with ID " + doctor.getHospitalId() + " does not exist in the repository.");
             }
@@ -217,7 +230,4 @@ public class DoctorController {
         return doctors;
     }
 
-    // public MedicalRecord getPatientRecord(int patientID){
-    // record not done yet
-    // }
 }

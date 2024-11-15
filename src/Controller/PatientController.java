@@ -55,7 +55,6 @@ public class PatientController {
             System.out.println("Birth Date: " + patient.getDateOfBirth());
             System.out.println("Gender: " + patient.getGender());
             System.out.println("Email: " + patient.getContactInformation());
-            System.out.println("Blood Type: " + patient.getBloodType());
         } else {
             System.out.println("Patient not found.");
         }

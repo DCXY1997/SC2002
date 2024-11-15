@@ -100,7 +100,7 @@ public class DisplayDoctorAppointment extends MainView {
         if (appointmentRequests.isEmpty()) {
             System.out.println("No appointment requests found for you.");
         } else {
-            System.out.println("Your Appointment Requests:");
+            System.out.println("Your Upcoming Appointments:");
 
             for (Appointment appointment : appointmentRequests) {
                 if (appointment.getStatus() == AppointmentStatus.CONFIRMED) {
@@ -164,26 +164,9 @@ public class DisplayDoctorAppointment extends MainView {
 
         if (choice == 1) {
             AppointmentController.acceptAppointment(doctor, selectedAppointment);
-            System.out.println("Appointment accepted.");
         } else {
             AppointmentController.declineAppointment(selectedAppointment);
             System.out.println("Appointment declined.");
         }
     }
-
-    // private void viewPastAppointments() {
-    //     // Implement logic to display the past appointments for the doctor
-    //     List<Appointment> pastAppointments = AppointmentController.getPastAppointmentsForDoctor(doctor);
-    //     if (pastAppointments.isEmpty()) {
-    //         System.out.println("No past appointments found for you.");
-    //     } else {
-    //         System.out.println("Your Past Appointments:");
-    //         for (Appointment appointment : pastAppointments) {
-    //             System.out.println("Appointment with Patient " + appointment.getPatient().getName());
-    //             System.out.println("From: " + appointment.getAppointmentDate());
-    //             System.out.println("Status: " + appointment.getStatus());
-    //             System.out.println();
-    //         }
-    //     }
-    // }
 }

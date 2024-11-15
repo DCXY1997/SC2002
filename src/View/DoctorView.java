@@ -1,8 +1,10 @@
 package src.View;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import src.Controller.DoctorController;
 import src.Helper.Helper;
 import src.Model.Doctor;
@@ -108,7 +110,7 @@ public class DoctorView extends MainView {
     }
 
     public void displayAllPatients(String hospitalId) {
-        List<Patient> patientList = DoctorController.getAllPatients(hospitalId); // Update to get patients by hospitalId
+        List<Patient> patientList = DoctorController.getAllPatients(hospitalId);
         for (Patient patient : patientList) {
             System.out.println("Patient ID: " + patient.getPatientId());
             System.out.println("Patient Name: " + patient.getName());
@@ -116,35 +118,47 @@ public class DoctorView extends MainView {
     }
 
     private void promptDisplaySchedule(String hospitalId) {
-        // Retrieve the schedule using the DoctorController method
         List<Schedule> docSchedule = DoctorController.getSchedule(doctor, hospitalId);
 
-        // Print each schedule's start and end times
-        for (Schedule schedule : docSchedule) {
-            System.out.println("From " + schedule.getStartTime() + " to " + schedule.getEndTime());
+        if (docSchedule.isEmpty()) {
+            System.out.println("No schedules found for Dr " + doctor.getName());
+        } else {
+            Map<String, List<Schedule>> groupedSchedules = new HashMap<>();
+            for (Schedule schedule : docSchedule) {
+                String date = schedule.getStartTime().toLocalDate().toString();
+                groupedSchedules.computeIfAbsent(date, k -> new ArrayList<>()).add(schedule);
+            }
+
+            System.out.println("Your Schedule: ");
+
+            int index = 1;
+            for (Map.Entry<String, List<Schedule>> entry : groupedSchedules.entrySet()) {
+                System.out.println(entry.getKey());
+                System.out.println("-------------");
+
+                for (Schedule schedule : entry.getValue()) {
+                    String startTime = schedule.getStartTime().toLocalTime().toString();
+                    String endTime = schedule.getEndTime().toLocalTime().toString();
+                    System.out.println("(" + index + ") " + startTime + " - " + endTime);
+                    index++;
+                }
+                System.out.println();
+            }
         }
     }
 
-    // FIX: IMPROVE THIS SO ITS MORE INTUITIVE + SEPARATE INTO DIFFERENT VIEW FILE
     private void promptAddAvailability(Doctor doctor) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime[] availability = Helper.promptAndValidateTimeRange(
+                "Enter availability START date and time:",
+                "Enter availability END date and time:",
+                Helper.TimeValidationRule.FUTURE_DATE,
+                Helper.TimeValidationRule.BUSINESS_HOURS,
+                Helper.TimeValidationRule.MAX_DURATION_24H
+        );
 
-        // Prompt for the "from" date
-        System.out.println("Key in Availability start date (format: yyyy-MM-dd):");
-        String startDate = Helper.readString();
-        System.out.println("Key in Availability start time (format: HH:mm):");
-        String startTime = Helper.readString();
-        LocalDateTime from = LocalDateTime.parse(startDate + " " + startTime, formatter);
-
-        // Prompt for the "to" date
-        System.out.println("Key in Availability end date (format: yyyy-MM-dd):");
-        String endDate = Helper.readString();
-        System.out.println("Key in Availability end time (format: HH:mm):");
-        String endTime = Helper.readString();
-        LocalDateTime to = LocalDateTime.parse(endDate + " " + endTime, formatter);
-
-        // Set the availability
-        DoctorController.addAvailibility(doctor, from, to);
+        if (availability != null) {
+            DoctorController.addAvailability(doctor, availability[0], availability[1]);
+        }
     }
 
     private void promptPersonalInformation() {
@@ -194,32 +208,11 @@ public class DoctorView extends MainView {
             // Now add the specialization to the Doctor instance
             if (specializationObj != null) {
                 DoctorController.addSpecialization(doctor, specializationObj);
-                System.out.println("Specialization " + specializationObj.getSpecializationName() + " has been added to Doctor " + doctor.getName());
             }
         } else {
             System.out.println("Invalid choice. Please try again.");
             return;
         }
-    }
-
-    // NOT FIXED
-    // private void promptRecordOutcome() {
-    //     int id;
-    //     System.out.println("Enter AppointmentID: ");
-    //     id = Helper.readInt();
-    //     if (DoctorController.getAppointmentById(id) == null) {
-    //         System.out.println("Invalid AppointmentID");
-    //         return;
-    //     }
-    //     System.out.println("Please enter Appointment Outcome: ");
-    //     // incomplete stuff AppointmentOutcome outcome = AppointmentOutcome(int
-    //     // outcomeId, List<Medicine> prescribedMedicines, List<Diagnosis>
-    //     // patientDiagnosis, String doctorNotes, LocalDateTime dateDiagnosed);
-    // }
-    private void promptGetPatientRecords() {
-        System.out.println("Key in PatientID of Patient");
-        int pid = Helper.readInt();
-        // printPatientRecords(DoctorController.getPatientRecords(pid));
     }
 
 }
