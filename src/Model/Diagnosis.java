@@ -1,9 +1,12 @@
 package src.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Diagnosis {
+public class Diagnosis implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     // Attributes
     private int diagnosisId;
@@ -56,4 +59,5 @@ public class Diagnosis {
     public void removeTreatment(Treatment treatment) {
         this.treatment.remove(treatment);
     }
+
 }

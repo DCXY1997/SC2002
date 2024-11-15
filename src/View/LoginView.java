@@ -13,7 +13,7 @@ import src.Model.Staff;
 public class LoginView extends MainView {
 
     private AdminView adminView = new AdminView();
-    // private PatientView patientView = new PatientView();
+    private PharmacistView pharmacistView = new PharmacistView();
 
     @Override
     protected void printActions() {
@@ -105,6 +105,9 @@ public class LoginView extends MainView {
                     doctorView.viewApp();
                 }
 
+                if (staffType == StaffType.PHARMACIST) {
+                    pharmacistView.viewApp();
+                }
             } else {
                 System.out.println("Invalid username/password or employee position");
             }
