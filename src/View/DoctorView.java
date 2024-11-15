@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import src.Controller.AppointmentController;
 import src.Controller.DoctorController;
+import src.Controller.PatientController;
 import src.Helper.Helper;
 import src.Model.Appointment;
 import src.Model.AppointmentOutcome;
@@ -37,16 +39,16 @@ public class DoctorView extends MainView {
         Helper.clearScreen();
         printBreadCrumbs("Hospital Management App View > Login View > Doctor View");
         System.out.println("What would you like to do ?");
-        // System.out.println("(1) View All Current Patients");
-        // System.out.println("(2) View Patient Medical Records");
-        // System.out.println("(3) Update Patient Medical Records");
-        System.out.println("(1) View Personal Schedule");
-        System.out.println("(2) Set Availability for Appointments");
-        System.out.println("(3) Handle Appointments");
-        System.out.println("(4) Record Appointment Outcome");
-        System.out.println("(5) View Personal Information");
-        System.out.println("(6) Add Specialization");
-        System.out.println("(7) Logout");
+        System.out.println("(1) View All Current Patients");
+        System.out.println("(2) View Patient Medical Records");
+        System.out.println("(3) Update Patient Medical Records");
+        System.out.println("(4) View Personal Schedule");
+        System.out.println("(5) Set Availability for Appointments");
+        System.out.println("(6) Handle Appointments");
+        System.out.println("(7) Record Appointment Outcome");
+        System.out.println("(8) View Personal Information");
+        System.out.println("(9) Add Specialization");
+        System.out.println("(10) Logout");
     }
 
     @Override
@@ -56,79 +58,73 @@ public class DoctorView extends MainView {
             printActions();
             opt = Helper.readInt(1, 11);
             switch (opt) {
-                // case 1:
-                // Helper.clearScreen();
-                // displayAllPatients(doctor.getHospitalId()); // Pass hospitalId
-                // break;
-                // case 2:
-                // Helper.clearScreen();
-                // promptGetPatientRecords();
-                // break;
-                // case 3:
-                // Helper.clearScreen();
-                // // promptUpdatePatientRecords();
-                // break;
                 case 1:
+                    Helper.clearScreen();
+                    displayAllPatients(doctor);
+                    break;
+                case 2:
+                    Helper.clearScreen();
+                    promptGetPatientRecords();
+                    break;
+                case 3:
+                    Helper.clearScreen();
+                    promptUpdatePatientRecords();
+                    break;
+                case 4:
                     Helper.clearScreen();
                     printBreadCrumbs(
                             "Hospital Management App View > Doctor View > View Personal Schedule");
-                    promptDisplaySchedule(doctor.getHospitalId()); // Pass hospitalId
+                    promptDisplaySchedule(doctor); // Pass hospitalId
                     break;
-                case 2:
+                case 5:
                     Helper.clearScreen();
                     printBreadCrumbs(
                             "Hospital Management App View > Doctor View > Set Availability");
                     promptAddAvailability(doctor);
                     break;
-                case 3:
+                case 6:
                     Helper.clearScreen();
                     displayDoctorAppointmentView.viewApp();
                     break;
-                case 4:
+                case 7:
                 	Helper.clearScreen();
                 	recordAppointmentOutcome(doctor);
                 	break;
-                // case 8:
-                //     Helper.clearScreen();
-                //     printBreadCrumbs(
-                //             "Hospital Management App View > Doctor View > Record Appointment Outcome");
-                //     promptRecordOutcome();
-                //     break;
-                case 5:
+                case 8:
                     Helper.clearScreen();
                     printBreadCrumbs(
                             "Hospital Management App View > Doctor View > View Personal Information");
                     promptPersonalInformation();
                     break;
-                case 6:
+                case 9:
                     Helper.clearScreen();
                     printBreadCrumbs(
                             "Hospital Management App View > Doctor View > Add Specialization");
                     promptSpecialization(doctor);
                     break;
-                case 7:
+                case 10:
                     break;
                 default:
                     System.out.println("Invalid option");
                     break;
             }
-            if (opt != 7) {
+            if (opt != 10) {
                 Helper.pressAnyKeyToContinue();
             }
-        } while (opt != 7);
+        } while (opt != 10);
     }
 
-    public void displayAllPatients(String hospitalId) {
-        List<Patient> patientList = DoctorController.getAllPatients(hospitalId); // Update to get patients by hospitalId
+    public void displayAllPatients(Doctor doctor) {
+        List<Patient> patientList = DoctorController.getAllPatients(doctor); // Update to get patients by hospitalId
         for (Patient patient : patientList) {
             System.out.println("Patient ID: " + patient.getPatientId());
             System.out.println("Patient Name: " + patient.getName());
         }
     }
 
-    private void promptDisplaySchedule(String hospitalId) {
+    private void promptDisplaySchedule(Doctor doctor) {
         // Retrieve the schedule using the DoctorController method
-        List<Schedule> docSchedule = DoctorController.getSchedule(doctor, hospitalId);
+        List<Schedule> docSchedule = DoctorController.getSchedule(doctor);
 
         // Print each schedule's start and end times
         for (Schedule schedule : docSchedule) {
@@ -213,37 +209,25 @@ public class DoctorView extends MainView {
         }
     }
 
-    // NOT FIXED
-    // private void promptRecordOutcome() {
-    //     int id;
-    //     System.out.println("Enter AppointmentID: ");
-    //     id = Helper.readInt();
-    //     if (DoctorController.getAppointmentById(id) == null) {
-    //         System.out.println("Invalid AppointmentID");
-    //         return;
-    //     }
-    //     System.out.println("Please enter Appointment Outcome: ");
-    //     // incomplete stuff AppointmentOutcome outcome = AppointmentOutcome(int
-    //     // outcomeId, List<Medicine> prescribedMedicines, List<Diagnosis>
-    //     // patientDiagnosis, String doctorNotes, LocalDateTime dateDiagnosed);
-    // }
+
     private void promptGetPatientRecords() {
         System.out.println("Key in PatientID of Patient");
-        int pid = Helper.readInt();
-        // printPatientRecords(DoctorController.getPatientRecords(pid));
+        String pid = Helper.readString();
+        PatientController.displayPatientRecord(pid);
     }
     
+    private void promptUpdatePatientRecords(){
+        promptGetPatientRecords();
+        System.out.println("Enter new Diagnosis and Treatment plan:");
+        System.out.println("Enter new Diagnosis name:");
+
+    }
+
     public void recordAppointmentOutcome(Doctor doctor) {
-        List<Appointment> appointments = getAllAppointment();
         List<Appointment> docAppointments = new ArrayList<>();
 
         // Filter appointments for the specified doctor
-        for (Appointment appoint : appointments) {
-            if (appoint.getAttendingDoctor() != null && 
-                appoint.getAttendingDoctor().getName().equals(doctor.getName())) {
-                docAppointments.add(appoint);
-            }
-        }
+        docAppointments = AppointmentController.viewDoctorAppointments(doctor);
 
         // Check if the doctor has any appointments
         if (docAppointments.isEmpty()) {
@@ -263,71 +247,81 @@ public class DoctorView extends MainView {
         int selectedIndex = Helper.readInt(1, docAppointments.size()) - 1;
         Appointment appointment = docAppointments.get(selectedIndex);
         Patient patient = Repository.PATIENT.get(appointment.getPatient().getPatientId());
-        // Prompt for diagnosis details
-        System.out.println("Enter Diagnosis:");
-        String diagnosisName = Helper.readString();
-        System.out.println("Enter Description:");
-        String description = Helper.readString();
 
+        // Checking for existing medical record
         MedicalRecord medicalRecord = patient.getMedicalRecord();
-        // Getting previous diagnosis ID
         int diagId = 0;
-        if (medicalRecord != null) {
-            int lastpatientApptOutc = patient.getMedicalRecord().getApptOutcomes().size()-1;
-            int lastpatientDiag = patient.getMedicalRecord().getApptOutcomes().get(lastpatientApptOutc).getPatientDiagnosis().size()-1;
-            diagId = patient.getMedicalRecord().getApptOutcomes().get(lastpatientApptOutc).getPatientDiagnosis().get(lastpatientDiag).getDiagnosisId();
+        if (medicalRecord == null) {
+            medicalRecord = new MedicalRecord("MR" + patient.getPatientId());
+            patient.setMedicalRecord(medicalRecord);
         }
-        Diagnosis diagnosis = new Diagnosis(diagId+1, diagnosisName, description);
-        // Prompt for medications and create a unique treatment
+        if (!medicalRecord.getDiagnoses().isEmpty()){
+            int lastPatientDiag = patient.getMedicalRecord().getDiagnoses().size()-1;
+            diagId = patient.getMedicalRecord().getDiagnoses().get(lastPatientDiag).getDiagnosisId();
+        }
 
+        // Prompt for diagnosis details
+        
+        List<Diagnosis> diagList = new ArrayList<>();
+        System.out.println("Enter number of Diagnoses: ");
+        int diagnoses = Helper.readInt();
         List<Medicine> prescribedMedicines = new ArrayList<>();
-        List<String> frequencies = new ArrayList<>();
+        for(int a = 0; a < diagnoses; a++) {
+            System.out.println("Enter Diagnosis:");
+            String diagnosisName = Helper.readString();
+            System.out.println("Enter Description:");
+            String description = Helper.readString();
 
-        System.out.println("Enter number of medicines prescribed:");
-        int numMedicines = Helper.readInt();
-        for (int i = 0; i < numMedicines; i++) {
-            System.out.println("Enter Medicine ID or Name:");
-            String medKey = Helper.readString();
+            Diagnosis diagnosis = new Diagnosis(++diagId, diagnosisName, description);
 
-            Medicine medicine = Repository.INVENTORY.get(medKey).getMedicine();
-            if (medicine != null) {
-                prescribedMedicines.add(new Medicine(medicine));
+            // Prompt for medications and create a unique treatment
+            List<Medicine> treatmentMedicines = new ArrayList<>();
+            List<String> medicineAmount = new ArrayList<>();
 
-                System.out.println("Enter frequency:");
-                String frequency = Helper.readString();
-                frequencies.add(frequency);
-            } else {
-                System.out.println("Warning: Medicine with ID '" + medKey + "' not found.");
+            System.out.println("Enter number of medicines prescribed:");
+            int numMedicines = Helper.readInt();
+            for (int i = 0; i < numMedicines; i++) {
+                System.out.println("Enter Medicine ID or Name:");
+                String medKey = Helper.readString();
+
+                Medicine medicine = Repository.INVENTORY.get(medKey).getMedicine();
+                if (medicine != null) {
+                    treatmentMedicines.add(new Medicine(medicine));
+                    prescribedMedicines.add(new Medicine(medicine));
+
+                    System.out.println("Enter amount of Medicine:");
+                    String amount = Helper.readString();
+                    medicineAmount.add(amount);
+                    // Create a unique Treatment for each Diagnosis
+                    Treatment treatment = new Treatment(diagId, treatmentMedicines, medicineAmount);
+                    // Add the treatment to the diagnosis
+                    diagnosis.addTreatment(treatment);
+                } else {
+                    System.out.println("Warning: Medicine with ID '" + medKey + "' not found.");
+                }
             }
+            medicalRecord.addDiagnosis(diagnosis);
+            diagList.add(diagnosis);
         }
-
         System.out.println("Enter Doctor Note: ");
         String note = Helper.readString();
 
-        // Create a unique Treatment for each record
-        Treatment treatment = new Treatment(diagId, prescribedMedicines, frequencies);
+        
 
-        // Add the treatment to the diagnosis
-        diagnosis.addTreatment(treatment);
+        
 
         // Create the AppointmentOutcome
         AppointmentOutcome outcome = new AppointmentOutcome(
             "OUT" + System.currentTimeMillis(),
             prescribedMedicines,
-            List.of(diagnosis),
+            diagList,
             note,
             LocalDateTime.now()
         );
 
         // Set the outcome and update the medical record
         appointment.setOutcome(outcome);
-        
-        if (medicalRecord == null) {
-            medicalRecord = new MedicalRecord("MR" + patient.getPatientId());
-            patient.setMedicalRecord(medicalRecord);
-        }
-        medicalRecord.addApptOutcome(outcome);
-
+        Repository.APPOINTMENT_LIST.put(appointment.getAppointmentId(), appointment);
         // Save the updated patient data back to the repository
         Repository.PATIENT.put(patient.getPatientId(), patient);
 

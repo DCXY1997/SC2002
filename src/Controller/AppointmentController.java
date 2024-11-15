@@ -177,7 +177,7 @@ public class AppointmentController {
         System.out.println("\nDoctor's current availability for " + appointmentDate + ": ");
 
         // Fetch the doctor's full schedule
-        List<Schedule> doctorSchedules = DoctorController.getSchedule(doctor, doctor.getHospitalId());
+        List<Schedule> doctorSchedules = DoctorController.getSchedule(doctor);
 
         // Filter the schedules for the appointment date
         List<Schedule> filteredSchedules = new ArrayList<>();

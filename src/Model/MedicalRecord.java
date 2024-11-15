@@ -8,12 +8,12 @@ public class MedicalRecord implements Serializable {
 
     private static final long serialVersionUID = 1L;
 	private String recordID;
-	private List<AppointmentOutcome> apptOutcomes;
+	private List<Diagnosis> diagnosis;
 
 	// Constructor
 	public MedicalRecord(String recordID) { // Removed Patient parameter as it wasn't used
 		this.recordID = recordID;
-		this.apptOutcomes = new ArrayList<>(); // Corrected syntax and used generics
+		this.diagnosis = new ArrayList<>(); // Corrected syntax and used generics
 	}
 
 	// Getter for recordID
@@ -27,14 +27,14 @@ public class MedicalRecord implements Serializable {
 	}
 
 	// Getter for appointment outcomes
-	public List<AppointmentOutcome> getApptOutcomes() {
-		return new ArrayList<>(apptOutcomes);
+	public List<Diagnosis> getDiagnoses() {
+		return diagnosis;
 	}
 
 	// Method to add an appointment outcome
-	public void addApptOutcome(AppointmentOutcome apptOutcome) {
-		if (apptOutcome != null) {
-			this.apptOutcomes.add(apptOutcome);
+	public void addDiagnosis(Diagnosis diagnosis) {
+		if (diagnosis != null) {
+			this.diagnosis.add(diagnosis);
 		}
 	}
 }

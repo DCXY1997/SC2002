@@ -2,6 +2,7 @@ package src.Model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import src.Enum.AppointmentStatus;
 
 public class Appointment implements Serializable {
@@ -20,6 +21,7 @@ public class Appointment implements Serializable {
     private LocalDateTime appointmentEndDate;
     private AppointmentOutcome outcome;
     private AppointmentStatus status;
+    private AppointmentOutcome appointmentOutcome;
 
     // Constructor
     public Appointment(Patient patient, Doctor attendingDoctor, LocalDateTime appointmentStartDate, LocalDateTime appointmentEndDate) {
@@ -28,6 +30,7 @@ public class Appointment implements Serializable {
         this.attendingDoctor = attendingDoctor;
         this.appointmentStartDate = appointmentStartDate;
         this.appointmentEndDate = appointmentEndDate;
+        this.appointmentOutcome = null;
         // this.status = AppointmentStatus.PENDING;
     }
 
@@ -86,5 +89,14 @@ public class Appointment implements Serializable {
 
     public void setStatus(AppointmentStatus status) {
         this.status = status;
+    }
+
+    public AppointmentOutcome getAppointmentOutcome(){
+        return this.appointmentOutcome;
+    }
+
+    public void setAppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Diagnosis> diagList, String doctorNotes, LocalDateTime dateDiagnosed){
+        this.appointmentOutcome = new AppointmentOutcome(outcomeId, prescribedMedicines, diagList, doctorNotes, dateDiagnosed);
+        this.status = AppointmentStatus.COMPLETED;
     }
 }
