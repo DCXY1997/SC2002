@@ -29,7 +29,6 @@ public class Medicine implements Serializable {
         this.medicineId = medicineId;
         this.medicineName = medicineName;
         this.medicinePrice = medicinePrice;
-        this.medicineAmount = medicineAmount;
         this.medicineDescription = medicineDescription;
         this.status = MedicineStatus.PENDING;
     }
@@ -82,13 +81,5 @@ public class Medicine implements Serializable {
 
     public void setMedicineDescription(String medicineDescription) {
         this.medicineDescription = medicineDescription;
-    }
-
-    public void setMedicineAmount(int medicineAmount) {
-        this.medicineAmount = medicineAmount;
-    }
-
-    public int getMedicineAmount() {
-        return medicineAmount;
     }
 }

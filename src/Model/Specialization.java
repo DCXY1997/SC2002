@@ -40,6 +40,23 @@ public class Specialization implements Serializable {
     // Override toString to display meaningful information about the specialization
     @Override
     public String toString() {
-        return "Specialization: " + specializationName + " - " + specializationDescription;
+        return specializationName + " - " + specializationDescription;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Specialization that = (Specialization) obj;
+        return specializationName != null ? specializationName.equals(that.specializationName) : that.specializationName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return specializationName != null ? specializationName.hashCode() : 0;
     }
 }

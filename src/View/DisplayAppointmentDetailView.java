@@ -1,5 +1,6 @@
 package src.View;
 
+import java.util.List;
 import src.Controller.AdminController;
 import src.Helper.Helper;
 
@@ -36,11 +37,27 @@ public class DisplayAppointmentDetailView extends MainView {
         }while(opt != 2);
 }
 
-    private void promptAppointmentId() {
-		System.out.println("Enter the Appointment Id: ");
-        String appointmentId = Helper.readString();
-        String appointmentDetails = AdminController.getAppointmentDetails(appointmentId);  // Get details from controller
-        System.out.println(appointmentDetails);  // Display the details
+private void promptAppointmentId() {
+    // Load and display available appointment IDs
+    List<String> appointmentIds = AdminController.getAllAppointmentIds();
+    if (appointmentIds.isEmpty()) {
+        System.out.println("No appointments available.");
+        return;  // Exit the method if no appointments are available
     }
+    
+    System.out.println("Available Appointment IDs:");
+    for (String id : appointmentIds) {
+        System.out.println("  - " + id);
+    }
+    
+    // Prompt the user to enter an appointment ID
+    System.out.println("Enter the Appointment Id: ");
+    String appointmentId = Helper.readString();
+
+    // Fetch and display the appointment details
+    String appointmentDetails = AdminController.getAppointmentDetails(appointmentId);  // Get details from controller
+    System.out.println(appointmentDetails);  // Display the details
+}
+
 
 }

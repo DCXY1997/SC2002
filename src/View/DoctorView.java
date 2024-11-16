@@ -132,32 +132,45 @@ public class DoctorView extends MainView {
         // Retrieve the schedule using the DoctorController method
         List<Schedule> docSchedule = DoctorController.getSchedule(doctor);
 
-        // Print each schedule's start and end times
-        for (Schedule schedule : docSchedule) {
-            System.out.println("From " + schedule.getStartTime() + " to " + schedule.getEndTime());
+        if (docSchedule.isEmpty()) {
+            System.out.println("No schedules found for Dr " + doctor.getName());
+        } else {
+            Map<String, List<Schedule>> groupedSchedules = new HashMap<>();
+            for (Schedule schedule : docSchedule) {
+                String date = schedule.getStartTime().toLocalDate().toString();
+                groupedSchedules.computeIfAbsent(date, k -> new ArrayList<>()).add(schedule);
+            }
+
+            System.out.println("Your Schedule: ");
+
+            int index = 1;
+            for (Map.Entry<String, List<Schedule>> entry : groupedSchedules.entrySet()) {
+                System.out.println(entry.getKey());
+                System.out.println("-------------");
+
+                for (Schedule schedule : entry.getValue()) {
+                    String startTime = schedule.getStartTime().toLocalTime().toString();
+                    String endTime = schedule.getEndTime().toLocalTime().toString();
+                    System.out.println("(" + index + ") " + startTime + " - " + endTime);
+                    index++;
+                }
+                System.out.println();
+            }
         }
     }
 
-    // FIX: IMPROVE THIS SO ITS MORE INTUITIVE + SEPARATE INTO DIFFERENT VIEW FILE
     private void promptAddAvailability(Doctor doctor) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime[] availability = Helper.promptAndValidateTimeRange(
+                "Enter availability START date and time:",
+                "Enter availability END date and time:",
+                Helper.TimeValidationRule.FUTURE_DATE,
+                Helper.TimeValidationRule.BUSINESS_HOURS,
+                Helper.TimeValidationRule.MAX_DURATION_24H
+        );
 
-        // Prompt for the "from" date
-        System.out.println("Key in Availability start date (format: yyyy-MM-dd):");
-        String startDate = Helper.readString();
-        System.out.println("Key in Availability start time (format: HH:mm):");
-        String startTime = Helper.readString();
-        LocalDateTime from = LocalDateTime.parse(startDate + " " + startTime, formatter);
-
-        // Prompt for the "to" date
-        System.out.println("Key in Availability end date (format: yyyy-MM-dd):");
-        String endDate = Helper.readString();
-        System.out.println("Key in Availability end time (format: HH:mm):");
-        String endTime = Helper.readString();
-        LocalDateTime to = LocalDateTime.parse(endDate + " " + endTime, formatter);
-
-        // Set the availability
-        DoctorController.addAvailibility(doctor, from, to);
+        if (availability != null) {
+            DoctorController.addAvailability(doctor, availability[0], availability[1]);
+        }
     }
 
     private void promptPersonalInformation() {
@@ -204,10 +217,8 @@ public class DoctorView extends MainView {
                     break;
             }
 
-            // Now add the specialization to the Doctor instance
             if (specializationObj != null) {
                 DoctorController.addSpecialization(doctor, specializationObj);
-                System.out.println("Specialization " + specializationObj.getSpecializationName() + " has been added to Doctor " + doctor.getName());
             }
         } else {
             System.out.println("Invalid choice. Please try again.");

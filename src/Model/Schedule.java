@@ -38,16 +38,4 @@ public class Schedule implements Serializable {
         this.endTime = endTime;
     }
 
-    // public Doctor getDoctor() {
-    //     return doctor;
-    // }
-    // public void setDoctor(Doctor doctor) {
-    //     this.doctor = doctor;
-    // }
-    // Override toString to display meaningful information about the schedule
-    // @Override
-    // public String toString() {
-    //     return "Start Time: " + startTime
-    //             + "End Time: " + endTime;
-    // }
 }

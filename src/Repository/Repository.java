@@ -19,8 +19,8 @@ public class Repository {
     private static final String folder = "Data";
 
     public static HashMap<String, Staff> STAFF = new HashMap<>();
-    public static HashMap<String, Patient> PATIENT = new HashMap<>();
     public static HashMap<String, InventoryList> INVENTORY = new HashMap<>();
+    public static HashMap<String, Patient> PATIENT = new HashMap<>();
     public static HashMap<String, ReplenishmentRequest> REPLENISHMENT_REQUEST = new HashMap<>();
     public static HashMap<String, AppointmentOutcome> APPOINTMENT_OUTCOME = new HashMap<>();
     public static HashMap<String, Appointment> APPOINTMENT_LIST = new HashMap<>();
@@ -73,6 +73,7 @@ public class Repository {
         writeSerializedObject(FileType.DIAGNOSIS);
         writeSerializedObject(FileType.TREATMENT);
         return true;
+
     }
 
     private static boolean writeSerializedObject(FileType fileType) {
@@ -299,13 +300,13 @@ public class Repository {
         }
 
         // Dummy data based on provided table
-        Medicine paracetamol = new Medicine("001", "Paracetamol", 5, 10, "To treat fever");
+        Medicine paracetamol = new Medicine("001", "Paracetamol", 5, "To treat fever");
         InventoryList inventoryParacetamol = new InventoryList(paracetamol, 100, 20);
 
-        Medicine ibuprofen = new Medicine("002", "Ibuprofen", 4, 15, "To treat fever");
+        Medicine ibuprofen = new Medicine("002", "Ibuprofen", 4, "To treat fever");
         InventoryList inventoryIbuprofen = new InventoryList(ibuprofen, 5, 10);
 
-        Medicine amoxicillin = new Medicine("003", "Amoxicillin", 3, 7, "To treat fever");
+        Medicine amoxicillin = new Medicine("003", "Amoxicillin", 3, "To treat fever");
         InventoryList inventoryAmoxicillin = new InventoryList(amoxicillin, 75, 15);
 
         // Add to INVENTORY with String keys
@@ -341,12 +342,12 @@ public class Repository {
         }
 
         // Create sample Medicine objects
-        Medicine medicine1 = new Medicine("001", "Paracetamol", 5, 10, "To treat fever");
-        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, 15, "To treat fever");
+        Medicine medicine1 = new Medicine("001", "Paracetamol", 5, "To treat fever");
+        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, "To treat inflammation");
 
-        // Create a list of prescribed medicines
-        List<Medicine> prescribedMedicinesList1 = Arrays.asList(medicine1, medicine2);
-        List<Medicine> prescribedMedicinesList2 = Arrays.asList(medicine1);
+        // Create independent copies of the medicines for each AppointmentOutcome
+        List<Medicine> prescribedMedicinesList1 = Arrays.asList(new Medicine(medicine1), new Medicine(medicine2));
+        List<Medicine> prescribedMedicinesList2 = Arrays.asList(new Medicine(medicine1));
 
         // Create dummy Diagnosis objects
         Diagnosis diagnosis1 = new Diagnosis(101, "Hypertension", "High blood pressure requiring regular monitoring");
@@ -354,13 +355,26 @@ public class Repository {
 
         // Add Diagnosis objects to a list
         List<Diagnosis> diagnosisList1 = Arrays.asList(diagnosis1, diagnosis2);
-
         List<Diagnosis> diagnosisList2 = Arrays.asList(diagnosis2);
 
         // Create dummy AppointmentOutcome instances
-        AppointmentOutcome appointmentOutcome1 = new AppointmentOutcome("101", prescribedMedicinesList1, diagnosisList1, "Patient needs rest and fluids.", LocalDateTime.now(), PaymentStatus.PENDING);
+        AppointmentOutcome appointmentOutcome1 = new AppointmentOutcome(
+                "101",
+                prescribedMedicinesList1,
+                diagnosisList1,
+                "Patient needs rest and fluids.",
+                LocalDateTime.now(),
+                PaymentStatus.PENDING
+        );
 
-        AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome("102", prescribedMedicinesList2, diagnosisList2, "Prescribed light medication and rest.", LocalDateTime.now().minusDays(1), PaymentStatus.PENDING);
+        AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome(
+                "102",
+                prescribedMedicinesList2,
+                diagnosisList2,
+                "Prescribed light medication and rest.",
+                LocalDateTime.now().minusDays(1),
+                PaymentStatus.PENDING
+        );
 
         // Add to the repository
         Repository.APPOINTMENT_OUTCOME.put(appointmentOutcome1.getOutcomeId(), appointmentOutcome1);

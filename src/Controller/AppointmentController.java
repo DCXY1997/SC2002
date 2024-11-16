@@ -1,10 +1,10 @@
 package src.Controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import src.Enum.AppointmentStatus;
+import src.Helper.Helper;
 import src.Model.Appointment;
 import src.Model.Doctor;
 import src.Model.Patient;
@@ -20,6 +20,12 @@ public class AppointmentController {
         return appointments;
     }
 
+    public static String generateAppointmentId() {
+        String prefix = "A";
+        int uniqueId = Helper.generateUniqueId(Repository.APPOINTMENT_LIST);
+        return prefix + String.format("%03d", uniqueId);
+    }
+
     public static boolean makeAppointment(Patient patient, Doctor doctor, Schedule schedule, LocalDateTime startTime, LocalDateTime endTime) {
         if (schedule == null || patient == null || doctor == null || startTime == null || endTime == null) {
             System.out.println("Invalid data. One or more required fields are missing.");
@@ -28,7 +34,7 @@ public class AppointmentController {
 
         // Check if the selected start and end time fit within the available schedule
         if (startTime.isBefore(schedule.getStartTime()) || endTime.isAfter(schedule.getEndTime())) {
-            System.out.println("The selected times are outside the available slot.");
+            System.out.println("The selected times are outside the available slot: " + schedule.getStartTime() + " - " + schedule.getEndTime());
             return false;
         }
 
@@ -42,27 +48,36 @@ public class AppointmentController {
         // Load existing appointments
         Repository.readData(FileType.APPOINTMENT_LIST);
 
+        // Check for conflicting appointments within the selected schedule
+        for (Appointment existingAppointment : Repository.APPOINTMENT_LIST.values()) {
+            if (existingAppointment.getAttendingDoctor().equals(doctor)
+                    && existingAppointment.getStatus() != AppointmentStatus.CANCELLED) {
+                LocalDateTime existingStart = existingAppointment.getAppointmentStartDate();
+                LocalDateTime existingEnd = existingAppointment.getAppointmentEndDate();
+                // Check if the time overlaps with any existing appointment
+                if (startTime.isBefore(existingEnd) && endTime.isAfter(existingStart)) {
+                    System.out.println("\nThe selected time slot is already booked from " + existingStart + " to " + existingEnd);
+                    return false;
+                }
+            }
+        }
+
         // Create and add the new appointment
         Appointment appointment = new Appointment(patient, doctor, startTime, endTime);
         appointment.setStatus(AppointmentStatus.PENDING);
+        appointment.setAppointmentId(generateAppointmentId());
+
         Repository.APPOINTMENT_LIST.put(appointment.getAppointmentId(), appointment);
 
-        // Persist the updated data
+        // Persist the updated appointment list
         Repository.persistData(FileType.APPOINTMENT_LIST);
-
-        System.out.println("Appointment successfully created!");
+        System.out.println("Appointment " + appointment.getAppointmentId() + " successfully created!");
         return true;
     }
 
     public static List<Appointment> viewPatientAppointments(Patient patient) {
         List<Appointment> patientAppointments = new ArrayList<>();
-
-        // Load appointments from the Repository (appointmentlist.dat)
         Repository.readData(FileType.APPOINTMENT_LIST);
-
-        // Check if the appointments are loaded correctly
-        //System.out.println("Loaded appointments: " + Repository.APPOINTMENT_LIST.size());
-        // Get the appointments from the Repository
         for (Appointment appointment : Repository.APPOINTMENT_LIST.values()) {
             if (appointment.getPatient().equals(patient)) {
                 patientAppointments.add(appointment);
@@ -71,7 +86,6 @@ public class AppointmentController {
         return patientAppointments;
     }
 
-    // FIX THIS!!!
     public static boolean rescheduleAppointment(Appointment appointment, Schedule newSchedule) {
         if (appointment == null || newSchedule == null) {
             System.out.println("Invalid appointment or schedule.");
@@ -84,33 +98,13 @@ public class AppointmentController {
             return false;
         }
 
-        // Get the doctor and their availability
-        Doctor doctor = appointment.getAttendingDoctor();
-        List<Schedule> doctorSchedules = doctor.getAvailability();
-
-        // Check if the new schedule fits within the doctor's availability
-        boolean fits = false;
         LocalDateTime newStartTime = newSchedule.getStartTime();
         LocalDateTime newEndTime = newSchedule.getEndTime();
-
-        for (Schedule schedule : doctorSchedules) {
-            if (!newStartTime.isBefore(schedule.getStartTime()) && !newEndTime.isAfter(schedule.getEndTime())) {
-                fits = true;
-                break;
-            }
-        }
-
-        if (!fits) {
-            System.out.println("The new appointment time exceeds the doctor's available schedule.");
-            return false;
-        }
-
-        // If it fits, update the appointment's start and end times
         appointment.setAppointmentStartDate(newStartTime);
         appointment.setAppointmentEndDate(newEndTime);
-        appointment.setStatus(AppointmentStatus.PENDING); // Reset status for rescheduling
+        appointment.setStatus(AppointmentStatus.PENDING);
 
-        // Save the updated appointment to the repository
+        // Update the repository with the rescheduled appointment
         Repository.readData(FileType.APPOINTMENT_LIST);
         Repository.APPOINTMENT_LIST.put(appointment.getAppointmentId(), appointment);
         Repository.persistData(FileType.APPOINTMENT_LIST);
@@ -149,9 +143,6 @@ public class AppointmentController {
         // Load appointments from the Repository (appointmentlist.dat)
         Repository.readData(FileType.APPOINTMENT_LIST);
 
-        // Check if the appointments are loaded correctly
-        //System.out.println("Loaded appointments: " + Repository.APPOINTMENT_LIST.size());
-        // Get the appointments from the Repository
         for (Appointment appointment : Repository.APPOINTMENT_LIST.values()) {
             // Check if the appointment is for the given doctor
             if (appointment.getAttendingDoctor().equals(doctor)) {
@@ -165,60 +156,27 @@ public class AppointmentController {
     public static void acceptAppointment(Doctor doctor, Appointment appointment) {
         LocalDateTime appointmentStart = appointment.getAppointmentStartDate();
         LocalDateTime appointmentEnd = appointment.getAppointmentEndDate();
-
-        LocalDate appointmentDate = appointmentStart.toLocalDate();
-        System.out.println("-------------------------------------------------------------");
-        System.out.println("\nDoctor's current availability for " + appointmentDate + ": ");
-
-        // Fetch the doctor's full schedule
-        List<Schedule> doctorSchedules = DoctorController.getSchedule(doctor);
-
-        // Filter the schedules for the appointment date
-        List<Schedule> filteredSchedules = new ArrayList<>();
-        for (Schedule schedule : doctorSchedules) {
-            if (schedule.getStartTime().toLocalDate().isEqual(appointmentDate)) {
-                filteredSchedules.add(schedule);
-                System.out.println("  Available from " + schedule.getStartTime() + " to " + schedule.getEndTime());
-            }
-        }
-
-        // If the appointment's times fit into the available schedule, proceed with the acceptance
-        boolean fits = false;
-        for (Schedule schedule : filteredSchedules) {
-            if (!appointmentStart.isBefore(schedule.getStartTime()) && !appointmentEnd.isAfter(schedule.getEndTime())) {
-                fits = true;
-                break;
-            }
-        }
-
-        if (!fits) {
-            System.out.println("The selected appointment does not fit within the doctor's availability.");
-            return;
-        }
-
-        // Proceed with accepting the appointment (update availability and status)
-        appointment.setStatus(AppointmentStatus.CONFIRMED);
+        // Fetch available slots for the selected doctor (with pending appointments excluded)
+        List<Schedule> availableSlots = AppointmentController.getAvailableSlotsForDoctorExcludingAppointment(doctor, appointment);
 
         // Update the doctor's availability for the specific appointment date
+        appointment.setStatus(AppointmentStatus.CONFIRMED);
         boolean updateSuccessful = DoctorController.updateDoctorAvailability(
                 doctor,
                 appointmentStart,
                 appointmentEnd,
-                filteredSchedules
+                availableSlots
         );
-
         if (!updateSuccessful) {
             System.out.println("Update doctor availability error.");
             return;
         }
-
         // Persist the updated appointment status and doctor's schedule
         Repository.readData(FileType.APPOINTMENT_LIST);
         Repository.APPOINTMENT_LIST.put(appointment.getAppointmentId(), appointment);
         Repository.persistData(FileType.APPOINTMENT_LIST);
-
         // Print updated doctor's availability after the appointment
-        System.out.println("Appointment accepted. Doctor's availability has been updated to:");
+        System.out.println("\nAppointment accepted. Doctor's availability has been updated to:");
         for (Schedule updatedSchedule : doctor.getAvailability()) {
             System.out.println("  Available from " + updatedSchedule.getStartTime() + " to " + updatedSchedule.getEndTime());
         }
@@ -229,7 +187,6 @@ public class AppointmentController {
         Repository.readData(FileType.APPOINTMENT_LIST);
         Repository.APPOINTMENT_LIST.put(appointment.getAppointmentId(), appointment);
         Repository.persistData(FileType.APPOINTMENT_LIST);
-
     }
 
     public static List<Appointment> viewConfirmAppointments(Doctor doctor){
@@ -308,4 +265,75 @@ public class AppointmentController {
     //     }
     //     return pastAppointments;
     // }
+    public static List<Schedule> getAvailableSlotsForDoctor(Doctor doctor) {
+        List<Schedule> availableSlots = new ArrayList<>();
+        List<Schedule> doctorSchedule = doctor.getAvailability();
+        List<Appointment> allAppointments = viewDoctorAppointments(doctor);
+        // Filter for pending and cancelled appointments
+        List<Appointment> relevantAppointments = allAppointments.stream()
+                .filter(appointment -> appointment.getStatus() == AppointmentStatus.PENDING)
+                .collect(Collectors.toList());
+
+        relevantAppointments.sort(Comparator.comparing(Appointment::getAppointmentStartDate));
+        for (Schedule schedule : doctorSchedule) {
+            LocalDateTime currentStart = schedule.getStartTime();
+            LocalDateTime currentEnd = schedule.getEndTime();
+            // Iterate through all relevant appointments and check for overlaps
+            for (Appointment appointment : relevantAppointments) {
+                LocalDateTime appointmentStart = appointment.getAppointmentStartDate();
+                LocalDateTime appointmentEnd = appointment.getAppointmentEndDate();
+
+                // If the appointment overlaps with the schedule slot
+                if (appointmentStart.isBefore(currentEnd) && appointmentEnd.isAfter(currentStart)) {
+                    // If the appointment starts after the current start time, add the slot before it
+                    if (appointmentStart.isAfter(currentStart)) {
+                        availableSlots.add(new Schedule(currentStart, appointmentStart));
+                    }
+                    // Set the new start time to the end of the current appointment
+                    currentStart = appointmentEnd;
+                }
+            }
+
+            // After checking all relevant appointments, if there's remaining time, add it as an available slot
+            if (currentStart.isBefore(currentEnd)) {
+                availableSlots.add(new Schedule(currentStart, currentEnd));
+            }
+        }
+        return availableSlots;
+    }
+
+    public static List<Schedule> getAvailableSlotsForDoctorExcludingAppointment(Doctor doctor, Appointment appointmentToAccept) {
+        List<Schedule> availableSlots = new ArrayList<>();
+        List<Schedule> doctorSchedule = DoctorController.getSchedule(doctor);
+
+        // Sort doctor’s availability for consistency
+        doctorSchedule.sort(Comparator.comparing(Schedule::getStartTime));
+
+        // Start and end time of the appointment to accept
+        LocalDateTime appointmentStart = appointmentToAccept.getAppointmentStartDate();
+        LocalDateTime appointmentEnd = appointmentToAccept.getAppointmentEndDate();
+
+        for (Schedule schedule : doctorSchedule) {
+            LocalDateTime currentStart = schedule.getStartTime();
+            LocalDateTime currentEnd = schedule.getEndTime();
+
+            // Check if the appointment overlaps with this schedule slot
+            if (appointmentStart.isBefore(currentEnd) && appointmentEnd.isAfter(currentStart)) {
+                // If the appointment starts after the current start time, add the slot before it
+                if (appointmentStart.isAfter(currentStart)) {
+                    availableSlots.add(new Schedule(currentStart, appointmentStart));
+                }
+
+                // If the appointment ends before the current end time, add the slot after it
+                if (appointmentEnd.isBefore(currentEnd)) {
+                    availableSlots.add(new Schedule(appointmentEnd, currentEnd));
+                }
+            } else {
+                // If no overlap, add the entire schedule slot
+                availableSlots.add(schedule);
+            }
+        }
+        return availableSlots;
+    }
+
 }

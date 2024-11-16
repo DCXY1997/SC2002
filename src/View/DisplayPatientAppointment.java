@@ -2,9 +2,12 @@ package src.View;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import src.Controller.AppointmentController;
 import src.Controller.DoctorController;
 import src.Enum.AppointmentStatus;
@@ -13,6 +16,7 @@ import src.Model.Appointment;
 import src.Model.Doctor;
 import src.Model.Patient;
 import src.Model.Schedule;
+import src.Model.Specialization;
 
 public class DisplayPatientAppointment extends MainView {
 
@@ -57,19 +61,17 @@ public class DisplayPatientAppointment extends MainView {
                     viewAppointmentRequests();
                     break;
                 case 3:
-                    // Reschedule an appointment
                     Helper.clearScreen();
                     printBreadCrumbs("Hospital Management App View > Patient Dashboard > Reschedule Appointment");
                     promptRescheduleAppointment();
                     break;
                 case 4:
-                    // Cancel an appointment
                     Helper.clearScreen();
                     printBreadCrumbs("Hospital Management App View > Patient Dashboard > Cancel Appointment");
                     cancelAppointment();
                     break;
                 case 5:
-                    return; // Return from the method to exit the loop
+                    return;
                 default:
                     System.out.println("Invalid option");
                     break;
@@ -81,7 +83,6 @@ public class DisplayPatientAppointment extends MainView {
     }
 
     private void promptRescheduleAppointment() {
-        // Display appointments to the user
         List<Appointment> appointments = AppointmentController.viewPatientAppointments(patient);
         List<Appointment> pendingAppointments = new ArrayList<>();
 
@@ -100,24 +101,28 @@ public class DisplayPatientAppointment extends MainView {
         System.out.println("Your Pending Appointments:");
         for (int i = 0; i < pendingAppointments.size(); i++) {
             Appointment appointment = pendingAppointments.get(i);
-            System.out.println((i + 1) + ". " + appointment.getAppointmentId() + " - Doctor: " + appointment.getAttendingDoctor().getName()
-                    + " from " + appointment.getAppointmentStartDate() + " to " + appointment.getAppointmentEndDate());
+            System.out.println((i + 1) + ". Appointment ID - " + appointment.getAppointmentId() + ":");
+            System.out.println("Patient: " + appointment.getPatient().getName());
+            System.out.println("Doctor: " + appointment.getAttendingDoctor().getName());
+            System.out.println("From: " + appointment.getAppointmentStartDate() + " to " + appointment.getAppointmentEndDate());
+            System.out.println("Status: " + appointment.getStatus());
+            System.out.println();
         }
 
-        System.out.println("Select an appointment to reschedule (1-" + pendingAppointments.size() + "): ");
+        System.out.println("\nSelect an appointment to reschedule (1-" + pendingAppointments.size() + "): ");
         int choice = Helper.readInt(1, pendingAppointments.size());
         Appointment selectedAppointment = pendingAppointments.get(choice - 1);
 
-        System.out.println("You selected appointment ID " + selectedAppointment.getAppointmentId() + " with Dr. "
-                + selectedAppointment.getAttendingDoctor().getName());
+        System.out.println("You selected Appointment - " + selectedAppointment.getAppointmentId() + ":");
+        System.out.println("Patient: " + selectedAppointment.getPatient().getName());
+        System.out.println("From: " + selectedAppointment.getAppointmentStartDate() + " to " + selectedAppointment.getAppointmentEndDate());
+        System.out.println("Status: " + selectedAppointment.getStatus() + "\n");
 
         // Prompt for new appointment time within the doctor's availability
         Schedule newSchedule = promptNewScheduleForReschedule(selectedAppointment.getAttendingDoctor(), selectedAppointment);
         if (newSchedule != null) {
             boolean rescheduled = AppointmentController.rescheduleAppointment(selectedAppointment, newSchedule);
-            if (rescheduled) {
-                System.out.println("Your appointment has been rescheduled successfully.");
-            } else {
+            if (!rescheduled) {
                 System.out.println("Failed to reschedule the appointment. The selected time may not be within the doctor's availability.");
             }
         }
@@ -130,38 +135,61 @@ public class DisplayPatientAppointment extends MainView {
             return null;
         }
 
-        // Display the available schedule times for reference
-        System.out.println("The doctor's available time slots for rescheduling are:");
-        for (int i = 0; i < availableSchedules.size(); i++) {
-            Schedule schedule = availableSchedules.get(i);
-            System.out.println((i + 1) + ". From " + schedule.getStartTime() + " to " + schedule.getEndTime());
+        // Fetch available slots for the selected doctor
+        List<Schedule> availableSlots = AppointmentController.getAvailableSlotsForDoctor(doctor);
+        availableSlots.add(new Schedule(currentAppointment.getAppointmentStartDate(), currentAppointment.getAppointmentEndDate()));
+
+        availableSlots.sort(Comparator.comparing(Schedule::getStartTime));
+        List<Schedule> mergedSlots = new ArrayList<>();
+        Schedule tempSlot = availableSlots.get(0);
+
+        // Merge overlapping slots
+        for (int i = 1; i < availableSlots.size(); i++) {
+            Schedule currentSlot = availableSlots.get(i);
+            if (!currentSlot.getStartTime().isAfter(tempSlot.getEndTime())) {
+                tempSlot = new Schedule(tempSlot.getStartTime(),
+                        currentSlot.getEndTime().isAfter(tempSlot.getEndTime()) ? currentSlot.getEndTime() : tempSlot.getEndTime());
+            } else {
+                mergedSlots.add(tempSlot);
+                tempSlot = currentSlot;
+            }
         }
-        System.out.println("------------------------------------------------------------");
+        mergedSlots.add(tempSlot);
 
-        // Prompt user to input a new start and end time for their appointment
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        Map<String, List<Schedule>> groupedSlots = new HashMap<>();
+        for (Schedule slot : mergedSlots) {
+            String date = slot.getStartTime().toLocalDate().toString();
+            groupedSlots.computeIfAbsent(date, k -> new ArrayList<>()).add(slot);
+        }
 
-        // Ask for the appointment date input (format: yyyy-MM-dd)
-        System.out.print("Enter the new appointment date (Format: yyyy-MM-dd): ");
-        String dateStr = Helper.readString();  // Ensure Helper.readString() gets the date input correctly
-        LocalDate appointmentDate = LocalDate.parse(dateStr);  // Convert input string to LocalDate
+        System.out.println("Available Appointment Slots For Dr. " + doctor.getName().toUpperCase() + ":");
+        int index = 1;
+        for (Map.Entry<String, List<Schedule>> entry : groupedSlots.entrySet()) {
+            System.out.println(entry.getKey());
+            System.out.println("-------------");
 
-        // Ask for the start time input
-        System.out.print("Enter the new start time for your appointment (Format: HH:mm): ");
-        String startTimeStr = Helper.readString();
-        String fullStartTimeStr = appointmentDate.toString() + " " + startTimeStr;
-        LocalDateTime startTime = LocalDateTime.parse(fullStartTimeStr, formatter);
+            for (Schedule slot : entry.getValue()) {
+                String timeRange = slot.getStartTime().toLocalTime() + " - " + slot.getEndTime().toLocalTime();
+                System.out.println("(" + index + ") From: " + timeRange);
+                index++;
+            }
+            System.out.println();
+        }
 
-        // Ask for the end time input
-        System.out.print("Enter the new end time for your appointment (Format: HH:mm): ");
-        String endTimeStr = Helper.readString();
-        String fullEndTimeStr = appointmentDate.toString() + " " + endTimeStr;
-        LocalDateTime endTime = LocalDateTime.parse(fullEndTimeStr, formatter);
+        System.out.print("Please select an appointment slot by entering the number: ");
+        int option = Helper.readInt(1, mergedSlots.size());
+        Schedule selectedSchedule = mergedSlots.get(option - 1);
 
-        // Helper method 1: Check if the time is within doctor's availability
+        String scheduleDate = selectedSchedule.getStartTime().toLocalDate().toString();
+        LocalDateTime[] appointmentTimes = Helper.validateAppointmentTime(scheduleDate,
+                "Enter the start time for your appointment (Format: HH:mm): ",
+                "Enter the end time for your appointment (Format: HH:mm): ");
+        LocalDateTime startTime = appointmentTimes[0];
+        LocalDateTime endTime = appointmentTimes[1];
+
+        // Check if the selected time is within the doctor's availability
         boolean isTimeAvailable = false;
         for (Schedule schedule : availableSchedules) {
-            // Check if the requested appointment's start and end times are within the doctor's available time
             if (!startTime.isBefore(schedule.getStartTime()) && !endTime.isAfter(schedule.getEndTime())) {
                 isTimeAvailable = true;
                 break;
@@ -173,25 +201,27 @@ public class DisplayPatientAppointment extends MainView {
             return null;
         }
 
-// Check if the selected time slot overlaps with any other appointments
-        List<Appointment> doctorAppointments = AppointmentController.viewDoctorAppointments(doctor);
-        for (Appointment appointment : doctorAppointments) {
-            // Skip the current appointment (the one being rescheduled)
-            if (appointment.getAppointmentId().equals(currentAppointment.getAppointmentId())) {
-                continue; // Skip the current appointment
-            }
+        // Check if the selected time slot overlaps with any other appointments
+        List<Appointment> doctorAppointments = AppointmentController.viewDoctorAppointments(doctor).stream()
+                .filter(appointment -> appointment.getStatus() == AppointmentStatus.PENDING || appointment.getStatus() == AppointmentStatus.CONFIRMED)
+                .collect(Collectors.toList());
 
-            // Check for overlap with other appointments
-            if (startTime.isBefore(appointment.getAppointmentEndDate()) && endTime.isAfter(appointment.getAppointmentStartDate())) {
-                System.out.println("The selected time slot is already occupied by another appointment.");
-                return null;
+        for (Appointment appointment : doctorAppointments) {
+            if (appointment.getAppointmentId().equals(currentAppointment.getAppointmentId())) {
+                // Allow rescheduling if the time slot overlaps only with the current appointment
+                if (startTime.isBefore(appointment.getAppointmentEndDate()) && endTime.isAfter(appointment.getAppointmentStartDate())) {
+                    System.out.println("Rescheduling allowed as the time slot overlaps with the current appointment.");
+                    continue;
+                }
+
+                if (startTime.isBefore(appointment.getAppointmentEndDate()) && endTime.isAfter(appointment.getAppointmentStartDate())) {
+                    System.out.println("The selected time slot is already occupied by another appointment.");
+                    return null;
+                }
             }
         }
 
-        // If everything is fine, create and return a new Schedule object
-        Schedule newSchedule = new Schedule(startTime, endTime);
-
-        return newSchedule;
+        return new Schedule(startTime, endTime);
     }
 
     private void cancelAppointment() {
@@ -234,17 +264,31 @@ public class DisplayPatientAppointment extends MainView {
 
         if (appointmentRequests.isEmpty()) {
             System.out.println("No appointment requests found for you.");
-        } else {
-            System.out.println("Your Appointment Requests:");
+            return;
+        }
 
-            for (Appointment appointment : appointmentRequests) {
-                System.out.println("Appointment ID - " + appointment.getAppointmentId() + ":");
+        // Group appointments by the date (appointment start date)
+        Map<LocalDate, List<Appointment>> appointmentsByDate = new HashMap<>();
+        for (Appointment appointment : appointmentRequests) {
+            LocalDate appointmentDate = appointment.getAppointmentStartDate().toLocalDate();
+            appointmentsByDate.computeIfAbsent(appointmentDate, k -> new ArrayList<>()).add(appointment);
+        }
+
+        System.out.println("Your Appointment Requests:");
+        for (LocalDate date : appointmentsByDate.keySet()) {
+            System.out.println(date);
+            System.out.println("-------------");
+            List<Appointment> appointmentsOnDate = appointmentsByDate.get(date);
+            for (int i = 0; i < appointmentsOnDate.size(); i++) {
+                Appointment appointment = appointmentsOnDate.get(i);
+                System.out.println((i + 1) + ". Appointment ID - " + appointment.getAppointmentId() + ":");
                 System.out.println("Patient: " + appointment.getPatient().getName());
                 System.out.println("Doctor: " + appointment.getAttendingDoctor().getName());
                 System.out.println("From: " + appointment.getAppointmentStartDate() + " to " + appointment.getAppointmentEndDate());
                 System.out.println("Status: " + appointment.getStatus());
                 System.out.println();
             }
+            System.out.println();
         }
     }
 
@@ -258,24 +302,30 @@ public class DisplayPatientAppointment extends MainView {
             int opt = Helper.readInt(1, 3);
             switch (opt) {
                 case 1:
+                    Helper.clearScreen();
+                    printBreadCrumbs("Hospital Management App View > Patient Dashboard > Schedule Appointment");
                     scheduledAppointment = promptDisplayApptByDoctor();
                     break;
                 case 2:
+                    Helper.clearScreen();
+                    printBreadCrumbs("Hospital Management App View > Patient Dashboard > Schedule Appointment");
                     scheduledAppointment = promptAllAvailableAppt();
                     break;
                 case 3:
-                    return; // Return from the method to exit the loop
+                    return;
                 default:
                     System.out.println("Invalid option");
                     break;
             }
             if (!scheduledAppointment) {
                 Helper.pressAnyKeyToContinue();
+                Helper.clearScreen();
+                printBreadCrumbs("Hospital Management App View > Patient Dashboard > Schedule Appointment");
             }
         } while (!scheduledAppointment);
     }
 
-    private boolean promptDisplayApptByDoctor() {
+    public boolean promptDisplayApptByDoctor() {
         List<Doctor> availableDoc = DoctorController.getAllDoctors();
 
         if (availableDoc.isEmpty()) {
@@ -286,14 +336,26 @@ public class DisplayPatientAppointment extends MainView {
         System.out.println("Available Doctors:");
         for (int i = 0; i < availableDoc.size(); i++) {
             Doctor doctor = availableDoc.get(i);
-            System.out.println((i + 1) + ". " + doctor.getName() + " (" + doctor.getHospitalId() + ") - " + doctor.getDocSpecialization());
+            List<Specialization> specializations = doctor.getDocSpecialization();
+            String specializationNames = specializations.isEmpty() ? "NIL"
+                    : specializations.stream()
+                            .map(Specialization::getSpecializationName)
+                            .collect(Collectors.joining(", "));
+
+            System.out.println((i + 1) + ". " + doctor.getName() + " (" + doctor.getHospitalId() + ") - " + specializationNames);
         }
 
         System.out.println("\nPlease select a doctor to view available appointments: ");
         int choice = Helper.readInt(1, availableDoc.size());
 
         Doctor selectedDoctor = availableDoc.get(choice - 1);
-        System.out.println("You selected Dr. " + selectedDoctor.getName() + " (" + selectedDoctor.getDocSpecialization() + ")");
+        List<Specialization> selectedSpecializations = selectedDoctor.getDocSpecialization();
+        String selectedSpecializationNames = selectedSpecializations.isEmpty() ? "NIL"
+                : selectedSpecializations.stream()
+                        .map(Specialization::getSpecializationName)
+                        .collect(Collectors.joining(", "));
+
+        System.out.println("You selected Dr. " + selectedDoctor.getName() + " (" + selectedDoctor.getHospitalId() + ") - " + selectedSpecializationNames);
         System.out.println("-----------------------------------------------------------");
         List<Schedule> doctorSchedule = DoctorController.getSchedule(selectedDoctor);
 
@@ -302,22 +364,46 @@ public class DisplayPatientAppointment extends MainView {
             return false;
         }
 
-        System.out.println("Available Appointment Slots:");
-        int index = 1;
-        for (Schedule schedule : doctorSchedule) {
-            System.out.println(index + ". From: " + schedule.getStartTime() + " To: " + schedule.getEndTime());
-            index++;
+        // Fetch available slots for the selected doctor (with pending appointments excluded)
+        List<Schedule> availableSlots = AppointmentController.getAvailableSlotsForDoctor(selectedDoctor);
+
+        if (availableSlots.isEmpty()) {
+            System.out.println("No available appointment slots for this doctor.");
+            return false;
         }
 
-        // Now let the user select a slot
-        System.out.print("Please select an appointment slot by entering the number: ");
-        choice = Helper.readInt(1, doctorSchedule.size());
+        // Group available slots by date
+        Map<String, List<Schedule>> groupedSlots = new HashMap<>();
+        for (Schedule slot : availableSlots) {
+            String date = slot.getStartTime().toLocalDate().toString();
+            groupedSlots.computeIfAbsent(date, k -> new ArrayList<>()).add(slot);
+        }
 
-        Schedule selectedSchedule = doctorSchedule.get(choice - 1);
-        return scheduleAppointment(selectedDoctor, selectedSchedule);
+        System.out.println("Available Appointment Slots:");
+        int index = 1;
+        // Display available slots grouped by date
+        for (Map.Entry<String, List<Schedule>> entry : groupedSlots.entrySet()) {
+            System.out.println(entry.getKey()); // Date
+            System.out.println("-------------");
+
+            for (Schedule slot : entry.getValue()) {
+                // Display the time range for the slot
+                String timeRange = slot.getStartTime().toLocalTime() + " - " + slot.getEndTime().toLocalTime();
+                System.out.println("(" + index + ") From: " + timeRange);
+                index++;
+            }
+            System.out.println();
+        }
+
+        // Ask the user to select a slot
+        System.out.print("Please select an appointment slot by entering the number: ");
+        int option = Helper.readInt(1, availableSlots.size());
+
+        Schedule selectedSchedule = availableSlots.get(option - 1);
+        return scheduleAppointmentInput(selectedDoctor, selectedSchedule);
     }
 
-    private boolean promptAllAvailableAppt() {
+    public boolean promptAllAvailableAppt() {
         List<Doctor> availableDoctors = DoctorController.getAllDoctors();
 
         if (availableDoctors.isEmpty()) {
@@ -328,25 +414,26 @@ public class DisplayPatientAppointment extends MainView {
         boolean hasAvailableSlots = false;
         System.out.println("All Available Appointment Slots:");
 
-        List<Schedule> allAvailableSchedules = new ArrayList<>();
-        List<Doctor> associatedDoctors = new ArrayList<>();
-        int index = 1;
+        // Map to hold doctor's name as the key and a map of dates to their available slots
+        Map<String, Map<String, List<Schedule>>> doctorSchedules = new HashMap<>();
 
         // Loop through all available doctors
         for (Doctor doctor : availableDoctors) {
-            List<Schedule> doctorSchedule = DoctorController.getSchedule(doctor);
-            if (!doctorSchedule.isEmpty()) {
-                hasAvailableSlots = true;
-                System.out.println("Dr. " + doctor.getName() + " (" + doctor.getDocSpecialization() + "):");
+            // Fetch available slots for each doctor (excluding pending appointments)
+            List<Schedule> availableSlots = AppointmentController.getAvailableSlotsForDoctor(doctor);
 
-                // List all the available time slots for each doctor
-                for (Schedule schedule : doctorSchedule) {
-                    System.out.println(index + ". From: " + schedule.getStartTime() + " To: " + schedule.getEndTime());
-                    allAvailableSchedules.add(schedule);
-                    associatedDoctors.add(doctor);
-                    index++;
+            if (!availableSlots.isEmpty()) {
+                hasAvailableSlots = true;
+
+                // Group the available slots by date for the current doctor
+                Map<String, List<Schedule>> groupedSchedulesByDate = new HashMap<>();
+                for (Schedule schedule : availableSlots) {
+                    String date = schedule.getStartTime().toLocalDate().toString();
+                    groupedSchedulesByDate.computeIfAbsent(date, k -> new ArrayList<>()).add(schedule);
                 }
-                System.out.println();
+
+                // Add the grouped schedules to the main map for the doctor
+                doctorSchedules.put(doctor.getName(), groupedSchedulesByDate);
             }
         }
 
@@ -355,32 +442,75 @@ public class DisplayPatientAppointment extends MainView {
             return false;
         }
 
-        // Now, let the user select a slot
-        System.out.println("\nPlease select an appointment slot by entering the number: ");
-        int choice = Helper.readInt(1, allAvailableSchedules.size());
+        int index = 1;
 
+        // Display the available slots grouped by doctor and date
+        for (Map.Entry<String, Map<String, List<Schedule>>> doctorEntry : doctorSchedules.entrySet()) {
+            String doctorName = doctorEntry.getKey();
+            Map<String, List<Schedule>> dateSchedules = doctorEntry.getValue();
+
+            // Display the doctor's name
+            System.out.println("\nDr. " + doctorName.toUpperCase());
+
+            // Display the available slots grouped by date
+            for (Map.Entry<String, List<Schedule>> dateEntry : dateSchedules.entrySet()) {
+                String date = dateEntry.getKey();
+                List<Schedule> schedules = dateEntry.getValue();
+
+                // Display the date and its available slots
+                System.out.println(date);
+                System.out.println("-------------");
+
+                // Display each available slot for the current date
+                for (Schedule schedule : schedules) {
+                    String timeRange = schedule.getStartTime().toLocalTime() + " - " + schedule.getEndTime().toLocalTime();
+                    System.out.println("(" + index + ") From: " + timeRange);
+                    index++;
+                }
+            }
+        }
+
+        System.out.println("\nPlease select an appointment slot by entering the number: ");
+        int choice = Helper.readInt(1, doctorSchedules.values().stream().flatMap(dateSchedules -> dateSchedules.values().stream()).mapToInt(List::size).sum());
+
+        int selectedIndex = 1;
+        Schedule selectedSchedule = null;
+        Doctor selectedDoctor = null;
+        for (Map.Entry<String, Map<String, List<Schedule>>> doctorEntry : doctorSchedules.entrySet()) {
+            for (Map.Entry<String, List<Schedule>> dateEntry : doctorEntry.getValue().entrySet()) {
+                for (Schedule schedule : dateEntry.getValue()) {
+                    if (selectedIndex == choice) {
+                        selectedSchedule = schedule;
+                        selectedDoctor = availableDoctors.stream().filter(doc -> doc.getName().equals(doctorEntry.getKey())).findFirst().orElse(null);
+                        break;
+                    }
+                    selectedIndex++;
+                }
+                if (selectedSchedule != null) {
+                    break;
+                }
+            }
+            if (selectedSchedule != null) {
+                break;
+            }
+        }
         // Call the scheduleAppointment method to proceed with scheduling
-        Schedule selectedSchedule = allAvailableSchedules.get(choice - 1);
-        Doctor selectedDoctor = associatedDoctors.get(choice - 1);
-        return scheduleAppointment(selectedDoctor, selectedSchedule);
+        return scheduleAppointmentInput(selectedDoctor, selectedSchedule);
     }
 
-    private boolean scheduleAppointment(Doctor selectedDoctor, Schedule selectedSchedule) {
-        // Prompt user for the desired start time and end time
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
+    private boolean scheduleAppointmentInput(Doctor selectedDoctor, Schedule selectedSchedule) {
+        // Prompt user for the desired start and end time
         String scheduleDate = selectedSchedule.getStartTime().toLocalDate().toString();
 
-        System.out.print("Enter the start time for your appointment (Format: HH:mm): ");
-        String startTimeStr = Helper.readString();
-        String fullStartTimeStr = scheduleDate + " " + startTimeStr;
-        LocalDateTime startTime = LocalDateTime.parse(fullStartTimeStr, formatter);
+        // Use Helper to validate both start and end times
+        LocalDateTime[] appointmentTimes = Helper.validateAppointmentTime(scheduleDate,
+                "Enter the start time for your appointment (Format: HH:mm): ",
+                "Enter the end time for your appointment (Format: HH:mm): ");
 
-        System.out.print("Enter the end time for your appointment (Format: HH:mm): ");
-        String endTimeStr = Helper.readString();
-        String fullEndTimeStr = scheduleDate + " " + endTimeStr;
-        LocalDateTime endTime = LocalDateTime.parse(fullEndTimeStr, formatter);
+        LocalDateTime startTime = appointmentTimes[0];
+        LocalDateTime endTime = appointmentTimes[1];
 
+        // Proceed with making the appointment
         boolean appointmentMade = AppointmentController.makeAppointment(patient, selectedDoctor, selectedSchedule, startTime, endTime);
 
         if (appointmentMade) {
@@ -390,4 +520,5 @@ public class DisplayPatientAppointment extends MainView {
             return false;
         }
     }
+
 }

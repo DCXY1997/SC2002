@@ -59,4 +59,5 @@ public class Diagnosis implements Serializable {
     public void removeTreatment(Treatment treatment) {
         this.treatment.remove(treatment);
     }
+
 }

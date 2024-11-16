@@ -10,7 +10,6 @@ public class Appointment implements Serializable {
      * For Java Serializable
      */
     private static final long serialVersionUID = 1L;
-    private static int idCounter = 1;
 
     // Attributes
     private String appointmentId;
@@ -18,13 +17,12 @@ public class Appointment implements Serializable {
     private Doctor attendingDoctor;
     private LocalDateTime appointmentStartDate;
     private LocalDateTime appointmentEndDate;
-    private AppointmentOutcome outcome;
     private AppointmentStatus status;
     private AppointmentOutcome appointmentOutcome;
 
     // Constructor
     public Appointment(Patient patient, Doctor attendingDoctor, LocalDateTime appointmentStartDate, LocalDateTime appointmentEndDate) {
-        this.appointmentId = "A" + idCounter++;
+        this.appointmentId = appointmentId;
         this.patient = patient;
         this.attendingDoctor = attendingDoctor;
         this.appointmentStartDate = appointmentStartDate;

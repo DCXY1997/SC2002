@@ -6,7 +6,6 @@ import src.Repository.Repository;
 import src.View.HospitalManagementAppView;
 
 public class HMSApp {
-
     public static void main(String[] args) {
         //Repository.clearDatabase();
 

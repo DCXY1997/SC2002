@@ -29,7 +29,6 @@ public class Doctor extends Staff {
         super(name, password, StaffType.DOCTOR, gender, age, hospitalId);
         this.docSpecialization = docSpecialization != null ? new ArrayList<>(docSpecialization) : new ArrayList<>();
         this.appointList = AppointmentList.getInstance(); // Use singleton instance
-        // this.appointList = appointList != null ? appointList : new AppointmentList();
         this.availability = availability != null ? new ArrayList<>(availability) : new ArrayList<>();
     }
 
