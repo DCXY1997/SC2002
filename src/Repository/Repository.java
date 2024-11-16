@@ -195,10 +195,6 @@ public class Repository {
             return false;
         }
 
-        // Staff staff1 = new Staff("John Smith", "password", StaffType.DOCTOR,
-        // Gender.MALE, 45, "D001");
-        // Staff staff2 = new Staff("Emily Clarke", "password", StaffType.DOCTOR,
-        // Gender.FEMALE, 38, "D002");
         Staff staff1 = new Doctor("John Doe", "password", Gender.MALE, 30, "D001", null, null, null);
         Staff staff2 = new Doctor("Emily Clarke", "password", Gender.FEMALE, 28, "D002", null, null, null);
         Staff staff3 = new Staff("Mark Lee", "password", StaffType.PHARMACIST, Gender.MALE, 29, "P001");

@@ -1,17 +1,19 @@
 package src.View;
+
 import src.Controller.AdminController;
 import src.Enum.Gender;
 import src.Enum.StaffType;
 import src.Helper.Helper;
 import src.Repository.Repository;
 
-public class ManageStaffAccountView extends MainView{
-	/**
+public class ManageStaffAccountView extends MainView {
+
+    /**
      * View Actions of the ManageStaffAccountView.
      */
     @Override
-	public void printActions() {
-		Helper.clearScreen();
+    public void printActions() {
+        Helper.clearScreen();
         printBreadCrumbs("Hospital Management App View > Login View > Admin View > Manage Staff Account View");
         System.out.println("What would you like to do ?");
         System.out.println("(1) Add new staff");
@@ -19,11 +21,13 @@ public class ManageStaffAccountView extends MainView{
         System.out.println("(3) Update staff");
         System.out.println("(4) Exit");
     }
+
     /**
-     * View Application of the ManageStaffAccountView. <p>
+     * View Application of the ManageStaffAccountView.
+     * <p>
      */
     @Override
-	public void viewApp() {
+    public void viewApp() {
         int opt = -1;
         do {
             printActions();
@@ -34,7 +38,7 @@ public class ManageStaffAccountView extends MainView{
                     printBreadCrumbs("Hospital Management App View > Login View > Admin View > Manage Staff Account View > Add Staff Account View");
                     promptAddStaffAccount();
                     break;
-                case 2: 
+                case 2:
                     Helper.clearScreen();
                     printBreadCrumbs("Hospital Management App View > Login View > Admin View > Manage Staff Account View > Remove Staff Account View");
                     promptRemoveStaffAccount();
@@ -45,7 +49,7 @@ public class ManageStaffAccountView extends MainView{
                     promptUpdateStaff();
                     break;
                 case 4:
-                	break;
+                    break;
                 default:
                     System.out.println("Invalid option");
                     break;
@@ -54,62 +58,68 @@ public class ManageStaffAccountView extends MainView{
                 Helper.pressAnyKeyToContinue();
             }
         } while (opt != 4);
-	}
-	
+    }
+
     private boolean promptAddStaffAccount() {
         System.out.println("Enter staff name:");
         String name = Helper.readString();
-    
+
         String password = "password"; // Default password
-    
+
         StaffType role = promptRole();
         if (role == null) {
             System.out.println("Invalid role! Add staff unsuccessful!");
             return false;
         }
-    
+
         Gender gender = promptGender();
         if (gender == null) {
             System.out.println("Invalid gender! Add staff unsuccessful!");
             return false;
         }
-    
+
         System.out.println("Enter the staff's age:");
         int age = Helper.readInt();
-    
+
         // Generate the hospital ID based on the role prefix
         String hospitalId = generateHospitalId(role);
-    
+        System.out.println("hospital id: " + hospitalId);
+
         AdminController.addStaffAccount(name, password, gender, age, hospitalId, role);
         return true;
     }
-    
+
     // Helper function to generate hospital ID based on role
     private String generateHospitalId(StaffType role) {
-        String prefix = "";
-        switch (role) {
-            case DOCTOR:
-                prefix = "D";
-                break;
-            case PHARMACIST:
-                prefix = "P";
-                break;
-            case ADMIN:
-                prefix = "A";
-                break;
-        }
-        int uniqueId = Helper.generateUniqueId(Repository.STAFF);
-        return prefix + String.format("%03d", uniqueId); // e.g., D001
-    }
-    
+        String prefix = switch (role) {
+            case DOCTOR ->
+                "D";
+            case PHARMACIST ->
+                "P";
+            case ADMIN ->
+                "A";
+            default ->
+                throw new IllegalArgumentException("Unknown role");
+        };
 
-	private void printGenderMenu() {
+        // Find the maximum existing ID for this prefix in the database
+        int maxId = Repository.STAFF.keySet().stream()
+                .filter(key -> key instanceof String && ((String) key).startsWith(prefix))
+                .mapToInt(key -> Integer.parseInt(((String) key).substring(1))) // Extract the numerical part
+                .max()
+                .orElse(0); // Default to 0 if no IDs exist for this prefix
+
+        int uniqueId = maxId + 1; // Increment to get the next unique ID
+        return prefix + String.format("%03d", uniqueId); // e.g., D003
+    }
+
+    private void printGenderMenu() {
         System.out.println("Please enter the staff's gender (1-2)");
         System.out.println("(1) Male");
         System.out.println("(2) Female");
     }
 
-	private Gender promptGender() {
+    private Gender promptGender() {
         printGenderMenu();
         int choice = Helper.readInt(1, 2);
         if (choice != 1 && choice != 2) {
@@ -126,9 +136,9 @@ public class ManageStaffAccountView extends MainView{
         }
         return null;
     }
- 
+
     private void printRoleMenu() {
-        System.out.println("Please enter the staff's role (1-2)");
+        System.out.println("Please enter the staff's role (1-3)");
         System.out.println("(1) Doctor");
         System.out.println("(2) Pharmacist");
         System.out.println("(3) Admin");
@@ -155,25 +165,24 @@ public class ManageStaffAccountView extends MainView{
     }
 
     private boolean promptRemoveStaffAccount() {
-    Helper.clearScreen();
-    printBreadCrumbs("Hotel Management App View > Admin View > Remove a staff");
-    System.out.println("Enter the hospital id of the staff that you want to remove: ");
-    String hospitalId = Helper.readString();
-    
-    // First, check if the staff exists
-    if (Repository.STAFF.containsKey(hospitalId)) {
-        // Call removeStaffAccount and handle the result accordingly
-        if (!AdminController.removeStaffAccount(hospitalId)) {
-            System.out.println("Staff removal canceled!");
+        Helper.clearScreen();
+        printBreadCrumbs("Hotel Management App View > Admin View > Remove a staff");
+        System.out.println("Enter the hospital id of the staff that you want to remove: ");
+        String hospitalId = Helper.readString();
+
+        // First, check if the staff exists
+        if (Repository.STAFF.containsKey(hospitalId)) {
+            // Call removeStaffAccount and handle the result accordingly
+            if (!AdminController.removeStaffAccount(hospitalId)) {
+                System.out.println("Staff removal canceled!");
+                return false;
+            }
+        } else {
+            System.out.println("Staff not found!");
             return false;
         }
-    } else {
-        System.out.println("Staff not found!");
-        return false;
+        return true;
     }
-    return true;
-}
-
 
     private boolean promptUpdateStaff() {
         Helper.clearScreen();
@@ -194,7 +203,7 @@ public class ManageStaffAccountView extends MainView{
                 AdminController.updateStaffAccount(hospitalId, name, 1);
                 return true;
             case 2:
-            	Gender gender = promptGender();
+                Gender gender = promptGender();
                 if (gender == null) {
                     return false;
                 }
@@ -217,5 +226,5 @@ public class ManageStaffAccountView extends MainView{
         System.out.println("(2) Gender");
         System.out.println("(3) Age");
     }
-	
+
 }

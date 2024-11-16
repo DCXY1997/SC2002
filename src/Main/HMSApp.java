@@ -6,6 +6,7 @@ import src.Repository.Repository;
 import src.View.HospitalManagementAppView;
 
 public class HMSApp {
+
     public static void main(String[] args) {
         //Repository.clearDatabase();
 
@@ -40,15 +41,15 @@ public class HMSApp {
         System.out
                 .println("║                           **  **       **      **     ______                                ║");
         System.out
-                .println("║                          /  |/  |   /  \\    /  |   /      \\                               ║");
+                .println("║                          /  |/  |   /  \\    /  |   /      \\                                 ║");
         System.out
-                .println("║                          ▐▐ |▐▐ |   ▐▐  \\  ▐▐ |  /▐▐▐▐▐▐▐ |                                ║");
+                .println("║                          ▐▐ |▐▐ |   ▐▐  \\  ▐▐ |  /▐▐▐▐▐▐▐ |                                 ║");
         System.out
-                .println("║                          ▐▐ |▐▐ |   ▐▐▐▐\\▐▐▐▐ |  ▐▐ \\__▐▐/                                ║");
+                .println("║                          ▐▐ |▐▐ |   ▐▐▐▐\\▐▐▐▐ |  ▐▐ \\__▐▐/                                  ║");
         System.out
                 .println("║                          ▐▐▐▐▐▐ |   ▐▐ |▐▐/ ▐▐ |  ▐▐                                        ║");
         System.out
-                .println("║                          ▐▐ |▐▐ |   ▐▐ |    ▐▐ |   ▐▐▐▐▐▐▐\\                                ║");
+                .println("║                          ▐▐ |▐▐ |   ▐▐ |    ▐▐ |   ▐▐▐▐▐▐▐\\                                 ║");
         System.out
                 .println("║                          ▐▐ |▐▐ |   ▐▐ |    ▐▐ |        ▐▐|                                 ║");
         System.out
