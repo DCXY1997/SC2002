@@ -334,7 +334,7 @@ public class Repository {
     }
 
     public static boolean initializeDummyAppointmentOutcome() {
-        if (!Repository.APPOINTMENT_OUTCOME.isEmpty()) {
+        /*if (!Repository.APPOINTMENT_OUTCOME.isEmpty()) {
             return false;
         }
 
@@ -382,7 +382,7 @@ public class Repository {
         Repository.APPOINTMENT_OUTCOME.put(appointmentOutcome1.getOutcomeId(), appointmentOutcome1);
         Repository.APPOINTMENT_OUTCOME.put(appointmentOutcome2.getOutcomeId(), appointmentOutcome2);
 
-        // Return true indicating dummy data is initialized
+        // Return true indicating dummy data is initialized*/
         return true;
     }
 

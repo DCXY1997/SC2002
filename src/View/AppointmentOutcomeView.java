@@ -31,7 +31,7 @@ public class AppointmentOutcomeView extends MainView{
                     
                     if (pendingRequests.contains("No pending medicine prescription found.")) 
                     {
-                        System.out.println("No appointment outcome with pending medicine prescription available.");
+                        System.out.println("No appointment outcome with pending medicine prescription available.\n");
                     } 
                     else 
                     {

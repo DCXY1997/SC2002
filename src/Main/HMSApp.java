@@ -27,7 +27,7 @@ public class HMSApp {
         Repository.initializeDummyStaff();
         Repository.initializeDummyInventory();
         Repository.initializeDummyReplenishmentRequest();
-        Repository.initializeDummyAppointmentOutcome();
+        //Repository.initializeDummyAppointmentOutcome();
 
         // Save all data after initialization
         Repository.saveAllFiles(); // Add this line
