@@ -29,17 +29,16 @@ public class Doctor extends Staff {
         super(name, password, StaffType.DOCTOR, gender, age, hospitalId);
         this.docSpecialization = docSpecialization != null ? new ArrayList<>(docSpecialization) : new ArrayList<>();
         this.appointList = AppointmentList.getInstance(); // Use singleton instance
-         / this.appointList = appointList != null ? appointList : new AppointmentList();
         this.availability = availability != null ? new ArrayList<>(availability) : new ArrayList<>();
-        }
-        // Getters and Setters
-    publ
-            ic List<Specialization> getDocSpecialization() {
+    }
+
+    // Getters and Setters
+    public List<Specialization> getDocSpecialization() {
         return docSpecialization;
     }
 
     // Method to add a specialization
-             id addSpecialization(Specialization specialization) {
+    public void addSpecialization(Specialization specialization) {
         if (specialization != null) {
             this.docSpecialization.add(specialization); // Add specialization to the doctor's list
         }
@@ -80,7 +79,6 @@ public class Doctor extends Staff {
     // Override equals to compare doctors by their hospitalId
     @Override
     public boolean equals(Object obj) {
-
         if (this == obj) {
             return true;
         }
