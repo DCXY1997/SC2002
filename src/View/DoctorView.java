@@ -265,7 +265,7 @@ public class DoctorView extends MainView {
                 int amount = Helper.readInt();
                 medicineAmount.add(amount);
                 // Create a unique Treatment for each Diagnosis
-                Treatment treatment = new Treatment(diagId, treatmentMedicines, medicineAmount);
+                Treatment treatment = new Treatment(i, treatmentMedicines, medicineAmount);
                 // Add the treatment to the diagnosis
                 diagnosis.addTreatment(treatment);
             } else {
@@ -344,7 +344,7 @@ public class DoctorView extends MainView {
                     int amount = Helper.readInt();
                     medicineAmount.add(amount);
                     // Create a unique Treatment for each Diagnosis
-                    Treatment treatment = new Treatment(diagId, treatmentMedicines, medicineAmount);
+                    Treatment treatment = new Treatment(i, treatmentMedicines, medicineAmount);
                     // Add the treatment to the diagnosis
                     diagnosis.addTreatment(treatment);
                     medicineAmounts.addAll(medicineAmount);
