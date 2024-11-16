@@ -357,8 +357,7 @@ public class DisplayPatientAppointment extends MainView {
 
         System.out.println("You selected Dr. " + selectedDoctor.getName() + " (" + selectedDoctor.getHospitalId() + ") - " + selectedSpecializationNames);
         System.out.println("-----------------------------------------------------------");
-
-        List<Schedule> doctorSchedule = DoctorController.getSchedule(selectedDoctor, selectedDoctor.getHospitalId());
+        List<Schedule> doctorSchedule = DoctorController.getSchedule(selectedDoctor);
 
         if (doctorSchedule.isEmpty()) {
             System.out.println("No available appointment slots for this doctor.");

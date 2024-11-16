@@ -14,23 +14,22 @@ import src.Repository.Repository;
 
 public class DoctorController {
 
-    public static List<Patient> getAllPatients(String hospitalId) {
+    public static List<Patient> getAllPatients(Doctor doctor) {
+        Doctor currentDoctor = (Doctor) Repository.STAFF.get(doctor.getHospitalId());
+        List<Appointment> docAppointments = AppointmentController.viewDoctorAppointments(currentDoctor);
         List<Patient> patientsUnderDoctor = new ArrayList<>();
-        for (Appointment appointment : AppointmentList.getInstance().getAppointments()) {
-            Doctor attendingDoctor = appointment.getAttendingDoctor();
-            if (attendingDoctor != null && attendingDoctor.getHospitalId().equals(hospitalId)) {
-                Patient patient = appointment.getPatient();
-                if (!patientsUnderDoctor.contains(patient)) {
-                    patientsUnderDoctor.add(patient);
-                }
+        for (Appointment appointment : docAppointments) {
+            Patient patient = appointment.getPatient();
+            if (!patientsUnderDoctor.contains(patient)) {
+                patientsUnderDoctor.add(patient);
             }
         }
         return patientsUnderDoctor;
     }
 
-    public static List<Schedule> getSchedule(Doctor doctor, String hospitalId) {
+    public static List<Schedule> getSchedule(Doctor doctor) {
         // Retrieve the doctor using the hospitalId from the repository
-        Doctor currentDoctor = (Doctor) Repository.STAFF.get(hospitalId);
+        Doctor currentDoctor = (Doctor) Repository.STAFF.get(doctor.getHospitalId());
 
         // Check if the doctor is found
         if (currentDoctor != null) {
@@ -175,5 +174,4 @@ public class DoctorController {
 
         return doctors;
     }
-
 }

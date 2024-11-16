@@ -1,19 +1,19 @@
 package src.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
+import java.util.Scanner;
 import src.Enum.PaymentStatus;
 import src.Helper.Helper;
 import src.Model.AppointmentOutcome;
 import src.Model.Medicine;
 import src.Repository.FileType;
 import src.Repository.Repository;
-import java.util.Scanner;
 
 public class PaymentController {
 
-    public double generateReceipt(String outcomeId)
+    public static double generateReceipt(String outcomeId)
     {
         double total = 0;
         boolean paid = false;
@@ -71,7 +71,7 @@ public class PaymentController {
     public void checkAppointmentId()
     {
         boolean hasOutcome = false;
-        System.out.println("Enter the appointment ID: ");
+        System.out.println("Enter the appointment outcome ID: ");
         String outcomeId = Helper.readString();
         for (Map.Entry<String, AppointmentOutcome> entry : Repository.APPOINTMENT_OUTCOME.entrySet()) 
         {

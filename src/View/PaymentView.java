@@ -1,10 +1,25 @@
 package src.View;
 
-import src.Helper.Helper;
+import java.util.List;
+import src.Controller.AppointmentController;
 import src.Controller.PaymentController;
+import src.Helper.Helper;
+import src.Model.Appointment;
+import src.Model.Patient;
 
 public class PaymentView extends MainView{
 
+    private Patient patient;
+    
+    public PaymentView(Patient patient) {
+        if (patient == null) {
+            System.out.println("Error: Patient is null in PaymentView.");
+            throw new IllegalArgumentException("Patient cannot be null");
+        }
+        this.patient = patient;
+    }
+
+    @Override
     public void printActions()
     {
         printBreadCrumbs("Hospital Management App View > Login View > Patient View > Payment View");
@@ -12,6 +27,7 @@ public class PaymentView extends MainView{
         System.out.println("(2) Back");
     }
 
+    @Override
     public void viewApp()
     {
         PaymentController paymentController = new PaymentController();
@@ -24,6 +40,7 @@ public class PaymentView extends MainView{
             {
                 case 1:
                     Helper.clearScreen();
+                    viewCompletedAppointments(patient);
                     paymentController.checkAppointmentId();
                     Helper.pressAnyKeyToContinue();
                     Helper.clearScreen();
@@ -37,5 +54,12 @@ public class PaymentView extends MainView{
             }
         }while(opt != 2);
 
+    }
+
+    public static void viewCompletedAppointments(Patient patient){
+        List<Appointment> appointments = AppointmentController.viewCompleteAppointments(patient);
+        for (Appointment appointment : appointments){
+            PaymentController.generateReceipt(appointment.getOutcome().getOutcomeId());
+        }
     }
 }

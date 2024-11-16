@@ -29,7 +29,8 @@ public class DisplayDoctorAppointment extends MainView {
         System.out.println("(1) View Your Appointment Requests");
         System.out.println("(2) Accept/ Decline Appointment Requests");
         System.out.println("(3) View Upcoming Appointments");
-        System.out.println("(4) Back");
+        System.out.println("(4) View Past Appointments");
+        System.out.println("(5) Back");
     }
 
     @Override
@@ -55,15 +56,20 @@ public class DisplayDoctorAppointment extends MainView {
                     viewUpcomingAppointments();
                     break;
                 case 4:
+                    Helper.clearScreen();
+                    printBreadCrumbs("Hospital Management App View > Doctor View > View Past Appointments");
+                    viewPastAppointments();
+                    break;
+                case 5:
                     break;
                 default:
                     System.out.println("Invalid option");
                     break;
             }
-            if (opt != 4) {
+            if (opt != 5) {
                 Helper.pressAnyKeyToContinue();
             }
-        } while (opt != 4);
+        } while (opt != 5);
     }
 
     private void viewAppointmentRequests() {
@@ -163,4 +169,25 @@ public class DisplayDoctorAppointment extends MainView {
             System.out.println("Appointment declined.");
         }
     }
+
+     private void viewPastAppointments() {
+         // Implement logic to display the past appointments for the doctor
+         List<Appointment> appointmentRequests = AppointmentController.viewCompleteAppointments(doctor);
+
+        if (appointmentRequests.isEmpty()) {
+            System.out.println("No appointment requests found for you.");
+        } else {
+            System.out.println("Your Past Appointment Requests:");
+
+            for (Appointment appointment : appointmentRequests) {
+                if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
+                    System.out.println("Appointment - " + appointment.getAppointmentId() + ":");
+                    System.out.println("Patient: " + appointment.getPatient().getName());
+                    System.out.println("From: " + appointment.getAppointmentStartDate() + " to " + appointment.getAppointmentEndDate());
+                    System.out.println("Status: " + appointment.getStatus());
+                    System.out.println();
+                }
+            }
+        }
+     }
 }

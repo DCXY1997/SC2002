@@ -1,22 +1,23 @@
 package src.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Treatment {
+public class Treatment implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     // Attributes
-    private int treatmentId;
-    private Diagnosis diagnosis; // Reference to the associated diagnosis
+    private int treatmentId; // Reference to the associated diagnosis
     private List<Medicine> medications; // List of medications for the treatment
-    private String frequency;
+    private List<Integer> medicineAmount;
 
     // Constructor
-    public Treatment(int treatmentId, Diagnosis diagnosis, List<Medicine> medications, String frequency) {
+    public Treatment(int treatmentId, List<Medicine> medications, List<Integer> medicineAmount) {
         this.treatmentId = treatmentId;
-        this.diagnosis = diagnosis;
         this.medications = new ArrayList<>(medications); // Initialize with a copy of the medications
-        this.frequency = frequency;
+        this.medicineAmount = medicineAmount;
     }
 
     // Getters and Setters
@@ -26,14 +27,6 @@ public class Treatment {
 
     public void setTreatmentId(int treatmentId) {
         this.treatmentId = treatmentId;
-    }
-
-    public Diagnosis getDiagnosis() {
-        return diagnosis;
-    }
-
-    public void setDiagnosis(Diagnosis diagnosis) {
-        this.diagnosis = diagnosis;
     }
 
     public List<Medicine> getMedications() {
@@ -50,11 +43,11 @@ public class Treatment {
         this.medications.remove(medicine);
     }
 
-    public String getFrequency() {
-        return frequency;
+    public List<Integer> getMedicineAmount() {
+        return medicineAmount;
     }
 
-    public void setFrequency(String frequency) {
-        this.frequency = frequency;
+    public void setMedicineAmount(List<Integer> medicineAmount) {
+        this.medicineAmount = medicineAmount;
     }
 }

@@ -17,8 +17,8 @@ public class Appointment implements Serializable {
     private Doctor attendingDoctor;
     private LocalDateTime appointmentStartDate;
     private LocalDateTime appointmentEndDate;
-    private AppointmentOutcome outcome;
     private AppointmentStatus status;
+    private AppointmentOutcome outcome;
 
     // Constructor
     public Appointment(Patient patient, Doctor attendingDoctor, LocalDateTime appointmentStartDate, LocalDateTime appointmentEndDate) {
@@ -27,6 +27,7 @@ public class Appointment implements Serializable {
         this.attendingDoctor = attendingDoctor;
         this.appointmentStartDate = appointmentStartDate;
         this.appointmentEndDate = appointmentEndDate;
+        // this.status = AppointmentStatus.PENDING;
     }
 
     // Getters and Setters
@@ -75,6 +76,7 @@ public class Appointment implements Serializable {
     }
 
     public void setOutcome(AppointmentOutcome outcome) {
+        this.status = AppointmentStatus.COMPLETED;
         this.outcome = outcome;
     }
 

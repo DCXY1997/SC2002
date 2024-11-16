@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,10 @@ public class Repository {
     public static HashMap<String, ReplenishmentRequest> REPLENISHMENT_REQUEST = new HashMap<>();
     public static HashMap<String, AppointmentOutcome> APPOINTMENT_OUTCOME = new HashMap<>();
     public static HashMap<String, Appointment> APPOINTMENT_LIST = new HashMap<>();
+    public static HashMap<String, Medicine> MEDICINE = new HashMap<>();
+    public static HashMap<String, MedicalRecord> MEDICAL_RECORD = new HashMap<>();
+    public static HashMap<String, Diagnosis> DIAGNOSIS = new HashMap<>();
+    public static HashMap<String, Treatment> TREATMENT = new HashMap<>();
 
     public static void persistData(FileType fileType) {
         writeSerializedObject(fileType);
@@ -40,6 +45,10 @@ public class Repository {
         persistData(FileType.REPLENISHMENT_REQUEST);
         persistData(FileType.APPOINTMENT_OUTCOME);
         persistData(FileType.APPOINTMENT_LIST);
+        persistData(FileType.MEDICINE);
+        persistData(FileType.MEDICAL_RECORD);
+        persistData(FileType.DIAGNOSIS);
+        persistData(FileType.TREATMENT);
     }
 
     public static boolean clearDatabase() {
@@ -48,12 +57,22 @@ public class Repository {
         PATIENT = new HashMap<>();
         INVENTORY = new HashMap<>();
         REPLENISHMENT_REQUEST = new HashMap<>();
+        MEDICINE = new HashMap<>();
+        APPOINTMENT_LIST = new HashMap<>();
+        APPOINTMENT_OUTCOME = new HashMap<>();
+        MEDICAL_RECORD = new HashMap<>();
+        DIAGNOSIS = new HashMap<>();
+        TREATMENT = new HashMap<>();
         writeSerializedObject(FileType.STAFF);
         writeSerializedObject(FileType.PATIENT);
         writeSerializedObject(FileType.INVENTORY);
         writeSerializedObject(FileType.REPLENISHMENT_REQUEST);
         writeSerializedObject(FileType.APPOINTMENT_OUTCOME);
         writeSerializedObject(FileType.APPOINTMENT_LIST);
+        writeSerializedObject(FileType.MEDICINE);
+        writeSerializedObject(FileType.MEDICAL_RECORD);
+        writeSerializedObject(FileType.DIAGNOSIS);
+        writeSerializedObject(FileType.TREATMENT);
         return true;
 
     }
@@ -86,6 +105,18 @@ public class Repository {
                     break;
                 case APPOINTMENT_LIST:
                     objectOutputStream.writeObject(APPOINTMENT_LIST);
+                    break;
+                case MEDICINE:
+                	objectOutputStream.writeObject(MEDICINE);
+                    break;
+                case MEDICAL_RECORD:
+                    objectOutputStream.writeObject(MEDICAL_RECORD);
+                    break;
+                case DIAGNOSIS:
+                    objectOutputStream.writeObject(DIAGNOSIS);
+                    break;
+                case TREATMENT:
+                    objectOutputStream.writeObject(TREATMENT);
                     break;
                 default:
                     System.out.println("Unsupported file type: " + fileType);
@@ -137,6 +168,17 @@ public class Repository {
                 case APPOINTMENT_LIST:
                     APPOINTMENT_LIST = new HashMap<>();
                     break;
+                case MEDICINE:
+                	    MEDICINE = new HashMap<>();
+                case MEDICAL_RECORD:
+                    MEDICAL_RECORD = new HashMap<>();
+                    break;
+                case DIAGNOSIS:
+                    DIAGNOSIS = new HashMap<>();
+                    break;
+                case TREATMENT:
+                    TREATMENT = new HashMap<>();
+                    break;
                 default:
                     System.out.println("Unsupported file type: " + fileType);
                     return false;
@@ -175,6 +217,18 @@ public class Repository {
                     break;
                 case APPOINTMENT_LIST:
                     APPOINTMENT_LIST = (HashMap<String, Appointment>) object;
+                    break;
+                case MEDICINE:
+                    MEDICINE = (HashMap<String, Medicine>) object;
+                    break;
+                case MEDICAL_RECORD:
+                    MEDICAL_RECORD = (HashMap<String, MedicalRecord>) object;
+                    break;
+                case DIAGNOSIS:
+                    DIAGNOSIS = (HashMap<String, Diagnosis>) object;
+                    break;
+                case TREATMENT:
+                    TREATMENT = (HashMap<String, Treatment>) object;
                     break;
                 default:
                     System.out.println("Unsupported file type: " + fileType);
@@ -288,6 +342,9 @@ public class Repository {
         Medicine medicine1 = new Medicine("001", "Paracetamol", 5, "To treat fever");
         Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, "To treat inflammation");
 
+        List<Integer> medicineAmount1 = new ArrayList<>(Arrays.asList(1, 2));
+        List<Integer> medicineAmount2 = new ArrayList<>(Arrays.asList(2));
+
         // Create independent copies of the medicines for each AppointmentOutcome
         List<Medicine> prescribedMedicinesList1 = Arrays.asList(new Medicine(medicine1), new Medicine(medicine2));
         List<Medicine> prescribedMedicinesList2 = Arrays.asList(new Medicine(medicine1));
@@ -304,6 +361,7 @@ public class Repository {
         AppointmentOutcome appointmentOutcome1 = new AppointmentOutcome(
                 "101",
                 prescribedMedicinesList1,
+                medicineAmount1,
                 diagnosisList1,
                 "Patient needs rest and fluids.",
                 LocalDateTime.now(),
@@ -313,6 +371,7 @@ public class Repository {
         AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome(
                 "102",
                 prescribedMedicinesList2,
+                medicineAmount2,
                 diagnosisList2,
                 "Prescribed light medication and rest.",
                 LocalDateTime.now().minusDays(1),
