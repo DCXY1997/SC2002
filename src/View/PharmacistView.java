@@ -10,6 +10,7 @@ public class PharmacistView extends MainView{
 	private AppointmentOutcomeView appointmentOutcomeView = new AppointmentOutcomeView();
 	//private PharmacistController pharmacistController = new PharmacistController();
 	private InventoryView inventoryView = new InventoryView();
+	private PaymentView paymentView = new PaymentView();
 	
 	public void printActions()
 	{
@@ -22,6 +23,7 @@ public class PharmacistView extends MainView{
 		System.out.println("(4) Submit Replenishment Request");
 		System.out.println("(5) Change Password");
 		System.out.println("(6) Logout");
+		System.out.println("(7) Make Payment");
 	}
 	
 	public void viewApp()
@@ -30,7 +32,7 @@ public class PharmacistView extends MainView{
 		do
 		{
 			printActions();
-			opt = Helper.readInt(1, 6);
+			opt = Helper.readInt(1, 7);
 			Helper.clearScreen();
 			switch (opt) 
 			{
@@ -55,6 +57,9 @@ public class PharmacistView extends MainView{
 				promptChangePassword();
 				break;
 			case 6:
+				break;
+			case 7:
+				paymentView.viewApp();
 				break;
 			default:
 				System.out.println("Invalid Option.");

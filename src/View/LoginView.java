@@ -74,6 +74,7 @@ public class LoginView extends MainView {
 			boolean loginSuccess = StaffController.authenticate(loginId, password, staffType);
 			if (loginSuccess) {
 				System.out.println("Login successful, welcome " + loginId);
+				Helper.pressAnyKeyToContinue();
 
 				if (staffType == StaffType.ADMIN) {
 					adminView.viewApp();

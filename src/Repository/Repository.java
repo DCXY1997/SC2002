@@ -271,7 +271,8 @@ public class Repository {
             prescribedMedicinesList1, 
             diagnosisList1, 
             "Patient needs rest and fluids.", 
-            LocalDateTime.now()
+            LocalDateTime.now(),
+            PaymentStatus.PENDING
         );
 
         AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome(
@@ -279,7 +280,8 @@ public class Repository {
             prescribedMedicinesList2, 
             diagnosisList2, 
             "Prescribed light medication and rest.", 
-            LocalDateTime.now().minusDays(1)
+            LocalDateTime.now().minusDays(1),
+            PaymentStatus.PENDING
         );
 
         // Add to the repository

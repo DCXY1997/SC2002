@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import src.Enum.PaymentStatus;
+
 public class AppointmentOutcome implements Serializable{
 
     // Attributes
@@ -13,15 +15,17 @@ public class AppointmentOutcome implements Serializable{
     private List<Diagnosis> patientDiagnosis;
     private String doctorNotes;
     private LocalDateTime dateDiagnosed;
+    private PaymentStatus paymentStatus;
 
     // Constructor
     public AppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Diagnosis> patientDiagnosis,
-            String doctorNotes, LocalDateTime dateDiagnosed) {
+            String doctorNotes, LocalDateTime dateDiagnosed, PaymentStatus paymentStatus) {
         this.outcomeId = outcomeId;
         this.prescribedMedicines = new ArrayList<>(prescribedMedicines); // Initialize with a copy
         this.patientDiagnosis = new ArrayList<>(patientDiagnosis); // Initialize with a copy
         this.doctorNotes = doctorNotes;
         this.dateDiagnosed = dateDiagnosed;
+        this.paymentStatus = PaymentStatus.PENDING;
     }
 
     // Getters and Setters
@@ -75,5 +79,13 @@ public class AppointmentOutcome implements Serializable{
 
     public void setDateDiagnosed(LocalDateTime dateDiagnosed) {
         this.dateDiagnosed = dateDiagnosed;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 }

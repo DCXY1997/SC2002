@@ -21,7 +21,8 @@ public class HMSApp {
     Helper.clearScreen();
     printHMSTitle();
     HospitalManagementAppView hospitalManagementAppView = new HospitalManagementAppView();
-    hospitalManagementAppView.viewApp();
+    System.out.println();
+    hospitalManagementAppView.viewApp();   
   }
 
   private static void printHMSTitle() {
