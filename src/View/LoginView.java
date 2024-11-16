@@ -13,7 +13,7 @@ import src.Model.Staff;
 public class LoginView extends MainView {
 
     private AdminView adminView = new AdminView();
-    // private PatientView patientView = new PatientView();
+    private PharmacistView pharmacistView = new PharmacistView();
 
     @Override
     protected void printActions() {
@@ -75,9 +75,10 @@ public class LoginView extends MainView {
             System.out.println("\nPassword:");
             password = Helper.readString();
 
-            boolean loginSuccess = StaffController.authenticate(loginId, password, staffType);
-            if (loginSuccess) {
-                System.out.println("Login successful, welcome " + loginId);
+			boolean loginSuccess = StaffController.authenticate(loginId, password, staffType);
+			if (loginSuccess) {
+				System.out.println("Login successful, welcome " + loginId);
+				Helper.pressAnyKeyToContinue();
 
                 if (staffType == StaffType.ADMIN) {
                     adminView.viewApp();
@@ -105,6 +106,9 @@ public class LoginView extends MainView {
                     doctorView.viewApp();
                 }
 
+                if (staffType == StaffType.PHARMACIST) {
+                    pharmacistView.viewApp();
+                }
             } else {
                 System.out.println("Invalid username/password or employee position");
             }

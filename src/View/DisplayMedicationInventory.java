@@ -37,3 +37,4 @@ public class DisplayMedicationInventory extends MainView{
         }while(opt != 2);
     }
 }
+

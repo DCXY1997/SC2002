@@ -1,9 +1,8 @@
 package src.Model;
 
-import java.io.Serializable;
 import src.Enum.*;
 
-public class Pharmacist extends Staff implements Serializable{
+public class Pharmacist extends Staff{
 	private static final long serialVersionUID = 1L;
 	
 	public Pharmacist()

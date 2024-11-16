@@ -6,6 +6,7 @@ import java.util.List;
 
 //Make AppointmentList a singleton so that there’s only one instance across the application.
 public class AppointmentList implements Serializable {
+
     /**
      * For Java Serializable
      */

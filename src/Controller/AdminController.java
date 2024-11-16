@@ -183,7 +183,7 @@ public class AdminController {
     }
 
     // Method to retrieve appointment details as a formatted String
-    public static String getAppointmentDetails(int appointmentId) {
+    public static String getAppointmentDetails(String appointmentId) {
         List<Appointment> appointments = AppointmentList.getInstance().getAppointments();  // Access singleton appointment list
         for (Appointment appointment : appointments) {
             if (appointment.getAppointmentId() == appointmentId) {
@@ -200,7 +200,7 @@ public class AdminController {
         details.append("Patient ID: ").append(appointment.getPatient().getPatientId()).append("\n");
         details.append("Doctor ID: ").append(appointment.getAttendingDoctor().getHospitalId()).append("\n");
         details.append("Status: ").append(appointment.getStatus()).append("\n");
-        details.append("Date & Time: ").append(appointment.getAppointmentDate()).append("\n");
+        details.append("Date & Time: ").append(appointment.getAppointmentStartDate()).append("\n");
     
         if (appointment.getStatus() == AppointmentStatus.COMPLETED && appointment.getOutcome() != null) {
             details.append("Outcome: ").append(appointment.getOutcome().getDoctorNotes()).append("\n");
@@ -245,7 +245,7 @@ public class AdminController {
         // Retrieve the InventoryList item associated with the medicalId
         InventoryList inventoryItem = Repository.INVENTORY.get(medicalId);
 
-        // Check if the initialStock is lowzer than the lowStockLevelAlert
+        // Check if the initialStock is lower than the lowStockLevelAlert
     if (inventoryItem.getInitialStock() < inventoryItem.getLowStocklevelAlert()) {
         // Update the stock level by adding stockCount to the current initialStock
         int updatedStock = inventoryItem.getInitialStock() + stockCount;
