@@ -1,34 +1,29 @@
 package src.Repository;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Set;
-import src.Enum.*;
-import src.Model.*;
-import src.Enum.Gender;
-import src.Enum.StaffType;
-import src.Controller.*;
-
-import java.io.IOException;
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import src.Enum.*;
+import src.Model.*;
 
 public class Repository {
+
     private static final String folder = "Data";
     
     public static HashMap<String, Staff> STAFF = new HashMap<>();
+    public static HashMap<String, Patient> PATIENT = new HashMap<>();
     public static HashMap<String, InventoryList> INVENTORY = new HashMap<>();
     public static HashMap<String, Patient> PATIENT = new HashMap<>();
     public static HashMap<String, ReplenishmentRequest> REPLENISHMENT_REQUEST = new HashMap<>();
     public static HashMap<String, AppointmentOutcome> APPOINTMENT_OUTCOME = new HashMap<>();
-
+    public static HashMap<String, Appointment> APPOINTMENT_LIST = new HashMap<>();
 
     public static void persistData(FileType fileType) {
         writeSerializedObject(fileType);
@@ -40,21 +35,25 @@ public class Repository {
 
     public static void saveAllFiles() {
         persistData(FileType.STAFF);
-        persistData(FileType.INVENTORY);
         persistData(FileType.PATIENT);
+        persistData(FileType.INVENTORY);
         persistData(FileType.REPLENISHMENT_REQUEST);
         persistData(FileType.APPOINTMENT_OUTCOME);
+        persistData(FileType.APPOINTMENT_LIST);
     }
 
     public static boolean clearDatabase() {
         // Initialize empty data
         STAFF = new HashMap<>();
+        PATIENT = new HashMap<>();
         INVENTORY = new HashMap<>();
         REPLENISHMENT_REQUEST = new HashMap<>();
         writeSerializedObject(FileType.STAFF);
         writeSerializedObject(FileType.PATIENT);
         writeSerializedObject(FileType.INVENTORY);
         writeSerializedObject(FileType.REPLENISHMENT_REQUEST);
+        writeSerializedObject(FileType.APPOINTMENT_OUTCOME);
+        writeSerializedObject(FileType.APPOINTMENT_LIST);
         return true;
     }
 
@@ -64,16 +63,16 @@ public class Repository {
         try {
             // Create the directory if it doesn't exist
             new File("./src/Repository/" + folder).mkdirs();
-            
+
             FileOutputStream fileOutputStream = new FileOutputStream(filePath);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            
-            switch(fileType) {
+
+            switch (fileType) {
                 case STAFF:
                     objectOutputStream.writeObject(STAFF);
                     break;
                 case PATIENT:
-                   objectOutputStream.writeObject(PATIENT);
+                    objectOutputStream.writeObject(PATIENT);
                     break;
                 case INVENTORY:
                     objectOutputStream.writeObject(INVENTORY);
@@ -82,11 +81,15 @@ public class Repository {
                     objectOutputStream.writeObject(REPLENISHMENT_REQUEST);
                     break;
                 case APPOINTMENT_OUTCOME:
-                	objectOutputStream.writeObject(APPOINTMENT_OUTCOME);
-                	break;
+                    objectOutputStream.writeObject(APPOINTMENT_OUTCOME);
+                    break;
+                case APPOINTMENT_LIST:
+                    objectOutputStream.writeObject(APPOINTMENT_LIST);
+                    break;
                 default:
                     System.out.println("Unsupported file type: " + fileType);
-            } 
+                    return false;
+            }
             objectOutputStream.close();
             fileOutputStream.close();
             return true;
@@ -96,21 +99,31 @@ public class Repository {
             return false;
         }
     }
-    
+
     private static boolean readSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
         String filePath = "./src/Repository/" + folder + "/" + fileType.fileName + fileExtension;
+
+        // Check if Data directory exists, create it if necessary
+        File dataDir = new File("./src/Repository/" + folder);
+        if (!dataDir.exists()) {
+            dataDir.mkdirs(); // Create the directory if it doesn't exist
+        }
+
         File file = new File(filePath);
 
+        // Check if the file exists
         if (!file.exists()) {
             System.out.println(fileType.fileName + ".dat does not exist. Creating a new file.");
+
+            // If the file does not exist, create an empty HashMap and save it
             switch (fileType) {
                 case STAFF:
                     STAFF = new HashMap<>();
                     break;
                 case PATIENT:
-                	PATIENT = new HashMap<>();
-                	break;
+                    PATIENT = new HashMap<>();
+                    break;
                 case INVENTORY:  // Initialize INVENTORY if file is missing
                     INVENTORY = new HashMap<>();
                     break;
@@ -118,10 +131,16 @@ public class Repository {
                     REPLENISHMENT_REQUEST = new HashMap<>();
                     break;
                 case APPOINTMENT_OUTCOME:
-                	APPOINTMENT_OUTCOME = new HashMap<>();
-                	break;
+                    APPOINTMENT_OUTCOME = new HashMap<>();
+                    break;
+                case APPOINTMENT_LIST:
+                    APPOINTMENT_LIST = new HashMap<>();
+                    break;
+                default:
+                    System.out.println("Unsupported file type: " + fileType);
+                    return false;
             }
-            writeSerializedObject(fileType);
+            writeSerializedObject(fileType); // Save the empty HashMap to a new file
             return true;
         }
 
@@ -130,6 +149,13 @@ public class Repository {
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             Object object = objectInputStream.readObject();
 
+            if (!(object instanceof HashMap)) {
+                System.out.println("Error: " + fileType.fileName + " is not a valid HashMap.");
+                objectInputStream.close();
+                return false;
+            }
+
+            // Deserialize data into the appropriate HashMap
             switch (fileType) {
                 case STAFF:
                     STAFF = (HashMap<String, Staff>) object;
@@ -141,12 +167,19 @@ public class Repository {
                     INVENTORY = (HashMap<String, InventoryList>) object;
                     break;
                 case REPLENISHMENT_REQUEST:  // Deserialize inventory
-                	REPLENISHMENT_REQUEST = (HashMap<String, ReplenishmentRequest>) object;
-                	break;
-                case APPOINTMENT_OUTCOME:
-                	APPOINTMENT_OUTCOME = (HashMap<String, AppointmentOutcome>) object;
+                    REPLENISHMENT_REQUEST = (HashMap<String, ReplenishmentRequest>) object;
                     break;
+                case APPOINTMENT_OUTCOME:
+                    APPOINTMENT_OUTCOME = (HashMap<String, AppointmentOutcome>) object;
+                    break;
+                case APPOINTMENT_LIST:
+                    APPOINTMENT_LIST = (HashMap<String, Appointment>) object;
+                    break;
+                default:
+                    System.out.println("Unsupported file type: " + fileType);
+                    return false;
             }
+
             objectInputStream.close();
             fileInputStream.close();
         } catch (IOException | ClassNotFoundException err) {
@@ -156,14 +189,17 @@ public class Repository {
         return true;
     }
 
-
     public static boolean initializeDummyStaff() {
     	if (!Repository.STAFF.isEmpty()) {
             return false;
         }
 
-        Staff staff1 = new Staff("John Smith", "password", StaffType.DOCTOR, Gender.MALE, 45, "D001");
-        Staff staff2 = new Staff("Emily Clarke", "password", StaffType.DOCTOR, Gender.FEMALE, 38, "D002");
+        // Staff staff1 = new Staff("John Smith", "password", StaffType.DOCTOR,
+        // Gender.MALE, 45, "D001");
+        // Staff staff2 = new Staff("Emily Clarke", "password", StaffType.DOCTOR,
+        // Gender.FEMALE, 38, "D002");
+        Staff staff1 = new Doctor("John Doe", "password", Gender.MALE, 30, "D001", null, null, null);
+        Staff staff2 = new Doctor("Emily Clarke", "password", Gender.FEMALE, 28, "D002", null, null, null);
         Staff staff3 = new Staff("Mark Lee", "password", StaffType.PHARMACIST, Gender.MALE, 29, "P001");
         Staff staff4 = new Staff("Sarah Lee", "password", StaffType.ADMIN, Gender.FEMALE, 40, "A001");
 
@@ -175,8 +211,9 @@ public class Repository {
     
         // Return true indicating dummy data is initialized
         return true;
+
     }
-    
+
     public static boolean initializeDummyPatient() {
         if (!Repository.PATIENT.isEmpty()) {
             return false;
@@ -202,7 +239,7 @@ public class Repository {
 
     }
 
-        // New method to initialize dummy inventory data
+    // New method to initialize dummy inventory data
     public static boolean initializeDummyInventory() {
         if (!Repository.INVENTORY.isEmpty()) {
             return false;
@@ -227,16 +264,16 @@ public class Repository {
 
         // Return true indicating dummy data is initialized
         return true;
-    } 
+    }
 
     public static boolean initializeDummyReplenishmentRequest() {
-    	if (!Repository.REPLENISHMENT_REQUEST.isEmpty()) {
+        if (!Repository.REPLENISHMENT_REQUEST.isEmpty()) {
             return false;
         }
 
         ReplenishmentRequest replenishmentRequest1 = new ReplenishmentRequest("R001", "001", 50, InventoryRequestStatus.PENDING);
         ReplenishmentRequest replenishmentRequest2 = new ReplenishmentRequest("R002", "002", 50, InventoryRequestStatus.PENDING);
-        
+
         // Add to the repository
         Repository.REPLENISHMENT_REQUEST.put(replenishmentRequest1.getRequestId(), replenishmentRequest1);
         Repository.REPLENISHMENT_REQUEST.put(replenishmentRequest2.getRequestId(), replenishmentRequest2);
@@ -244,7 +281,7 @@ public class Repository {
         // Return true indicating dummy data is initialized
         return true;
     }
-    
+
     public static boolean initializeDummyAppointmentOutcome() {
         if (!Repository.APPOINTMENT_OUTCOME.isEmpty()) {
             return false;
@@ -252,11 +289,11 @@ public class Repository {
 
         // Create sample Medicine objects
         Medicine medicine1 = new Medicine("001", "Paracetamol", 5, 10, "To treat fever");
-        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, 15, "To treat inflammation");
+        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, 15, "To treat fever");
 
-        // Create independent copies of the medicines for each AppointmentOutcome
-        List<Medicine> prescribedMedicinesList1 = Arrays.asList(new Medicine(medicine1), new Medicine(medicine2));
-        List<Medicine> prescribedMedicinesList2 = Arrays.asList(new Medicine(medicine1));
+        // Create a list of prescribed medicines
+        List<Medicine> prescribedMedicinesList1 = Arrays.asList(medicine1, medicine2);
+        List<Medicine> prescribedMedicinesList2 = Arrays.asList(medicine1);
 
         // Create dummy Diagnosis objects
         Diagnosis diagnosis1 = new Diagnosis(101, "Hypertension", "High blood pressure requiring regular monitoring");
@@ -264,24 +301,13 @@ public class Repository {
 
         // Add Diagnosis objects to a list
         List<Diagnosis> diagnosisList1 = Arrays.asList(diagnosis1, diagnosis2);
+
         List<Diagnosis> diagnosisList2 = Arrays.asList(diagnosis2);
 
         // Create dummy AppointmentOutcome instances
-        AppointmentOutcome appointmentOutcome1 = new AppointmentOutcome(
-            "101", 
-            prescribedMedicinesList1, 
-            diagnosisList1, 
-            "Patient needs rest and fluids.", 
-            LocalDateTime.now()
-        );
+        AppointmentOutcome appointmentOutcome1 = new AppointmentOutcome("101", prescribedMedicinesList1, diagnosisList1, "Patient needs rest and fluids.", LocalDateTime.now());
 
-        AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome(
-            "102", 
-            prescribedMedicinesList2, 
-            diagnosisList2, 
-            "Prescribed light medication and rest.", 
-            LocalDateTime.now().minusDays(1)
-        );
+        AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome("102", prescribedMedicinesList2, diagnosisList2, "Prescribed light medication and rest.", LocalDateTime.now().minusDays(1));
 
         // Add to the repository
         Repository.APPOINTMENT_OUTCOME.put(appointmentOutcome1.getOutcomeId(), appointmentOutcome1);

@@ -245,7 +245,7 @@ public class AdminController {
         // Retrieve the InventoryList item associated with the medicalId
         InventoryList inventoryItem = Repository.INVENTORY.get(medicalId);
 
-        // Check if the initialStock is lower than the lowStockLevelAlert
+        // Check if the initialStock is lowzer than the lowStockLevelAlert
     if (inventoryItem.getInitialStock() < inventoryItem.getLowStocklevelAlert()) {
         // Update the stock level by adding stockCount to the current initialStock
         int updatedStock = inventoryItem.getInitialStock() + stockCount;

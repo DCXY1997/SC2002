@@ -6,6 +6,7 @@ import src.Enum.Gender;
 import src.Enum.StaffType;
 
 public class Doctor extends Staff {
+
     /**
      * For Java Serializable
      */
@@ -19,6 +20,7 @@ public class Doctor extends Staff {
     public Doctor() {
         super();
         this.role = StaffType.DOCTOR;
+        this.appointList = AppointmentList.getInstance(); // Use singleton instance
     }
 
     // Parameterized constructor
@@ -26,7 +28,8 @@ public class Doctor extends Staff {
             List<Specialization> docSpecialization, AppointmentList appointList, List<Schedule> availability) {
         super(name, password, StaffType.DOCTOR, gender, age, hospitalId);
         this.docSpecialization = docSpecialization != null ? new ArrayList<>(docSpecialization) : new ArrayList<>();
-        this.appointList = appointList != null ? appointList : new AppointmentList();
+        this.appointList = AppointmentList.getInstance(); // Use singleton instance
+        // this.appointList = appointList != null ? appointList : new AppointmentList();
         this.availability = availability != null ? new ArrayList<>(availability) : new ArrayList<>();
     }
 
@@ -38,7 +41,7 @@ public class Doctor extends Staff {
     // Method to add a specialization
     public void addSpecialization(Specialization specialization) {
         if (specialization != null) {
-            this.docSpecialization.add(specialization);
+            this.docSpecialization.add(specialization); // Add specialization to the doctor's list
         }
     }
 
@@ -57,10 +60,39 @@ public class Doctor extends Staff {
         return availability;
     }
 
+    public void setAvailability(List<Schedule> availability) {
+        this.availability = availability;
+    }
+
     // Method to add availability to the schedule
     public void addAvailability(Schedule schedule) {
         if (schedule != null) {
             this.availability.add(schedule);
         }
+    }
+
+    // Override toString method to return meaningful information about the doctor
+    @Override
+    public String toString() {
+        return "Doctor[ID=" + super.getHospitalId() + ", Name=" + name + "]";
+    }
+
+    // Override equals to compare doctors by their hospitalId
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Doctor doctor = (Doctor) obj;
+        return super.getHospitalId().equals(doctor.getHospitalId());  // Compare by hospitalId
+    }
+
+    // Override hashCode to be consistent with equals
+    @Override
+    public int hashCode() {
+        return super.getHospitalId().hashCode();  // Use hospitalId for hashCode
     }
 }

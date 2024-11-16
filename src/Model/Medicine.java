@@ -25,15 +25,6 @@ public class Medicine implements Serializable {
         this.status = MedicineStatus.PENDING;
     }
 
-    public Medicine(Medicine clone) {
-        this.medicineId = clone.medicineId;
-        this.medicineName = clone.medicineName;
-        this.medicinePrice = clone.medicinePrice;
-        this.medicineAmount = clone.medicineAmount;
-        this.medicineDescription = clone.medicineDescription;
-        this.status = clone.status;
-    }
-
     // Getters and Setters
     public String getMedicineId() {
         return medicineId;

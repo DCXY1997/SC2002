@@ -1,35 +1,33 @@
 package src.Controller;
 
-import java.util.ArrayList;
 import java.util.Map;
-
-import src.Enum.Gender;
 import src.Enum.InventoryRequestStatus;
-import src.Enum.StaffType;
+import src.Enum.MedicineStatus;
 import src.Helper.Helper;
 import src.Model.InventoryList;
 import src.Model.Medicine;
 import src.Model.ReplenishmentRequest;
-import src.Model.Staff;
 import src.Repository.FileType;
 import src.Repository.Repository;
 
 public class InventoryController {
 
-    public static void addMedicalInventory(String medicineId, String medicineName, float medicinePrice, int medicineAmount, String medicineDescription, int medicineStock, int medicineLowStock) {
-        Medicine medicine = new Medicine(medicineId, medicineName, medicinePrice, medicineAmount, medicineDescription);
-		InventoryList inventoryList= new InventoryList(medicine, medicineStock, medicineLowStock);
-        
-        //Update Hash Map
+    public static void addMedicalInventory(String medicineId, String medicineName, MedicineStatus medicineStatus,
+            float medicinePrice, String medicineDescription, int medicineStock, int medicineLowStock) {
+
+        Medicine medicine = new Medicine(medicineId, medicineName, medicineStatus, medicinePrice, medicineDescription);
+        InventoryList inventoryList = new InventoryList(medicine, medicineStock, medicineLowStock);
+
+        // Update Hash Map
         Repository.INVENTORY.put(medicine.getMedicineId(), inventoryList);
-    
+
         // Persist data to file
         Repository.persistData(FileType.INVENTORY);
 
         System.out.println("Medical Inventory Item added successfully! ID: " + medicineId);
-	}
+    }
 
-    public static boolean removeMedicalInventoryItem(String medicineId) { 
+    public static boolean removeMedicalInventoryItem(String medicineId) {
         if (Repository.INVENTORY.containsKey(medicineId)) {
             // Prompt confirmation before removal
             if (Helper.promptConfirmation("remove this medical inventory item?")) {
@@ -45,7 +43,6 @@ public class InventoryController {
             return false;
         }
     }
-    
 
     public static InventoryList searchMedicalInventoryById(String medicineId) {
         // Check if the INVENTORY map contains the specified medicineId
@@ -58,26 +55,25 @@ public class InventoryController {
             return null;
         }
     }
-    
-   
+
     public static boolean updateMedicalInventoryStockLevel(String medicineId, int stockLevel) {
         // Check if the INVENTORY map contains the specified medicineId
         if (Repository.INVENTORY.containsKey(medicineId)) {
             // Get the InventoryList item associated with the medicineId
             InventoryList inventoryItem = Repository.INVENTORY.get(medicineId);
-            
+
             // Update the initial stock level
             inventoryItem.setInitialStock(stockLevel);
-            
+
             // Persist the updated inventory if necessary
-            Repository.INVENTORY.put(medicineId, inventoryItem);  // Explicitly put the updated item back into INVENTORY
-    
+            Repository.INVENTORY.put(medicineId, inventoryItem); // Explicitly put the updated item back into INVENTORY
+
             // Save the changes to the data file if required
-            Repository.persistData(FileType.INVENTORY);  // Assuming persistData handles saving INVENTORY data
-            
-            return true;  // Indicate success
+            Repository.persistData(FileType.INVENTORY); // Assuming persistData handles saving INVENTORY data
+
+            return true; // Indicate success
         } else {
-            return false;  // Indicate failure if medicineId not found
+            return false; // Indicate failure if medicineId not found
         }
     }
 
@@ -86,35 +82,35 @@ public class InventoryController {
         if (Repository.INVENTORY.containsKey(medicineId)) {
             // Retrieve the inventory item associated with the medicine ID
             InventoryList inventoryItem = Repository.INVENTORY.get(medicineId);
-            
+
             // Update the low stock level alert value
             inventoryItem.setLowStocklevelAlert(lowStockLevelAlert);
-            
+
             // Persist the changes to the data file
             Repository.persistData(FileType.INVENTORY);
-            
-            return true;  // Indicate success
+
+            return true; // Indicate success
         } else {
-            return false;  // Medicine ID not found
+            return false; // Medicine ID not found
         }
     }
-    
-    public static String checkPendingReplenishmentRequests() {
+
+    public static String displayPendingReplenishmentRequests() {
         StringBuilder pendingRequests = new StringBuilder();
-    
+
         if (Repository.REPLENISHMENT_REQUEST.isEmpty()) {
             return "No replenishment requests found.";
         }
-    
+
         pendingRequests.append("Pending Replenishment Requests:\n");
         pendingRequests.append("------------------------------------------------------------\n");
-    
+
         boolean hasPendingRequests = false;
-    
+
         // Loop through all requests in the repository
         for (Map.Entry<String, ReplenishmentRequest> entry : Repository.REPLENISHMENT_REQUEST.entrySet()) {
             ReplenishmentRequest request = entry.getValue();
-    
+
             // Check if the status is PENDING
             if (request.getStatus() == InventoryRequestStatus.PENDING) {
                 hasPendingRequests = true;
@@ -125,35 +121,35 @@ public class InventoryController {
                 pendingRequests.append("------------------------------------------------------------\n");
             }
         }
-    
+
         if (!hasPendingRequests) {
             return "No pending replenishment requests found.";
         }
-    
+
         return pendingRequests.toString();
     }
-    
+
     public static boolean approveReplenishmentRequest(String requestId) {
         ReplenishmentRequest request = Repository.REPLENISHMENT_REQUEST.get(requestId);
         if (request == null) {
             System.out.println("Request ID not found.");
             return false;
         }
-        
+
         String medicineId = request.getMedicineId();
         InventoryList inventoryItem = Repository.INVENTORY.get(medicineId);
-    
+
         if (inventoryItem != null && inventoryItem.getInitialStock() < inventoryItem.getLowStocklevelAlert()) {
             int updatedStock = inventoryItem.getInitialStock() + request.getStockLevel();
             inventoryItem.setInitialStock(updatedStock);
-    
+
             Repository.INVENTORY.put(medicineId, inventoryItem);
             request.setStatus(InventoryRequestStatus.APPROVED);
             Repository.REPLENISHMENT_REQUEST.put(requestId, request);
-            
+
             Repository.persistData(FileType.INVENTORY);
             Repository.persistData(FileType.REPLENISHMENT_REQUEST);
-    
+
             return true;
         } else {
             return false;

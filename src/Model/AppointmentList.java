@@ -1,18 +1,22 @@
 package src.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 //Make AppointmentList a singleton so that there’s only one instance across the application.
-public class AppointmentList {
+public class AppointmentList implements Serializable {
+    /**
+     * For Java Serializable
+     */
+    private static final long serialVersionUID = 1L;
 
     // Singleton instance
     private static final AppointmentList appointmentList = new AppointmentList();
 
     private final List<Appointment> appointments;
 
-    // Private constructor to prevent external instantiation
-    private AppointmentList() {
+    public AppointmentList() {
         this.appointments = new ArrayList<>();
     }
 

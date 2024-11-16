@@ -109,4 +109,23 @@ public class Patient implements Serializable {
     public void setAppointmentList(AppointmentList appointList) {
         this.appointList = appointList;
     }
+
+    // Override equals to compare patients by their patientId
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Patient patient = (Patient) obj;
+        return this.patientId.equals(patient.getPatientId());
+    }
+
+    // Override hashCode to be consistent with equals
+    @Override
+    public int hashCode() {
+        return patientId.hashCode();
+    }
 }

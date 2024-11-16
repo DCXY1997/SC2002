@@ -1,17 +1,21 @@
 package src.Model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Schedule {
+public class Schedule implements Serializable {
+
+    /**
+     * For Java Serializable
+     */
+    private static final long serialVersionUID = 1L;
 
     // Attributes
-    private Doctor doctor;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
     // Constructor
-    public Schedule(Doctor doctor, LocalDateTime startTime, LocalDateTime endTime) {
-        this.doctor = doctor;
+    public Schedule(LocalDateTime startTime, LocalDateTime endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -34,11 +38,4 @@ public class Schedule {
         this.endTime = endTime;
     }
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
 }

@@ -1,6 +1,5 @@
 package src.View;
 
-import src.Controller.AdminController;
 import src.Controller.StaffController;
 import src.Helper.Helper;
 import src.Model.Staff;
@@ -12,11 +11,12 @@ public class AdminView extends MainView {
 	 * initialize objects to call their view app
 	 */
 	private DisplayStaffView displayStaffView = new DisplayStaffView();
-    private ManageStaffAccountView manageStaffAccountView = new ManageStaffAccountView();
+	private ManageStaffAccountView manageStaffAccountView = new ManageStaffAccountView();
 	private DisplayAppointmentDetailView displayAppointmentDetailsView = new DisplayAppointmentDetailView();
 	private DisplayMedicationInventory displayMedicalInventoryView = new DisplayMedicationInventory();
 	private ManageMedicalInventory manageMedicalInventory = new ManageMedicalInventory();
 	private ManageReplenishmentRequestView manageReplenishmentRequestView = new ManageReplenishmentRequestView();
+
 	/**
 	 * View Actions of the AdminView.
 	 */
@@ -35,42 +35,16 @@ public class AdminView extends MainView {
 		System.out.println("(8) Logout");
 	}
 
-    @Override
-	public void viewApp() { 
-		int opt = -1; 
-		do { 
-            printActions();
-            opt = Helper.readInt(1,8);
-            switch (opt) {
-                case 1:
-                    Helper.clearScreen();
-                    displayStaffView.viewApp();
-                    break;
-                case 2:
-                    Helper.clearScreen();
-                    manageStaffAccountView.viewApp();
-                    break;
-                case 3:
-                    Helper.clearScreen();
-                    displayAppointmentDetailsView.viewApp();
-                    break;
-                case 4:
-                	Helper.clearScreen();
-                	displayMedicalInventoryView.viewApp();
-                    break;
-                case 5:
+	@Override
+	public void viewApp() {
+		int opt = -1;
+		do {
+			printActions();
+			opt = Helper.readInt(1, 8);
+			switch (opt) {
+				case 1:
 					Helper.clearScreen();
-					manageMedicalInventory.viewApp();
-					break;
-                case 6:
-                	Helper.clearScreen();
-                	manageReplenishmentRequestView.viewApp();
-                	break;
-                case 7:
-                	printBreadCrumbs("Hospital Management App View > Login View > Admin View > Password Change View");
-                	promptChangePassword();
-                	break;
-                case 8:
+					displayStaffView.viewApp();
 					break;
 				case 2:
 					Helper.clearScreen();
@@ -134,6 +108,7 @@ public class AdminView extends MainView {
 			String newPassword = Helper.readString();
 			System.out.println("Re-enter new password: ");
 			String confirmPassword = Helper.readString();
+
 			if (StaffController.changePassword(staff, newPassword, confirmPassword)) {
 				System.out.println("Password changed successfully!");
 			} else {
