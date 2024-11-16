@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -345,6 +346,9 @@ public class Repository {
         Medicine medicine1 = new Medicine("001", "Paracetamol", 5, "To treat fever");
         Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, "To treat inflammation");
 
+        List<Integer> medicineAmount1 = new ArrayList<>(Arrays.asList(1, 2));
+        List<Integer> medicineAmount2 = new ArrayList<>(Arrays.asList(2));
+
         // Create independent copies of the medicines for each AppointmentOutcome
         List<Medicine> prescribedMedicinesList1 = Arrays.asList(new Medicine(medicine1), new Medicine(medicine2));
         List<Medicine> prescribedMedicinesList2 = Arrays.asList(new Medicine(medicine1));
@@ -361,6 +365,7 @@ public class Repository {
         AppointmentOutcome appointmentOutcome1 = new AppointmentOutcome(
                 "101",
                 prescribedMedicinesList1,
+                medicineAmount1,
                 diagnosisList1,
                 "Patient needs rest and fluids.",
                 LocalDateTime.now(),
@@ -370,6 +375,7 @@ public class Repository {
         AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome(
                 "102",
                 prescribedMedicinesList2,
+                medicineAmount2,
                 diagnosisList2,
                 "Prescribed light medication and rest.",
                 LocalDateTime.now().minusDays(1),

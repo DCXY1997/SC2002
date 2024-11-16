@@ -13,26 +13,29 @@ public class AppointmentOutcome implements Serializable {
     // Attributes
     private String outcomeId;
     private List<Medicine> prescribedMedicines;
+    private List<Integer> medicineAmount;
     private List<Diagnosis> patientDiagnosis;
     private String doctorNotes;
     private LocalDateTime dateDiagnosed;
     private PaymentStatus paymentStatus;
 
     // Constructor
-    public AppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Diagnosis> patientDiagnosis,
+    public AppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Integer> medicineAmount, List<Diagnosis> patientDiagnosis,
             String doctorNotes, LocalDateTime dateDiagnosed) {
         this.outcomeId = outcomeId;
         this.prescribedMedicines = new ArrayList<>(prescribedMedicines); // Initialize with a copy
+        this.medicineAmount = new ArrayList<>(medicineAmount);
         this.patientDiagnosis = new ArrayList<>(patientDiagnosis); // Initialize with a copy
         this.doctorNotes = doctorNotes;
         this.dateDiagnosed = dateDiagnosed;
         this.paymentStatus = PaymentStatus.PENDING;
     }
 
-    public AppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Diagnosis> patientDiagnosis,
+    public AppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Integer> medicineAmount, List<Diagnosis> patientDiagnosis,
             String doctorNotes, LocalDateTime dateDiagnosed, PaymentStatus paymentStatus) {
         this.outcomeId = outcomeId;
         this.prescribedMedicines = new ArrayList<>(prescribedMedicines); // Initialize with a copy
+        this.medicineAmount = new ArrayList<>(medicineAmount);
         this.patientDiagnosis = new ArrayList<>(patientDiagnosis); // Initialize with a copy
         this.doctorNotes = doctorNotes;
         this.dateDiagnosed = dateDiagnosed;

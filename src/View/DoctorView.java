@@ -1,9 +1,10 @@
 package src.View;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import src.Controller.AppointmentController;
 import src.Controller.DoctorController;
 import src.Controller.PatientController;
@@ -248,7 +249,7 @@ public class DoctorView extends MainView {
 
         // Prompt for medications and create a unique treatment
         List<Medicine> treatmentMedicines = new ArrayList<>();
-        List<String> medicineAmount = new ArrayList<>();
+        List<Integer> medicineAmount = new ArrayList<>();
 
         System.out.println("Enter number of medicines prescribed:");
         int numMedicines = Helper.readInt();
@@ -261,7 +262,7 @@ public class DoctorView extends MainView {
                 treatmentMedicines.add(new Medicine(medicine));
                 
                 System.out.println("Enter amount of Medicine:");
-                String amount = Helper.readString();
+                int amount = Helper.readInt();
                 medicineAmount.add(amount);
                 // Create a unique Treatment for each Diagnosis
                 Treatment treatment = new Treatment(diagId, treatmentMedicines, medicineAmount);
@@ -310,8 +311,8 @@ public class DoctorView extends MainView {
             patient.setMedicalRecord(medicalRecord);
         }
 
+        List<Integer> medicineAmounts = new ArrayList<>();
         // Prompt for diagnosis details
-        
         List<Diagnosis> diagList = new ArrayList<>();
         System.out.println("Enter number of Diagnoses: ");
         int diagnoses = Helper.readInt();
@@ -326,7 +327,7 @@ public class DoctorView extends MainView {
 
             // Prompt for medications and create a unique treatment
             List<Medicine> treatmentMedicines = new ArrayList<>();
-            List<String> medicineAmount = new ArrayList<>();
+            List<Integer> medicineAmount = new ArrayList<>();
 
             System.out.println("Enter number of medicines prescribed:");
             int numMedicines = Helper.readInt();
@@ -340,16 +341,18 @@ public class DoctorView extends MainView {
                     prescribedMedicines.add(new Medicine(medicine));
 
                     System.out.println("Enter amount of Medicine:");
-                    String amount = Helper.readString();
+                    int amount = Helper.readInt();
                     medicineAmount.add(amount);
                     // Create a unique Treatment for each Diagnosis
                     Treatment treatment = new Treatment(diagId, treatmentMedicines, medicineAmount);
                     // Add the treatment to the diagnosis
                     diagnosis.addTreatment(treatment);
+                    medicineAmounts.addAll(medicineAmount);
                 } else {
                     System.out.println("Warning: Medicine with ID '" + medKey + "' not found.");
                 }
             }
+            
             medicalRecord.addDiagnosis(diagnosis);
             diagList.add(diagnosis);
         }
@@ -360,6 +363,7 @@ public class DoctorView extends MainView {
         AppointmentOutcome outcome = new AppointmentOutcome(
             "OUT" + System.currentTimeMillis(),
             prescribedMedicines,
+            medicineAmounts,
             diagList,
             note,
             LocalDateTime.now()

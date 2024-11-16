@@ -11,10 +11,10 @@ public class Treatment implements Serializable {
     // Attributes
     private int treatmentId; // Reference to the associated diagnosis
     private List<Medicine> medications; // List of medications for the treatment
-    private List<String> medicineAmount;
+    private List<Integer> medicineAmount;
 
     // Constructor
-    public Treatment(int treatmentId, List<Medicine> medications, List<String> medicineAmount) {
+    public Treatment(int treatmentId, List<Medicine> medications, List<Integer> medicineAmount) {
         this.treatmentId = treatmentId;
         this.medications = new ArrayList<>(medications); // Initialize with a copy of the medications
         this.medicineAmount = medicineAmount;
@@ -43,11 +43,11 @@ public class Treatment implements Serializable {
         this.medications.remove(medicine);
     }
 
-    public List<String> getMedicineAmount() {
+    public List<Integer> getMedicineAmount() {
         return medicineAmount;
     }
 
-    public void setMedicineAmount(List<String> medicineAmount) {
+    public void setMedicineAmount(List<Integer> medicineAmount) {
         this.medicineAmount = medicineAmount;
     }
 }
