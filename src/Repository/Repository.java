@@ -358,9 +358,9 @@ public class Repository {
         List<Diagnosis> diagnosisList2 = Arrays.asList(diagnosis2);
 
         // Create dummy AppointmentOutcome instances
-        AppointmentOutcome appointmentOutcome1 = new AppointmentOutcome("101", prescribedMedicinesList1, diagnosisList1, "Patient needs rest and fluids.", LocalDateTime.now());
+        AppointmentOutcome appointmentOutcome1 = new AppointmentOutcome("101", prescribedMedicinesList1, diagnosisList1, "Patient needs rest and fluids.", LocalDateTime.now(), PaymentStatus.PENDING);
 
-        AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome("102", prescribedMedicinesList2, diagnosisList2, "Prescribed light medication and rest.", LocalDateTime.now().minusDays(1));
+        AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome("102", prescribedMedicinesList2, diagnosisList2, "Prescribed light medication and rest.", LocalDateTime.now().minusDays(1), PaymentStatus.PENDING);
 
         // Add to the repository
         Repository.APPOINTMENT_OUTCOME.put(appointmentOutcome1.getOutcomeId(), appointmentOutcome1);

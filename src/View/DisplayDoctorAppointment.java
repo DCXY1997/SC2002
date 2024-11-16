@@ -55,11 +55,11 @@ public class DisplayDoctorAppointment extends MainView {
                     printBreadCrumbs("Hospital Management App View > Doctor View > View Upcoming Appointments");
                     viewUpcomingAppointments();
                     break;
-                // case 4:
-                //     Helper.clearScreen();
-                //     printBreadCrumbs("Hospital Management App View > Doctor View > View Past Appointments");
-                //     viewPastAppointments();
-                //     break;
+                case 4:
+                    Helper.clearScreen();
+                    printBreadCrumbs("Hospital Management App View > Doctor View > View Past Appointments");
+                    viewPastAppointments();
+                    break;
                 case 5:
                     break;
                 default:
@@ -171,19 +171,24 @@ public class DisplayDoctorAppointment extends MainView {
         }
     }
 
-    // private void viewPastAppointments() {
-    //     // Implement logic to display the past appointments for the doctor
-    //     List<Appointment> pastAppointments = AppointmentController.getPastAppointmentsForDoctor(doctor);
-    //     if (pastAppointments.isEmpty()) {
-    //         System.out.println("No past appointments found for you.");
-    //     } else {
-    //         System.out.println("Your Past Appointments:");
-    //         for (Appointment appointment : pastAppointments) {
-    //             System.out.println("Appointment with Patient " + appointment.getPatient().getName());
-    //             System.out.println("From: " + appointment.getAppointmentDate());
-    //             System.out.println("Status: " + appointment.getStatus());
-    //             System.out.println();
-    //         }
-    //     }
-    // }
+     private void viewPastAppointments() {
+         // Implement logic to display the past appointments for the doctor
+         List<Appointment> appointmentRequests = AppointmentController.viewCompleteAppointments(doctor);
+
+        if (appointmentRequests.isEmpty()) {
+            System.out.println("No appointment requests found for you.");
+        } else {
+            System.out.println("Your Past Appointment Requests:");
+
+            for (Appointment appointment : appointmentRequests) {
+                if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
+                    System.out.println("Appointment - " + appointment.getAppointmentId() + ":");
+                    System.out.println("Patient: " + appointment.getPatient().getName());
+                    System.out.println("From: " + appointment.getAppointmentStartDate() + " to " + appointment.getAppointmentEndDate());
+                    System.out.println("Status: " + appointment.getStatus());
+                    System.out.println();
+                }
+            }
+        }
+     }
 }

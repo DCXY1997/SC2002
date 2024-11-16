@@ -116,13 +116,13 @@ public class PatientController {
             System.out.println("Patient not found.");
             return;
         }
-
+        
         List<Appointment> appointments = AppointmentController.viewPatientAppointments(patient);
         List<AppointmentOutcome> pastAppointments = new ArrayList<>();
 
         for (Appointment appointment : appointments) {
             if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
-                pastAppointments.add(appointment.getAppointmentOutcome());
+                pastAppointments.add(appointment.getOutcome());
             }
         }
 
@@ -174,6 +174,16 @@ public class PatientController {
         }
     }
 
+    public static int getLastDiagId(Patient patient){
+        MedicalRecord medicalRecord = patient.getMedicalRecord();
+        if(medicalRecord != null){
+            if (!medicalRecord.getDiagnoses().isEmpty()){
+                int lastPatientDiag = patient.getMedicalRecord().getDiagnoses().size()-1;
+                return patient.getMedicalRecord().getDiagnoses().get(lastPatientDiag).getDiagnosisId();
+            }
+        }
+        return 0;
+    }
 
 
 

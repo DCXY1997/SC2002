@@ -162,12 +162,6 @@ public class AppointmentController {
         return doctorAppointments;
     }
 
-    // public static void acceptAppointment(Appointment appointment) {
-    //     appointment.setStatus(AppointmentStatus.CONFIRMED);
-    //     Repository.readData(FileType.APPOINTMENT_LIST);
-    //     Repository.APPOINTMENT_LIST.put(appointment.getAppointmentId(), appointment);
-    //     Repository.persistData(FileType.APPOINTMENT_LIST);
-    // }
     public static void acceptAppointment(Doctor doctor, Appointment appointment) {
         LocalDateTime appointmentStart = appointment.getAppointmentStartDate();
         LocalDateTime appointmentEnd = appointment.getAppointmentEndDate();
@@ -238,6 +232,62 @@ public class AppointmentController {
 
     }
 
+    public static List<Appointment> viewConfirmAppointments(Doctor doctor){
+        List<Appointment> doctorAppointments = new ArrayList<>();
+
+        // Load appointments from the Repository (appointmentlist.dat)
+        Repository.readData(FileType.APPOINTMENT_LIST);
+
+        // Check if the appointments are loaded correctly
+        //System.out.println("Loaded appointments: " + Repository.APPOINTMENT_LIST.size());
+        // Get the appointments from the Repository
+        for (Appointment appointment : Repository.APPOINTMENT_LIST.values()) {
+            // Check if the appointment is for the given doctor
+            if (appointment.getAttendingDoctor().equals(doctor) && appointment.getStatus() == AppointmentStatus.CONFIRMED) {
+                doctorAppointments.add(appointment);
+            }
+        }
+        // Return the list of appointments for the doctor
+        return doctorAppointments;
+    }
+
+    public static List<Appointment> viewCompleteAppointments(Doctor doctor){
+        List<Appointment> doctorAppointments = new ArrayList<>();
+
+        // Load appointments from the Repository (appointmentlist.dat)
+        Repository.readData(FileType.APPOINTMENT_LIST);
+
+        // Check if the appointments are loaded correctly
+        //System.out.println("Loaded appointments: " + Repository.APPOINTMENT_LIST.size());
+        // Get the appointments from the Repository
+        for (Appointment appointment : Repository.APPOINTMENT_LIST.values()) {
+            // Check if the appointment is for the given doctor
+            if (appointment.getAttendingDoctor().equals(doctor) && appointment.getStatus() == AppointmentStatus.COMPLETED) {
+                doctorAppointments.add(appointment);
+            }
+        }
+        // Return the list of appointments for the doctor
+        return doctorAppointments;
+    }
+
+    public static List<Appointment> viewCompleteAppointments(Patient patient){
+        List<Appointment> patientAppointments = new ArrayList<>();
+
+        // Load appointments from the Repository (appointmentlist.dat)
+        Repository.readData(FileType.APPOINTMENT_LIST);
+
+        // Check if the appointments are loaded correctly
+        //System.out.println("Loaded appointments: " + Repository.APPOINTMENT_LIST.size());
+        // Get the appointments from the Repository
+        for (Appointment appointment : Repository.APPOINTMENT_LIST.values()) {
+            // Check if the appointment is for the given doctor
+            if (appointment.getPatient().equals(patient) && appointment.getStatus() == AppointmentStatus.COMPLETED) {
+                patientAppointments.add(appointment);
+            }
+        }
+        // Return the list of appointments for the doctor
+        return patientAppointments;
+    }
     // public static List<Appointment> getUpcomingAppointmentsForDoctor(Doctor doctor) {
     //     List<Appointment> upcomingAppointments = new ArrayList<>();
     //     LocalDateTime now = LocalDateTime.now();

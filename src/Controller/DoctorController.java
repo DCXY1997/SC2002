@@ -17,14 +17,12 @@ public class DoctorController {
 
     public static List<Patient> getAllPatients(Doctor doctor) {
         Doctor currentDoctor = (Doctor) Repository.STAFF.get(doctor.getHospitalId());
+        List<Appointment> docAppointments = AppointmentController.viewDoctorAppointments(currentDoctor);
         List<Patient> patientsUnderDoctor = new ArrayList<>();
-        for (Appointment appointment : AppointmentList.getInstance().getAppointments()) {
-            Doctor attendingDoctor = appointment.getAttendingDoctor();
-            if (attendingDoctor != null && attendingDoctor.equals(currentDoctor)) { // Corrected comparison
-                Patient patient = appointment.getPatient();
-                if (!patientsUnderDoctor.contains(patient)) {
-                    patientsUnderDoctor.add(patient);
-                }
+        for (Appointment appointment : docAppointments) {
+            Patient patient = appointment.getPatient();
+            if (!patientsUnderDoctor.contains(patient)) {
+                patientsUnderDoctor.add(patient);
             }
         }
         return patientsUnderDoctor;
@@ -217,5 +215,4 @@ public class DoctorController {
 
         return doctors;
     }
-
 }

@@ -18,6 +18,7 @@ import src.Model.Patient;
 import src.Model.Schedule;
 import src.Model.Specialization;
 import src.Model.Treatment;
+import src.Repository.FileType;
 import src.Repository.Repository;
 
 public class DoctorView extends MainView {
@@ -116,9 +117,14 @@ public class DoctorView extends MainView {
 
     public void displayAllPatients(Doctor doctor) {
         List<Patient> patientList = DoctorController.getAllPatients(doctor); // Update to get patients by hospitalId
-        for (Patient patient : patientList) {
-            System.out.println("Patient ID: " + patient.getPatientId());
-            System.out.println("Patient Name: " + patient.getName());
+        if (patientList.isEmpty()){
+            System.out.println("This doctor has no patients.");
+        }
+        else{
+            for (Patient patient : patientList) {
+                System.out.println("Patient ID: " + patient.getPatientId());
+                System.out.println("Patient Name: " + patient.getName());
+            }
         }
     }
 
@@ -217,21 +223,58 @@ public class DoctorView extends MainView {
     }
     
     private void promptUpdatePatientRecords(){
-        promptGetPatientRecords();
+        System.out.println("Key in PatientID of Patient");
+        String pid = Helper.readString();
+        Patient patient = Repository.PATIENT.get(pid);
         System.out.println("Enter new Diagnosis and Treatment plan:");
-        System.out.println("Enter new Diagnosis name:");
+        System.out.println("Enter Diagnosis:");
+        String diagnosisName = Helper.readString();
+        System.out.println("Enter Description:");
+        String description = Helper.readString();
 
+        int diagId = PatientController.getLastDiagId(patient);
+        Diagnosis diagnosis = new Diagnosis(++diagId, diagnosisName, description);
+
+        // Prompt for medications and create a unique treatment
+        List<Medicine> treatmentMedicines = new ArrayList<>();
+        List<String> medicineAmount = new ArrayList<>();
+
+        System.out.println("Enter number of medicines prescribed:");
+        int numMedicines = Helper.readInt();
+        for (int i = 0; i < numMedicines; i++) {
+            System.out.println("Enter Medicine ID or Name:");
+            String medKey = Helper.readString();
+
+            Medicine medicine = Repository.INVENTORY.get(medKey).getMedicine();
+            if (medicine != null) {
+                treatmentMedicines.add(new Medicine(medicine));
+                
+                System.out.println("Enter amount of Medicine:");
+                String amount = Helper.readString();
+                medicineAmount.add(amount);
+                // Create a unique Treatment for each Diagnosis
+                Treatment treatment = new Treatment(diagId, treatmentMedicines, medicineAmount);
+                // Add the treatment to the diagnosis
+                diagnosis.addTreatment(treatment);
+            } else {
+                System.out.println("Warning: Medicine with ID '" + medKey + "' not found.");
+            }
+        }
+        patient.getMedicalRecord().addDiagnosis(diagnosis);
+        System.out.println("Diagnosis added");
+        Repository.PATIENT.put(patient.getPatientId(), patient);
+        Repository.persistData(FileType.PATIENT);
     }
 
     public void recordAppointmentOutcome(Doctor doctor) {
         List<Appointment> docAppointments = new ArrayList<>();
 
         // Filter appointments for the specified doctor
-        docAppointments = AppointmentController.viewDoctorAppointments(doctor);
-
+        docAppointments = AppointmentController.viewConfirmAppointments(doctor);
+        
         // Check if the doctor has any appointments
         if (docAppointments.isEmpty()) {
-            System.out.println("No appointments found for Dr. " + doctor.getName());
+            System.out.println("No confirmed appointments found for Dr. " + doctor.getName());
             return;
         }
 
@@ -250,14 +293,10 @@ public class DoctorView extends MainView {
 
         // Checking for existing medical record
         MedicalRecord medicalRecord = patient.getMedicalRecord();
-        int diagId = 0;
+        int diagId = PatientController.getLastDiagId(patient);
         if (medicalRecord == null) {
             medicalRecord = new MedicalRecord("MR" + patient.getPatientId());
             patient.setMedicalRecord(medicalRecord);
-        }
-        if (!medicalRecord.getDiagnoses().isEmpty()){
-            int lastPatientDiag = patient.getMedicalRecord().getDiagnoses().size()-1;
-            diagId = patient.getMedicalRecord().getDiagnoses().get(lastPatientDiag).getDiagnosisId();
         }
 
         // Prompt for diagnosis details
@@ -306,10 +345,6 @@ public class DoctorView extends MainView {
         System.out.println("Enter Doctor Note: ");
         String note = Helper.readString();
 
-        
-
-        
-
         // Create the AppointmentOutcome
         AppointmentOutcome outcome = new AppointmentOutcome(
             "OUT" + System.currentTimeMillis(),
@@ -321,10 +356,13 @@ public class DoctorView extends MainView {
 
         // Set the outcome and update the medical record
         appointment.setOutcome(outcome);
+        Repository.APPOINTMENT_OUTCOME.put(outcome.getOutcomeId(), outcome);
+        Repository.persistData(FileType.APPOINTMENT_OUTCOME);
         Repository.APPOINTMENT_LIST.put(appointment.getAppointmentId(), appointment);
+        Repository.persistData(FileType.APPOINTMENT_LIST);
         // Save the updated patient data back to the repository
         Repository.PATIENT.put(patient.getPatientId(), patient);
-
+        Repository.persistData(FileType.PATIENT);
         System.out.println("Outcome recorded successfully.");
     }
 

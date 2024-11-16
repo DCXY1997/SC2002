@@ -9,6 +9,7 @@ public class PatientView extends MainView {
 
     private Patient patient;
     private DisplayPatientAppointment displayPatientAppointmentView;
+    private PaymentView displayPaymentView;
 
     public PatientView(Patient patient) {
         this.patient = patient;
@@ -20,6 +21,12 @@ public class PatientView extends MainView {
         } else {
             // Handle the case where patient is null
             System.out.println("Error: Patient is null in PatientView.");
+        }
+        if (patient != null) {
+            this.displayPaymentView = new PaymentView(patient);
+        } else {
+            // Handle the case where patient is null
+            System.out.println("Error: Patient is null in PaymentView.");
         }
     }
 
@@ -36,12 +43,13 @@ public class PatientView extends MainView {
         Helper.clearScreen();
         printBreadCrumbs("Hospital Management App View > Patient Dashboard");
         System.out.println("What would you like to do?");
-        System.out.println("(1) View Medical Record (NOT WORKING YET)");
+        System.out.println("(1) View Medical Record");
         System.out.println("(2) Handle Appointments");
-        System.out.println("(3) View Past Appointment Outcome Records (NOT WORKING)");
+        System.out.println("(3) View Past Appointment Outcome Records");
         System.out.println("(4) Update Personal Information");
         System.out.println("(5) View Personal Information");
-        System.out.println("(6) Logout");
+        System.out.println("(6) Handle Payment");
+        System.out.println("(7) Logout");
     }
 
     @Override
@@ -49,7 +57,7 @@ public class PatientView extends MainView {
         int opt = -1;
         do {
             printActions();
-            opt = Helper.readInt(1, 6);
+            opt = Helper.readInt(1, 8);
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
@@ -60,7 +68,8 @@ public class PatientView extends MainView {
                     displayPatientAppointmentView.viewApp();
                     break;
                 case 3:
-                    Helper.clearScreen();
+                    printBreadCrumbs(
+                    "Hospital Management App View > Patient View > View Past Appointment Outcomes");
                     viewPastAppointmentOutcome();
                     break;
                 case 4:
@@ -74,15 +83,18 @@ public class PatientView extends MainView {
                     viewPersonalInformation();
                     break;
                 case 6:
+                    Helper.clearScreen();
+                    displayPaymentView.viewApp();
+                case 7:
                     break;
                 default:
                     System.out.println("Invalid option");
                     break;
             }
-            if (opt != 6) {
+            if (opt != 7) {
                 Helper.pressAnyKeyToContinue();
             }
-        } while (opt != 6);
+        } while (opt != 7);
     }
 
     private void promptUpdateDetails() {
