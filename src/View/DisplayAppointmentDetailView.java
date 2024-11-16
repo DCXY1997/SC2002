@@ -38,7 +38,7 @@ public class DisplayAppointmentDetailView extends MainView {
 
     private void promptAppointmentId() {
 		System.out.println("Enter the Appointment Id: ");
-        int appointmentId = Helper.readInt();
+        String appointmentId = Helper.readString();
         String appointmentDetails = AdminController.getAppointmentDetails(appointmentId);  // Get details from controller
         System.out.println(appointmentDetails);  // Display the details
     }
