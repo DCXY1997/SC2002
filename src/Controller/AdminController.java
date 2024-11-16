@@ -182,32 +182,42 @@ public class AdminController {
         return true;
     }
 
-    // Method to retrieve appointment details as a formatted String
     public static String getAppointmentDetails(String appointmentId) {
-        List<Appointment> appointments = AppointmentList.getInstance().getAppointments();  // Access singleton appointment list
-        for (Appointment appointment : appointments) {
-            if (appointment.getAppointmentId() == appointmentId) {
-                return formatAppointmentDetails(appointment);
-            }
-        }   
+        // Load appointments from the Repository (to ensure the latest data is used)
+        Repository.readData(FileType.APPOINTMENT_LIST);
+    
+        // Search for the appointment in the APPOINTMENT_LIST map
+        Appointment appointment = Repository.APPOINTMENT_LIST.get(appointmentId);
+    
+        // If found, format and return the details
+        if (appointment != null) {
+            return formatAppointmentDetails(appointment);
+        }
+    
+        // If not found, return a "not found" message
         return "Appointment with ID " + appointmentId + " not found.";
     }
-
-    // Helper method to format appointment details into a String
+    
+    // Helper function to format appointment details
     private static String formatAppointmentDetails(Appointment appointment) {
-        StringBuilder details = new StringBuilder();
-        details.append("Appointment ID: ").append(appointment.getAppointmentId()).append("\n");
-        details.append("Patient ID: ").append(appointment.getPatient().getPatientId()).append("\n");
-        details.append("Doctor ID: ").append(appointment.getAttendingDoctor().getHospitalId()).append("\n");
-        details.append("Status: ").append(appointment.getStatus()).append("\n");
-        details.append("Date & Time: ").append(appointment.getAppointmentStartDate()).append("\n");
+        return String.format(
+            "Appointment ID: %s\nPatient Name: %s\nDoctor Name: %s\nStart Time: %s\nEnd Time: %s\nStatus: %s",
+            appointment.getAppointmentId(),
+            appointment.getPatient().getName(),  // Get the patient's name
+            appointment.getAttendingDoctor().getName(),  // Get the doctor's name
+            appointment.getAppointmentStartDate(),
+            appointment.getAppointmentEndDate(),
+            appointment.getStatus()
+        );
+    }
+
+    public static List<String> getAllAppointmentIds() {
+        // Load appointments from the Repository
+        Repository.readData(FileType.APPOINTMENT_LIST);
     
-        if (appointment.getStatus() == AppointmentStatus.COMPLETED && appointment.getOutcome() != null) {
-            details.append("Outcome: ").append(appointment.getOutcome().getDoctorNotes()).append("\n");
-        }
-    
-        return details.toString();
-        }
+        // Collect all appointment IDs
+        return new ArrayList<>(Repository.APPOINTMENT_LIST.keySet());
+    }
         
     public static String getInventoryRecord() {
         StringBuilder inventoryDetails = new StringBuilder();
