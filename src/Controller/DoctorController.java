@@ -18,7 +18,7 @@ public class DoctorController {
         List<Patient> patientsUnderDoctor = new ArrayList<>();
         for (Appointment appointment : AppointmentList.getInstance().getAppointments()) {
             Doctor attendingDoctor = appointment.getAttendingDoctor();
-            if (attendingDoctor != null && attendingDoctor.getHospitalId().equals(hospitalId)) { // Corrected comparison
+            if (attendingDoctor != null && attendingDoctor.getHospitalId().equals(hospitalId)) {
                 Patient patient = appointment.getPatient();
                 if (!patientsUnderDoctor.contains(patient)) {
                     patientsUnderDoctor.add(patient);
@@ -34,13 +34,10 @@ public class DoctorController {
 
         // Check if the doctor is found
         if (currentDoctor != null) {
-            // System.out.println("Doctor's Availability List: ");
-            // Return the availability list
             return currentDoctor.getAvailability();
         } else {
-            // If the doctor is not found, log the error and return an empty list
             System.out.println("Error: Doctor not found.");
-            return new ArrayList<>();  // Return an empty list if the doctor is not found
+            return new ArrayList<>();
         }
     }
 
@@ -81,60 +78,9 @@ public class DoctorController {
     }
 
     public static boolean updateDoctorAvailability(Doctor doctor, LocalDateTime startTime, LocalDateTime endTime, List<Schedule> filteredSchedules) {
-        // List<Schedule> updatedSchedule = new ArrayList<>();
-        // boolean scheduleUpdated = false;
-        System.out.println("Doctor's availability size: " + filteredSchedules.size());
-        // for (Schedule schedule : filteredSchedules) {
-        //     // Check if the appointment fits within the available time slot
-        //     boolean isStartTimeValid = startTime.isEqual(schedule.getStartTime()) || startTime.isAfter(schedule.getStartTime());
-        //     boolean isEndTimeValid = endTime.isBefore(schedule.getEndTime()) || endTime.isEqual(schedule.getEndTime());
-        //     if (isStartTimeValid && isEndTimeValid) {
-        //         scheduleUpdated = true;
-        //         System.out.println("Schedule fits! Appointment start: " + startTime + " to end: " + endTime);
-        //         // Split the availability into slots around the appointment time
-        //         if (startTime.isAfter(schedule.getStartTime())) {
-        //             Schedule newStartSlot = new Schedule(schedule.getStartTime(), startTime);
-        //             if (!updatedSchedule.contains(newStartSlot)) {
-        //                 updatedSchedule.add(newStartSlot);
-        //             }
-        //         }
-        //         if (endTime.isBefore(schedule.getEndTime())) {
-        //             Schedule newEndSlot = new Schedule(endTime, schedule.getEndTime());
-        //             if (!updatedSchedule.contains(newEndSlot)) {
-        //                 updatedSchedule.add(newEndSlot);
-        //             }
-        //         }
-        //     } else {
-        //         updatedSchedule.add(schedule);
-        //     }
-        // }
-        // if (!scheduleUpdated) {
-        //     return false;
-        // }
-
         List<Schedule> doctorAvailability = new ArrayList<>(doctor.getAvailability());
         doctorAvailability.addAll(filteredSchedules);
 
-        // doctorAvailability.sort(Comparator.comparing(Schedule::getStartTime));
-        // List<Schedule> mergedSchedule = new ArrayList<>();
-        // // Initialize current slot as the first slot
-        // Schedule currentSlot = doctorAvailability.get(0);
-        // for (int i = 1; i < doctorAvailability.size(); i++) {
-        //     Schedule nextSlot = doctorAvailability.get(i);
-        //     // Check if the slots are directly consecutive or overlapping
-        //     if (!nextSlot.getStartTime().isAfter(currentSlot.getEndTime())) {
-        //         // Extend the current slot to include nextSlot if nextSlot's end time is later
-        //         currentSlot = new Schedule(currentSlot.getStartTime(),
-        //                 nextSlot.getEndTime().isAfter(currentSlot.getEndTime()) ? nextSlot.getEndTime() : currentSlot.getEndTime());
-        //     } else {
-        //         // If there's a gap, add the current slot to merged list and reset current slot
-        //         mergedSchedule.add(currentSlot);
-        //         currentSlot = nextSlot;
-        //     }
-        // }
-        // // Add the last processed slot
-        // mergedSchedule.add(currentSlot);
-        // mergedSchedule = new ArrayList<>(new HashSet<>(mergedSchedule));
         doctor.setAvailability(filteredSchedules);
         // Persist the updated availability
         Repository.readData(FileType.STAFF);

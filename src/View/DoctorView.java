@@ -31,13 +31,9 @@ public class DoctorView extends MainView {
         Helper.clearScreen();
         printBreadCrumbs("Hospital Management App View > Login View > Doctor View");
         System.out.println("What would you like to do ?");
-        // System.out.println("(1) View All Current Patients");
-        // System.out.println("(2) View Patient Medical Records");
-        // System.out.println("(3) Update Patient Medical Records");
         System.out.println("(1) View Personal Schedule");
         System.out.println("(2) Set Availability for Appointments");
         System.out.println("(3) Handle Appointments");
-        // System.out.println("(4) Record Appointment Outcome");
         System.out.println("(4) View Personal Information");
         System.out.println("(5) Add Specialization");
         System.out.println("(6) Logout");
@@ -50,18 +46,6 @@ public class DoctorView extends MainView {
             printActions();
             opt = Helper.readInt(1, 11);
             switch (opt) {
-                // case 1:
-                // Helper.clearScreen();
-                // displayAllPatients(doctor.getHospitalId()); // Pass hospitalId
-                // break;
-                // case 2:
-                // Helper.clearScreen();
-                // promptGetPatientRecords();
-                // break;
-                // case 3:
-                // Helper.clearScreen();
-                // // promptUpdatePatientRecords();
-                // break;
                 case 1:
                     Helper.clearScreen();
                     printBreadCrumbs(
@@ -78,13 +62,6 @@ public class DoctorView extends MainView {
                     Helper.clearScreen();
                     displayDoctorAppointmentView.viewApp();
                     break;
-
-                // case 8:
-                //     Helper.clearScreen();
-                //     printBreadCrumbs(
-                //             "Hospital Management App View > Doctor View > Record Appointment Outcome");
-                //     promptRecordOutcome();
-                //     break;
                 case 4:
                     Helper.clearScreen();
                     printBreadCrumbs(
@@ -205,7 +182,6 @@ public class DoctorView extends MainView {
                     break;
             }
 
-            // Now add the specialization to the Doctor instance
             if (specializationObj != null) {
                 DoctorController.addSpecialization(doctor, specializationObj);
             }

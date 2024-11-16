@@ -29,8 +29,7 @@ public class DisplayDoctorAppointment extends MainView {
         System.out.println("(1) View Your Appointment Requests");
         System.out.println("(2) Accept/ Decline Appointment Requests");
         System.out.println("(3) View Upcoming Appointments");
-        System.out.println("(4) View Past Appointments");
-        System.out.println("(5) Back");
+        System.out.println("(4) Back");
     }
 
     @Override
@@ -38,7 +37,7 @@ public class DisplayDoctorAppointment extends MainView {
         int opt = -1;
         do {
             printActions();
-            opt = Helper.readInt(1, 5);
+            opt = Helper.readInt(1, 4);
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
@@ -55,21 +54,16 @@ public class DisplayDoctorAppointment extends MainView {
                     printBreadCrumbs("Hospital Management App View > Doctor View > View Upcoming Appointments");
                     viewUpcomingAppointments();
                     break;
-                // case 4:
-                //     Helper.clearScreen();
-                //     printBreadCrumbs("Hospital Management App View > Doctor View > View Past Appointments");
-                //     viewPastAppointments();
-                //     break;
-                case 5:
+                case 4:
                     break;
                 default:
                     System.out.println("Invalid option");
                     break;
             }
-            if (opt != 5) {
+            if (opt != 4) {
                 Helper.pressAnyKeyToContinue();
             }
-        } while (opt != 5);
+        } while (opt != 4);
     }
 
     private void viewAppointmentRequests() {
