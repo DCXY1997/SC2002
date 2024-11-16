@@ -20,7 +20,6 @@ public class Medicine implements Serializable {
         this.medicineId = medicineId;
         this.medicineName = medicineName;
         this.medicinePrice = medicinePrice;
-        this.medicineAmount = medicineAmount;
         this.medicineDescription = medicineDescription;
         this.status = MedicineStatus.PENDING;
     }

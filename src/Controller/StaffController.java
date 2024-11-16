@@ -39,27 +39,7 @@ public class StaffController {
         }
     }
 
-    // public static Staff getStaffById(String loginId) {
-    // // Retrieve the staff member from the repository using the loginId
-    // Staff staff = Repository.STAFF.get(loginId);
-
-    // if (staff == null) {
-    // System.out.println("Staff not found with ID: " + loginId);
-    // return null;
-    // } else {
-    // // Check the staff type and return the appropriate subclass instance
-    // if (staff instanceof Doctor) {
-    // return (Doctor) staff;
-    // } else {
-    // System.out.println("Retrieved staff: " + staff.getName() + ", Role: " +
-    // staff.getRole());
-    // return staff;
-    // }
-    // }
-    // }
-
     public static Staff getStaffById(String loginId) {
         return Repository.STAFF.get(loginId);
     }
-
 }
