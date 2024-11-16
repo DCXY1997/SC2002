@@ -23,11 +23,11 @@ public class HMSApp {
         Repository.readData(FileType.TREATMENT);
 
         // Initialize dummy data if needed
-        //Repository.initializeDummyPatient();
-        //Repository.initializeDummyStaff();
-        //Repository.initializeDummyInventory();
-        //Repository.initializeDummyReplenishmentRequest();
-        //Repository.initializeDummyAppointmentOutcome();
+        Repository.initializeDummyPatient();
+        Repository.initializeDummyStaff();
+        Repository.initializeDummyInventory();
+        Repository.initializeDummyReplenishmentRequest();
+        Repository.initializeDummyAppointmentOutcome();
 
         // Save all data after initialization
         Repository.saveAllFiles(); // Add this line

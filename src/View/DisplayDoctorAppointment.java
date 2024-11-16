@@ -38,7 +38,7 @@ public class DisplayDoctorAppointment extends MainView {
         int opt = -1;
         do {
             printActions();
-            opt = Helper.readInt(1, 4);
+            opt = Helper.readInt(1, 5);
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
@@ -170,9 +170,9 @@ public class DisplayDoctorAppointment extends MainView {
         }
     }
 
-     private void viewPastAppointments() {
-         // Implement logic to display the past appointments for the doctor
-         List<Appointment> appointmentRequests = AppointmentController.viewCompleteAppointments(doctor);
+    private void viewPastAppointments() {
+        // Implement logic to display the past appointments for the doctor
+        List<Appointment> appointmentRequests = AppointmentController.viewCompleteAppointments(doctor);
 
         if (appointmentRequests.isEmpty()) {
             System.out.println("No appointment requests found for you.");
@@ -189,5 +189,5 @@ public class DisplayDoctorAppointment extends MainView {
                 }
             }
         }
-     }
+    }
 }
