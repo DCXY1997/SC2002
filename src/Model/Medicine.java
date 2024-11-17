@@ -22,8 +22,6 @@ public class Medicine implements Serializable {
         this.medicinePrice = medicinePrice;
         this.medicineDescription = medicineDescription;
     }*/
-
-
     // Constructor for Patient side
     public Medicine(String medicineId, String medicineName, float medicinePrice, String medicineDescription) {
         this.medicineId = medicineId;

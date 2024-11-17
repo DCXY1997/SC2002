@@ -15,29 +15,107 @@ import java.util.List;
 import src.Enum.*;
 import src.Model.*;
 
+/**
+ * The Repository class provides a centralized storage and management mechanism
+ * for all data in the hospital management system. It supports persisting,
+ * retrieving, and initializing data for various entities such as staff,
+ * patients, inventory, appointments, and replenishment requests.
+ * <p>
+ * This class also provides functionality to initialize dummy data for testing
+ * and manages serialized file storage for persistent data.
+ * </p>
+ *
+ * <p>
+ * <b>Key Responsibilities:</b></p>
+ * <ul>
+ * <li>Persisting data to serialized files.</li>
+ * <li>Reading data from serialized files.</li>
+ * <li>Managing in-memory data structures for different entities.</li>
+ * <li>Initializing dummy data for testing purposes.</li>
+ * </ul>
+ *
+ * @see FileType
+ * @see Staff
+ * @see Patient
+ * @see InventoryList
+ * @see Appointment
+ * @see AppointmentOutcome
+ * @see ReplenishmentRequest
+ * @author Keng Jia Chi, Jasmine Tye
+ * @version 1.0
+ * @since 2024-11-17
+ */
 public class Repository {
 
+    /**
+     * Folder name where serialized data files are stored.
+     */
     private static final String folder = "Data";
 
+    /**
+     * HashMap to store staff data.
+     */
     public static HashMap<String, Staff> STAFF = new HashMap<>();
+    /**
+     * HashMap to store inventory data.
+     */
     public static HashMap<String, InventoryList> INVENTORY = new HashMap<>();
+    /**
+     * HashMap to store patient data.
+     */
     public static HashMap<String, Patient> PATIENT = new HashMap<>();
+    /**
+     * HashMap to store replenishment request data.
+     */
     public static HashMap<String, ReplenishmentRequest> REPLENISHMENT_REQUEST = new HashMap<>();
+    /**
+     * HashMap to store appointment outcome data.
+     */
     public static HashMap<String, AppointmentOutcome> APPOINTMENT_OUTCOME = new HashMap<>();
+    /**
+     * HashMap to store appointment list data.
+     */
     public static HashMap<String, Appointment> APPOINTMENT_LIST = new HashMap<>();
-    public static HashMap<String, Medicine> MEDICINE = new HashMap<>();
+    /**
+     * HashMap to store medicine data.
+     */
     public static HashMap<String, MedicalRecord> MEDICAL_RECORD = new HashMap<>();
+    /**
+     * HashMap to store diagnosis data.
+     */
     public static HashMap<String, Diagnosis> DIAGNOSIS = new HashMap<>();
+    /**
+     * HashMap to store treatment data.
+     */
     public static HashMap<String, Treatment> TREATMENT = new HashMap<>();
+    /**
+     * HashMap to store medicine data.
+     */
+    public static HashMap<String, Medicine> MEDICINE = new HashMap<>();
 
+    /**
+     * Persists the data of a given file type by writing it to a serialized
+     * file.
+     *
+     * @param fileType The type of file to persist, defined in {@link FileType}.
+     */
     public static void persistData(FileType fileType) {
         writeSerializedObject(fileType);
     }
 
+    /**
+     * Reads data from a serialized file and populates the corresponding
+     * in-memory HashMap.
+     *
+     * @param fileType The type of file to read, defined in {@link FileType}.
+     */
     public static void readData(FileType fileType) {
         readSerializedObject(fileType);
     }
 
+    /**
+     * Saves all data to their respective files.
+     */
     public static void saveAllFiles() {
         persistData(FileType.STAFF);
         persistData(FileType.PATIENT);
@@ -51,6 +129,12 @@ public class Repository {
         persistData(FileType.TREATMENT);
     }
 
+    /**
+     * Clears the database by resetting all HashMaps and creating empty
+     * serialized files.
+     *
+     * @return {@code true} if the database was successfully cleared.
+     */
     public static boolean clearDatabase() {
         // Initialize empty data
         STAFF = new HashMap<>();
@@ -77,6 +161,13 @@ public class Repository {
 
     }
 
+    /**
+     * Writes the data of a specific file type to a serialized file.
+     *
+     * @param fileType The type of file to write, defined in {@link FileType}.
+     * @return {@code true} if the data was successfully written, {@code false}
+     * otherwise.
+     */
     private static boolean writeSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
         String filePath = "./src/Repository/" + folder + "/" + fileType.fileName + fileExtension;
@@ -132,6 +223,14 @@ public class Repository {
         }
     }
 
+    /**
+     * Reads data from a serialized file and populates the corresponding
+     * in-memory HashMap.
+     *
+     * @param fileType The type of file to read, defined in {@link FileType}.
+     * @return {@code true} if the data was successfully read, {@code false}
+     * otherwise.
+     */
     private static boolean readSerializedObject(FileType fileType) {
         String fileExtension = ".dat";
         String filePath = "./src/Repository/" + folder + "/" + fileType.fileName + fileExtension;
@@ -244,6 +343,12 @@ public class Repository {
         return true;
     }
 
+    /**
+     * Initializes dummy data for staff and adds it to the STAFF HashMap.
+     *
+     * @return {@code true} if dummy staff data was successfully initialized,
+     * {@code false} otherwise.
+     */
     public static boolean initializeDummyStaff() {
         if (!Repository.STAFF.isEmpty()) {
             return false;
@@ -265,6 +370,12 @@ public class Repository {
 
     }
 
+    /**
+     * Initializes dummy data for patients and adds it to the PATIENT HashMap.
+     *
+     * @return {@code true} if dummy patient data was successfully initialized,
+     * {@code false} otherwise.
+     */
     public static boolean initializeDummyPatient() {
         if (!Repository.PATIENT.isEmpty()) {
             return false;
@@ -290,7 +401,13 @@ public class Repository {
 
     }
 
-    // New method to initialize dummy inventory data
+    /**
+     * Initializes dummy data for inventory and adds it to the INVENTORY
+     * HashMap.
+     *
+     * @return {@code true} if dummy inventory data was successfully
+     * initialized, {@code false} otherwise.
+     */
     public static boolean initializeDummyInventory() {
         if (!Repository.INVENTORY.isEmpty()) {
             return false;
@@ -317,6 +434,13 @@ public class Repository {
         return true;
     }
 
+    /**
+     * Initializes dummy data for replenishment requests and adds it to the
+     * REPLENISHMENT_REQUEST HashMap.
+     *
+     * @return {@code true} if dummy replenishment requests were successfully
+     * initialized, {@code false} otherwise.
+     */
     public static boolean initializeDummyReplenishmentRequest() {
         if (!Repository.REPLENISHMENT_REQUEST.isEmpty()) {
             return false;
@@ -333,6 +457,13 @@ public class Repository {
         return true;
     }
 
+    /**
+     * Initializes dummy data for appointment outcomes and adds it to the
+     * APPOINTMENT_OUTCOME HashMap.
+     *
+     * @return {@code true} if dummy appointment outcomes were successfully
+     * initialized, {@code false} otherwise.
+     */
     public static boolean initializeDummyAppointmentOutcome() {
         /*if (!Repository.APPOINTMENT_OUTCOME.isEmpty()) {
             return false;

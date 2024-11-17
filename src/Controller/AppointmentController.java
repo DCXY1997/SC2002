@@ -5,27 +5,85 @@ import java.util.*;
 import java.util.stream.Collectors;
 import src.Enum.AppointmentStatus;
 import src.Helper.Helper;
+import src.Model.Admin;
 import src.Model.Appointment;
 import src.Model.Doctor;
 import src.Model.Patient;
 import src.Model.Schedule;
 import src.Repository.FileType;
 import src.Repository.Repository;
+import src.View.AdminView;
+import src.View.DisplayAppointmentDetailView;
 
+/**
+ * The AppointmentController class is a controller class that acts as a
+ * "middleman" between the view classes - {@link AdminView} and
+ * {@link DisplayAppointmentDetailView}, and the model classes - {@link Admin}
+ * and {@link Appointment}.
+ * <p>
+ * This class provides functionalities to manage appointments, including
+ * creating, rescheduling, canceling, and viewing appointments. It also includes
+ * helper methods to retrieve appointment details and available doctor
+ * schedules.
+ * </p>
+ *
+ * <p>
+ * <b>Key Responsibilities:</b></p>
+ * <ul>
+ * <li>Create appointments for patients and doctors.</li>
+ * <li>View and manage appointments for patients and doctors.</li>
+ * <li>Reschedule or cancel appointments.</li>
+ * <li>Fetch appointment details and available schedules for doctors.</li>
+ * </ul>
+ *
+ * @see AdminView
+ * @see DisplayAppointmentDetailView
+ * @see Admin
+ * @see Appointment
+ * @author Jasmine Tye Jia Wen, Bryan
+ * @version 1.0
+ * @since 2024-11-17
+ */
 public class AppointmentController {
 
     private static List<Appointment> appointments = new ArrayList<>();
 
+    /**
+     * Retrieves all appointments currently in the system.
+     *
+     * @author Jasmine Tye
+     * @return A list of all {@link Appointment} objects.
+     */
     public static List<Appointment> getAllAppointments() {
         return appointments;
     }
 
+    /**
+     * Generates a unique appointment ID for a new appointment.
+     *
+     * @author Jasmine Tye
+     * @return A unique appointment ID as a string.
+     */
     public static String generateAppointmentId() {
         String prefix = "A";
         int uniqueId = Helper.generateUniqueId(Repository.APPOINTMENT_LIST);
         return prefix + String.format("%03d", uniqueId);
     }
 
+    /**
+     * Creates a new appointment for a patient and doctor within the given
+     * schedule and time slot. Validates the input data, checks for schedule
+     * conflicts, and persists the new appointment.
+     *
+     * @author Jasmine Tye
+     * @param patient The {@link Patient} associated with the appointment.
+     * @param doctor The {@link Doctor} attending the appointment.
+     * @param schedule The {@link Schedule} of the doctor.
+     * @param startTime The start time of the appointment.
+     * @param endTime The end time of the appointment.
+     * @return {@code true} if the appointment was successfully created,
+     * {@code false} otherwise.
+     */
     public static boolean makeAppointment(Patient patient, Doctor doctor, Schedule schedule, LocalDateTime startTime, LocalDateTime endTime) {
         if (schedule == null || patient == null || doctor == null || startTime == null || endTime == null) {
             System.out.println("Invalid data. One or more required fields are missing.");
@@ -75,6 +133,14 @@ public class AppointmentController {
         return true;
     }
 
+    /**
+     * Retrieves a list of appointments for a specific patient.
+     *
+     * @author Jasmine Tye
+     * @param patient The {@link Patient} whose appointments are to be viewed.
+     * @return A list of {@link Appointment} objects associated with the
+     * patient.
+     */
     public static List<Appointment> viewPatientAppointments(Patient patient) {
         List<Appointment> patientAppointments = new ArrayList<>();
         Repository.readData(FileType.APPOINTMENT_LIST);
@@ -86,6 +152,16 @@ public class AppointmentController {
         return patientAppointments;
     }
 
+    /**
+     * Reschedules an existing appointment to a new time slot within the
+     * doctor's schedule.
+     *
+     * @author Jasmine Tye
+     * @param appointment The {@link Appointment} to be rescheduled.
+     * @param newSchedule The new {@link Schedule} for the appointment.
+     * @return {@code true} if the appointment was successfully rescheduled,
+     * {@code false} otherwise.
+     */
     public static boolean rescheduleAppointment(Appointment appointment, Schedule newSchedule) {
         if (appointment == null || newSchedule == null) {
             System.out.println("Invalid appointment or schedule.");
@@ -113,6 +189,15 @@ public class AppointmentController {
         return true;
     }
 
+    /**
+     * Cancels an existing appointment by updating its status to
+     * {@link AppointmentStatus#CANCELLED}.
+     *
+     * @author Jasmine Tye
+     * @param appointment The {@link Appointment} to be canceled.
+     * @return {@code true} if the appointment was successfully canceled,
+     * {@code false} otherwise.
+     */
     public static boolean cancelAppointment(Appointment appointment) {
         if (appointment == null) {
             System.out.println("Invalid appointment.");
@@ -136,7 +221,13 @@ public class AppointmentController {
         return true;
     }
 
-    // Doctor
+    /**
+     * Retrieves a list of appointments for a specific doctor.
+     *
+     * @author Jasmine Tye
+     * @param doctor The {@link Doctor} whose appointments are to be viewed.
+     * @return A list of {@link Appointment} objects associated with the doctor.
+     */
     public static List<Appointment> viewDoctorAppointments(Doctor doctor) {
         List<Appointment> doctorAppointments = new ArrayList<>();
 
@@ -153,6 +244,15 @@ public class AppointmentController {
         return doctorAppointments;
     }
 
+    /**
+     * Confirms an appointment for a doctor by updating its status to
+     * {@link AppointmentStatus#CONFIRMED}. Also updates the doctor's
+     * availability to account for the appointment time.
+     *
+     * @author Jasmine Tye
+     * @param doctor The {@link Doctor} confirming the appointment.
+     * @param appointment The {@link Appointment} to be confirmed.
+     */
     public static void acceptAppointment(Doctor doctor, Appointment appointment) {
         LocalDateTime appointmentStart = appointment.getAppointmentStartDate();
         LocalDateTime appointmentEnd = appointment.getAppointmentEndDate();
@@ -182,6 +282,13 @@ public class AppointmentController {
         }
     }
 
+    /**
+     * Declines an appointment by updating its status to
+     * {@link AppointmentStatus#CANCELLED}.
+     *
+     * @author Jasmine Tye
+     * @param appointment The {@link Appointment} to be declined.
+     */
     public static void declineAppointment(Appointment appointment) {
         appointment.setStatus(AppointmentStatus.CANCELLED);
         Repository.readData(FileType.APPOINTMENT_LIST);
@@ -189,6 +296,18 @@ public class AppointmentController {
         Repository.persistData(FileType.APPOINTMENT_LIST);
     }
 
+    /**
+     * Retrieves a list of confirmed appointments for a specific doctor.
+     * <p>
+     * This method loads the appointments from the repository and filters them
+     * to include only those that are confirmed and associated with the given
+     * doctor.
+     * </p>
+     *
+     * @author Bryan
+     * @param doctor The doctor for whom to retrieve confirmed appointments.
+     * @return A list of confirmed appointments for the specified doctor.
+     */
     public static List<Appointment> viewConfirmAppointments(Doctor doctor) {
         List<Appointment> doctorAppointments = new ArrayList<>();
 
@@ -206,6 +325,19 @@ public class AppointmentController {
         return doctorAppointments;
     }
 
+    /**
+     * Retrieves the available time slots for a doctor based on their schedule
+     * and pending appointments.
+     * <p>
+     * This method checks the doctor's schedule and filters out any time slots
+     * that overlap with pending appointments. It considers only pending
+     * appointments and dynamically calculates available slots for the doctor.
+     * </p>
+     *
+     * @author Bryan
+     * @param doctor The doctor whose available slots need to be retrieved.
+     * @return A list of available time slots as {@link Schedule} objects.
+     */
     public static List<Appointment> viewCompleteAppointments(Doctor doctor) {
         List<Appointment> doctorAppointments = new ArrayList<>();
 
@@ -223,6 +355,18 @@ public class AppointmentController {
         return doctorAppointments;
     }
 
+    /**
+     * Retrieves a list of completed appointments for a specific patient.
+     * <p>
+     * This method loads the appointments from the repository and filters them
+     * to include only those that are completed and associated with the given
+     * patient.
+     * </p>
+     *
+     * @author Bryan
+     * @param patient The patient for whom to retrieve completed appointments.
+     * @return A list of completed appointments for the specified patient.
+     */
     public static List<Appointment> viewCompleteAppointments(Patient patient) {
         List<Appointment> patientAppointments = new ArrayList<>();
 
@@ -240,6 +384,18 @@ public class AppointmentController {
         return patientAppointments;
     }
 
+    /**
+     * Retrieves a list of completed appointments for a specific patient.
+     * <p>
+     * This method loads the appointments from the repository and filters them
+     * to include only those that are completed and associated with the given
+     * patient.
+     * </p>
+     *
+     * @author Jasmine Tye
+     * @param patient The patient for whom to retrieve completed appointments.
+     * @return A list of completed appointments for the specified patient.
+     */
     public static List<Schedule> getAvailableSlotsForDoctor(Doctor doctor) {
         List<Schedule> availableSlots = new ArrayList<>();
         List<Schedule> doctorSchedule = doctor.getAvailability();
@@ -277,6 +433,16 @@ public class AppointmentController {
         return availableSlots;
     }
 
+    /**
+     * Retrieves the available time slots for a specific doctor while excluding
+     * a specific appointment time.
+     *
+     * @author Jasmine Tye
+     * @param doctor The {@link Doctor} whose schedule is to be checked.
+     * @param appointmentToAccept The {@link Appointment} to be excluded from
+     * the schedule check.
+     * @return A list of available {@link Schedule} slots.
+     */
     public static List<Schedule> getAvailableSlotsForDoctorExcludingAppointment(Doctor doctor, Appointment appointmentToAccept) {
         List<Schedule> availableSlots = new ArrayList<>();
         List<Schedule> doctorSchedule = DoctorController.getSchedule(doctor);
@@ -309,6 +475,72 @@ public class AppointmentController {
             }
         }
         return availableSlots;
+    }
+
+    /**
+     * Retrieves the details of an appointment based on the provided appointment
+     * ID. This method reads the latest data from the repository and searches
+     * for the appointment in the APPOINTMENT_LIST map. If found, it formats and
+     * returns the details. If not found, it returns a "not found" message.
+     *
+     * @author Bryan
+     * @param appointmentId The unique identifier of the appointment to
+     * retrieve.
+     * @return A formatted string containing the details of the appointment, or
+     * a "not found" message if the appointment does not exist.
+     */
+    public static String getAppointmentDetails(String appointmentId) {
+        // Load appointments from the Repository (to ensure the latest data is used)
+        Repository.readData(FileType.APPOINTMENT_LIST);
+
+        // Search for the appointment in the APPOINTMENT_LIST map
+        Appointment appointment = Repository.APPOINTMENT_LIST.get(appointmentId);
+
+        // If found, format and return the details
+        if (appointment != null) {
+            return formatAppointmentDetails(appointment);
+        }
+
+        // If not found, return a "not found" message
+        return "Appointment with ID " + appointmentId + " not found.";
+    }
+
+    /**
+     * Formats the details of an appointment into a readable string. This helper
+     * function extracts key information such as the appointment ID, patient
+     * name, doctor name, start time, end time, and status.
+     *
+     * @author Bryan
+     * @param appointment The appointment object to format.
+     * @return A formatted string containing the details of the appointment.
+     */
+    // Helper function to format appointment details
+    private static String formatAppointmentDetails(Appointment appointment) {
+        return String.format(
+                "Appointment ID: %s\nPatient Name: %s\nDoctor Name: %s\nStart Time: %s\nEnd Time: %s\nStatus: %s",
+                appointment.getAppointmentId(),
+                appointment.getPatient().getName(), // Get the patient's name
+                appointment.getAttendingDoctor().getName(), // Get the doctor's name
+                appointment.getAppointmentStartDate(),
+                appointment.getAppointmentEndDate(),
+                appointment.getStatus()
+        );
+    }
+
+    /**
+     * Retrieves a list of all appointment IDs from the repository. This method
+     * ensures the latest data is loaded from the repository and returns all
+     * keys (appointment IDs) from the APPOINTMENT_LIST map.
+     *
+     * @author Bryan
+     * @return A list of appointment IDs currently available in the repository.
+     */
+    public static List<String> getAllAppointmentIds() {
+        // Load appointments from the Repository
+        Repository.readData(FileType.APPOINTMENT_LIST);
+
+        // Collect all appointment IDs
+        return new ArrayList<>(Repository.APPOINTMENT_LIST.keySet());
     }
 
 }

@@ -1,24 +1,41 @@
 package src.Controller;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import src.Enum.AppointmentStatus;
 import src.Enum.Gender;
 import src.Enum.StaffType;
 import src.Helper.Helper;
-import src.Model.Appointment;
-import src.Model.AppointmentList;
-import src.Model.InventoryList;
-import src.Model.Medicine;
+import src.Model.Admin;
 import src.Model.Staff;
 import src.Model.Doctor;
 import src.Repository.FileType;
 import src.Repository.Repository;
+import src.View.AdminView;
+import src.View.DisplayStaffView;
+import src.View.ManageStaffAccountView;
 
+/**
+ * AdminController is a controller class that acts as a "middleman" between the
+ * view classes - {@link AdminView},  {@link DisplayStaffView} and
+ * {@link ManageStaffAccountView} and the model class - {@link Admin} and
+ * {@link Staff}.
+ * <p>
+ *
+ * It can view/add/update/remove staff
+ *
+ * @author Keng Jia Chi
+ * @version 1.0
+ * @since 2024-11-17
+ */
 public class AdminController {
 
+    /**
+     * Overloading function to display staff list according to role
+     *
+     * @param role the role of staff
+     * @return {@code true} if display successfully. Otherwise, {@code false}
+     */
     public static boolean displayStaffListByRole(StaffType role) {
         ArrayList<Staff> staffNameList = new ArrayList<Staff>();
         //can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
@@ -37,6 +54,12 @@ public class AdminController {
         return false;
     }
 
+    /**
+     * Overloading function to display staff list according to gender
+     *
+     * @param gender the gender of the staff
+     * @return {@code true} if display successfully. Otherwise, {@code false}
+     */
     public static boolean displayStaffListByGender(Gender gender) {
         ArrayList<Staff> staffNameList = new ArrayList<Staff>();
         //can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
@@ -55,6 +78,12 @@ public class AdminController {
         return false;
     }
 
+    /**
+     * Overloading function to display staff list according to age
+     *
+     * @param age the age of the staff
+     * @return {@code true} if display successfully. Otherwise, {@code false}
+     */
     public static boolean displayStaffListByAge(int age) {
         ArrayList<Staff> staffNameList = new ArrayList<Staff>();
         //can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
@@ -73,6 +102,16 @@ public class AdminController {
         return false;
     }
 
+    /**
+     * function to add new staff account
+     *
+     * @param name the name of the new staff
+     * @param password the password of the new staff
+     * @param gender the gender of the new staff
+     * @param age the age of the new staff
+     * @param hospitalId the loginId of the new staff
+     * @param role the role of the new staff
+     */
     public static void addStaffAccount(String name, String password, Gender gender, int age, String hospitalId, StaffType role) {
         Staff staff;
         if (role == StaffType.DOCTOR) {
@@ -85,9 +124,15 @@ public class AdminController {
         // Persist data to file
         Repository.persistData(FileType.STAFF);
         System.out.println("Staff added successfully! ID: " + hospitalId);
-
     }
 
+    /**
+     * Function to remove staff from the database
+     * <p>
+     * @param hospitalID the targeted staff's login ID
+     * @return {@code true} if remove successfully. Otherwise, {@code false} if
+     * staff id is not found
+     */
     public static boolean removeStaffAccount(String hospitalId) {
         if (Repository.STAFF.containsKey(hospitalId)) {
             // Prompt confirmation before removal
@@ -105,6 +150,12 @@ public class AdminController {
         }
     }
 
+    /**
+     * function to return the staff object by searching staff's login id
+     *
+     * @param hospitalId the targeted staff's login id
+     * @return staff object as a list
+     */
     public static ArrayList<Staff> searchStaffById(String hospitalId) {
         //create an array list to store staff object
         ArrayList<Staff> searchList = new ArrayList<Staff>();
@@ -116,6 +167,16 @@ public class AdminController {
         return searchList;
     }
 
+    /**
+     * function to update staff name
+     *
+     * @param hospitalId targeted staff's login id
+     * @param name targeted staff's name
+     * @param attributeCode the attribute code for the detail that user choose
+     * to update
+     * @return {@code true} if update staff is successful. Otherwise,
+     * {@code false}
+     */
     public static boolean updateStaffAccount(String hospitalId, String name, int attributeCode) {
         // Create a list to store Staff objects
         ArrayList<Staff> updateList = searchStaffById(hospitalId);
@@ -139,6 +200,16 @@ public class AdminController {
         return true;
     }
 
+    /**
+     * Overloading method of update staff gender
+     * <p>
+     * @param hospitalId targeted staff's login id
+     * @param attributeCode the attribute code for the detail that user choose
+     * to update
+     * @param gender targeted staff's gender
+     * @return {@code true} if update staff is successful. Otherwise,
+     * {@code false}
+     */
     public static boolean updateStaffAccount(String hospitalId, int attributeCode, Gender gender) {
         // Create a list to store Staff objects
         ArrayList<Staff> updateList = searchStaffById(hospitalId);
@@ -162,6 +233,16 @@ public class AdminController {
         return true;
     }
 
+    /**
+     * Overloading method that update the age of the staff
+     * <p>
+     * @param hospitalId targeted staff's login id
+     * @param attributeCode the attribute code for the detail that user choose
+     * to update
+     * @param age targeted staff's age
+     * @return {@code true} if update staff is successful. Otherwise,
+     * {@code false}
+     */
     public static boolean updateStaffAccount(String hospitalId, int attributeCode, int age) {
         // Create a list to store Staff objects
         ArrayList<Staff> updateList = searchStaffById(hospitalId);
@@ -184,98 +265,4 @@ public class AdminController {
         Repository.persistData(FileType.STAFF);
         return true;
     }
-
-    public static String getAppointmentDetails(String appointmentId) {
-        // Load appointments from the Repository (to ensure the latest data is used)
-        Repository.readData(FileType.APPOINTMENT_LIST);
-
-        // Search for the appointment in the APPOINTMENT_LIST map
-        Appointment appointment = Repository.APPOINTMENT_LIST.get(appointmentId);
-
-        // If found, format and return the details
-        if (appointment != null) {
-            return formatAppointmentDetails(appointment);
-        }
-
-        // If not found, return a "not found" message
-        return "Appointment with ID " + appointmentId + " not found.";
-    }
-
-    // Helper function to format appointment details
-    private static String formatAppointmentDetails(Appointment appointment) {
-        return String.format(
-                "Appointment ID: %s\nPatient Name: %s\nDoctor Name: %s\nStart Time: %s\nEnd Time: %s\nStatus: %s",
-                appointment.getAppointmentId(),
-                appointment.getPatient().getName(), // Get the patient's name
-                appointment.getAttendingDoctor().getName(), // Get the doctor's name
-                appointment.getAppointmentStartDate(),
-                appointment.getAppointmentEndDate(),
-                appointment.getStatus()
-        );
-    }
-
-    public static List<String> getAllAppointmentIds() {
-        // Load appointments from the Repository
-        Repository.readData(FileType.APPOINTMENT_LIST);
-
-        // Collect all appointment IDs
-        return new ArrayList<>(Repository.APPOINTMENT_LIST.keySet());
-    }
-
-    public static String getInventoryRecord() {
-        StringBuilder inventoryDetails = new StringBuilder();
-
-        if (Repository.INVENTORY.isEmpty()) {
-            return "No inventory records found.";
-        }
-
-        inventoryDetails.append("Medical Inventory:\n");
-        inventoryDetails.append("------------------------------------------------------------\n");
-
-        for (Map.Entry<String, InventoryList> entry : Repository.INVENTORY.entrySet()) {
-            InventoryList inventoryItem = entry.getValue();
-            Medicine medicine = inventoryItem.getMedicine();
-
-            inventoryDetails.append("Medicine ID: ").append(medicine.getMedicineId()).append("\n");
-            inventoryDetails.append("Medicine Name: ").append(medicine.getMedicineName()).append("\n");
-            inventoryDetails.append("Medicine Price: $").append(medicine.getMedicinePrice()).append("\n");
-            inventoryDetails.append("Medicine Description: ").append(medicine.getMedicineDescription()).append("\n");
-            inventoryDetails.append("Initial Stock: ").append(inventoryItem.getInitialStock()).append("\n");
-            inventoryDetails.append("Low Stock Level Alert: ").append(inventoryItem.getLowStocklevelAlert()).append("\n");
-            inventoryDetails.append("------------------------------------------------------------\n");
-        }
-
-        return inventoryDetails.toString();
-    }
-
-    public boolean approveReplenishmentRequests(String medicalId, int stockCount) {
-        // Check if the specified medicalId exists in INVENTORY
-        if (!Repository.INVENTORY.containsKey(medicalId)) {
-            System.out.println("Medical ID not found in inventory.");
-            return false;
-        }
-
-        // Retrieve the InventoryList item associated with the medicalId
-        InventoryList inventoryItem = Repository.INVENTORY.get(medicalId);
-
-        // Check if the initialStock is lower than the lowStockLevelAlert
-        if (inventoryItem.getInitialStock() < inventoryItem.getLowStocklevelAlert()) {
-            // Update the stock level by adding stockCount to the current initialStock
-            int updatedStock = inventoryItem.getInitialStock() + stockCount;
-            inventoryItem.setInitialStock(updatedStock);
-
-            // Update the INVENTORY map in the repository
-            Repository.INVENTORY.put(medicalId, inventoryItem);
-
-            // Persist the changes to the data file
-            Repository.persistData(FileType.INVENTORY);
-
-            System.out.println("Stock level updated successfully for Medicine ID: " + medicalId);
-            return true;
-        } else {
-            System.out.println("Replenishment not needed: Stock level is above alert threshold.");
-            return false;
-        }
-    }
-
 }

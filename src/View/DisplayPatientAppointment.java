@@ -18,10 +18,36 @@ import src.Model.Patient;
 import src.Model.Schedule;
 import src.Model.Specialization;
 
+/**
+ * The {@code DisplayPatientAppointment} class manages the patient's interface
+ * for handling appointments.
+ * <p>
+ * This class allows patients to:
+ * <ul>
+ * <li>Schedule appointments with available doctors</li>
+ * <li>View their appointments</li>
+ * <li>Reschedule pending appointments</li>
+ * <li>Cancel pending appointments</li>
+ * </ul>
+ * <p>
+ * This class is part of the {@code View} layer in the application.
+ * </p>
+ *
+ * @author Jasmine Tye Jia Wen
+ * @version 1.0
+ * @since 2024-11-17
+ */
 public class DisplayPatientAppointment extends MainView {
 
     private Patient patient;
 
+    /**
+     * Constructs a {@code DisplayPatientAppointment} object for the specified
+     * patient.
+     *
+     * @param patient The patient associated with this view.
+     * @throws IllegalArgumentException If the patient is {@code null}.
+     */
     public DisplayPatientAppointment(Patient patient) {
         if (patient == null) {
             System.out.println("Error: Patient is null in DisplayPatientAppointment.");
@@ -31,6 +57,9 @@ public class DisplayPatientAppointment extends MainView {
         System.out.println("DisplayPatientAppointment initialized with patient: " + patient.getPatientId());
     }
 
+    /**
+     * Prints the available actions for the patient.
+     */
     @Override
     public void printActions() {
         Helper.clearScreen();
@@ -43,6 +72,9 @@ public class DisplayPatientAppointment extends MainView {
         System.out.println("(5) Back");
     }
 
+    /**
+     * Handles the patient's interactions with appointments.
+     */
     @Override
     public void viewApp() {
         int opt = -1;
@@ -82,6 +114,9 @@ public class DisplayPatientAppointment extends MainView {
         } while (true);
     }
 
+    /**
+     * Prompts the patient to reschedule a pending appointment.
+     */
     private void promptRescheduleAppointment() {
         List<Appointment> appointments = AppointmentController.viewPatientAppointments(patient);
         List<Appointment> pendingAppointments = new ArrayList<>();
@@ -128,6 +163,9 @@ public class DisplayPatientAppointment extends MainView {
         }
     }
 
+    /**
+     * Prompts the patient to reschedule a new appointment.
+     */
     private Schedule promptNewScheduleForReschedule(Doctor doctor, Appointment currentAppointment) {
         List<Schedule> availableSchedules = doctor.getAvailability();
         if (availableSchedules.isEmpty()) {
@@ -224,6 +262,9 @@ public class DisplayPatientAppointment extends MainView {
         return new Schedule(startTime, endTime);
     }
 
+    /**
+     * Prompts the patient to cancel a pending appointment.
+     */
     private void cancelAppointment() {
         List<Appointment> appointments = AppointmentController.viewPatientAppointments(patient);
         List<Appointment> pendingAppointments = new ArrayList<>();
@@ -263,6 +304,9 @@ public class DisplayPatientAppointment extends MainView {
         }
     }
 
+    /**
+     * Displays the patient's appointment requests grouped by date.
+     */
     private void viewAppointmentRequests() {
         List<Appointment> appointmentRequests = AppointmentController.viewPatientAppointments(patient);
 
@@ -296,6 +340,9 @@ public class DisplayPatientAppointment extends MainView {
         }
     }
 
+    /**
+     * Prompts the patient to schedule an appointment.
+     */
     private void promptScheduleAppointment() {
         boolean scheduledAppointment = false;
         do {
@@ -329,6 +376,12 @@ public class DisplayPatientAppointment extends MainView {
         } while (!scheduledAppointment);
     }
 
+    /**
+     * Prompts the patient to view available appointments by doctor.
+     *
+     * @return {@code true} if an appointment was scheduled successfully;
+     * {@code false} otherwise.
+     */
     public boolean promptDisplayApptByDoctor() {
         List<Doctor> availableDoc = DoctorController.getAllDoctors();
 
@@ -407,6 +460,12 @@ public class DisplayPatientAppointment extends MainView {
         return scheduleAppointmentInput(selectedDoctor, selectedSchedule);
     }
 
+    /**
+     * Prompts the patient to view all available appointments.
+     *
+     * @return {@code true} if an appointment was scheduled successfully;
+     * {@code false} otherwise.
+     */
     public boolean promptAllAvailableAppt() {
         List<Doctor> availableDoctors = DoctorController.getAllDoctors();
 
@@ -502,6 +561,15 @@ public class DisplayPatientAppointment extends MainView {
         return scheduleAppointmentInput(selectedDoctor, selectedSchedule);
     }
 
+    /**
+     * Helper method to schedule an appointment based on the selected doctor and
+     * schedule.
+     *
+     * @param selectedDoctor The selected doctor.
+     * @param selectedSchedule The selected schedule.
+     * @return {@code true} if the appointment was scheduled successfully;
+     * {@code false} otherwise.
+     */
     private boolean scheduleAppointmentInput(Doctor selectedDoctor, Schedule selectedSchedule) {
         // Prompt user for the desired start and end time
         String scheduleDate = selectedSchedule.getStartTime().toLocalDate().toString();
