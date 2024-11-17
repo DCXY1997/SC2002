@@ -20,7 +20,7 @@ import java.util.List;
  *   <li>Tracks the quantities of the prescribed medications.</li>
  * </ul>
  * 
- * @author Bryan
+ * @author Bryan, Darren
  * @version 1.0
  * @since 2024-11-17
  */
