@@ -13,7 +13,7 @@ import src.Enum.Gender;
  * <p>This class implements {@link Serializable} to allow patient data to be serialized
  * for persistence.</p>
  * 
- * @author Bryan
+ * @author Bryan, Darren
  * @version 1.0
  * @since 2024-11-17
  */
