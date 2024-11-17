@@ -35,44 +35,6 @@ public class PharmacistController {
 			return false;
 	}
 	
-	/*public void changePrescriptionStatus(AppointmentOutcome appointmentOutcome, InventoryList inventory) {
-		int i = 0;
-	    for (Medicine medicine : appointmentOutcome.getPrescribedMedicines()) {
-	        if (inventory.getMedicine().equals(medicine)) {
-	            int currentStock = inventory.getInitialStock(); 
-	            int medicineAmount = appointmentOutcome.getMedicineAmount().get(i); 
-	            
-	            if (currentStock >= medicineAmount) {
-	                inventory.setInitialStock(currentStock - medicineAmount);
-	                medicine.setStatus(MedicineStatus.DISPENSED); 
-	                //System.out.println("Updated status of " + medicine.getMedicineName() + " to DISPENSED. Remaining stock: " + (currentStock - medicineAmount));
-	            } else {
-	            	submitReplenishmentRequest(medicine.getMedicineId());
-	                System.out.println("Not enough stock for " + medicine.getMedicineName() + ". Current stock: " + currentStock + ", Required: " + medicineAmount);
-	            }
-	        }
-			i++;
-	    }
-	}*/
-
-	
-	/*public String getLowStock(InventoryList inventory) {
-	    StringBuilder sb = new StringBuilder();
-	    
-	    // Check if the initial stock is less than the low stock level alert
-	    if (inventory.getInitialStock() < inventory.getLowStocklevelAlert()) {
-	        sb.append("Medicine: ").append(inventory.getMedicine().getMedicineName())
-	          .append(" | Stock: ").append(inventory.getInitialStock())
-	          .append(" | Alert Threshold: ").append(inventory.getLowStocklevelAlert())
-	          .append("\n");
-	    } else {
-	        sb.append("All medicines are above the alert threshold.");
-	    }
-	    
-	    return sb.toString();
-	}*/
-
-	
 	public static void submitReplenishmentRequest(String medicineId)
 	{
 		int opt = -1;
