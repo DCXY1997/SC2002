@@ -5,22 +5,24 @@ import src.Helper.Helper;
 import src.Controller.*;
 
 /**
- * The InventoryView class provides an interface for pharmacists to view and manage 
- * the medication inventory in the hospital management system.
+ * The InventoryView class provides an interface for pharmacists to view and
+ * manage the medication inventory in the hospital management system.
  * <p>
  * This class allows pharmacists to:
  * </p>
  * <ul>
- *   <li>View all medication inventory.</li>
- *   <li>Submit replenishment requests for low-stock medication.</li>
- *   <li>Navigate back to the previous menu.</li>
+ * <li>View all medication inventory.</li>
+ * <li>Submit replenishment requests for low-stock medication.</li>
+ * <li>Navigate back to the previous menu.</li>
  * </ul>
  *
- * <p><b>Key Features:</b></p>
+ * <p>
+ * <b>Key Features:</b></p>
  * <ul>
- *   <li>Integrates with {@link InventoryController} to fetch inventory data.</li>
- *   <li>Allows pharmacists to identify and address low-stock inventory.</li>
- *   <li>Facilitates submitting replenishment requests via {@link PharmacistController}.</li>
+ * <li>Integrates with {@link InventoryController} to fetch inventory data.</li>
+ * <li>Allows pharmacists to identify and address low-stock inventory.</li>
+ * <li>Facilitates submitting replenishment requests via
+ * {@link PharmacistController}.</li>
  * </ul>
  *
  * @see InventoryController
@@ -31,7 +33,6 @@ import src.Controller.*;
  * @version 1.0
  * @since 2024-11-17
  */
-
 public class InventoryView extends MainView {
 
     /**
@@ -40,8 +41,8 @@ public class InventoryView extends MainView {
      * The menu options include:
      * </p>
      * <ul>
-     *   <li>(1) View all medication inventory.</li>
-     *   <li>(2) Navigate back to the previous menu.</li>
+     * <li>(1) View all medication inventory.</li>
+     * <li>(2) Navigate back to the previous menu.</li>
      * </ul>
      */
     @Override
@@ -55,7 +56,8 @@ public class InventoryView extends MainView {
     /**
      * Controls the workflow of the Medication Inventory View.
      * <p>
-     * Allows the pharmacist to view the full inventory or navigate back to the previous menu.
+     * Allows the pharmacist to view the full inventory or navigate back to the
+     * previous menu.
      * </p>
      */
     @Override
@@ -88,16 +90,18 @@ public class InventoryView extends MainView {
     }
 
     /**
-     * Displays the interface for submitting replenishment requests for low-stock medication.
+     * Displays the interface for submitting replenishment requests for
+     * low-stock medication.
      * <p>
      * This method provides the following options:
      * </p>
      * <ul>
-     *   <li>(1) View low-stock medication and submit a replenishment request.</li>
-     *   <li>(2) Navigate back to the previous menu.</li>
+     * <li>(1) View low-stock medication and submit a replenishment
+     * request.</li>
+     * <li>(2) Navigate back to the previous menu.</li>
      * </ul>
-     * The pharmacist can view a list of low-stock medication and choose to submit a request
-     * for a specific medicine by entering its ID.
+     * The pharmacist can view a list of low-stock medication and choose to
+     * submit a request for a specific medicine by entering its ID.
      */
     public void displayReplenishmentRequest() {
         Scanner sc = new Scanner(System.in);

@@ -1,6 +1,6 @@
 package src.View;
 
-import java.util.Map; 
+import java.util.Map;
 import src.Model.*;
 import src.Controller.*;
 import java.util.*;
@@ -9,20 +9,24 @@ import src.Repository.*;
 import src.Enum.*;
 
 /**
- * The {@code AppointmentOutcomeView} class handles the user interface for managing appointment outcomes.
- * It interacts with the {@link AppointmentOutcomeController} and displays pending prescriptions, updates prescription statuses, 
- * and provides options to view appointment outcomes.
- * 
- * <p><b>Features:</b></p>
+ * The {@code AppointmentOutcomeView} class handles the user interface for
+ * managing appointment outcomes. It interacts with the
+ * {@link AppointmentOutcomeController} and displays pending prescriptions,
+ * updates prescription statuses, and provides options to view appointment
+ * outcomes.
+ *
+ * <p>
+ * <b>Features:</b></p>
  * <ul>
- *   <li>View all appointment outcomes with pending prescriptions.</li>
- *   <li>Update prescription status for a specific appointment outcome.</li>
- *   <li>Navigate back to the previous menu.</li>
+ * <li>View all appointment outcomes with pending prescriptions.</li>
+ * <li>Update prescription status for a specific appointment outcome.</li>
+ * <li>Navigate back to the previous menu.</li>
  * </ul>
  *
- * <p><b>Associated Controllers:</b></p>
+ * <p>
+ * <b>Associated Controllers:</b></p>
  * <ul>
- *   <li>{@link AppointmentOutcomeController}</li>
+ * <li>{@link AppointmentOutcomeController}</li>
  * </ul>
  *
  * @author Cheah Wei Jun
@@ -32,8 +36,8 @@ import src.Enum.*;
 public class AppointmentOutcomeView extends MainView {
 
     /**
-     * Prints the available actions for the Appointment Outcome view.
-     * This method provides options to view appointment outcomes or navigate back.
+     * Prints the available actions for the Appointment Outcome view. This
+     * method provides options to view appointment outcomes or navigate back.
      */
     @Override
     protected void printActions() {
@@ -44,8 +48,8 @@ public class AppointmentOutcomeView extends MainView {
     }
 
     /**
-     * Handles the main navigation for the Appointment Outcome view.
-     * Users can choose to view appointment outcomes or navigate back.
+     * Handles the main navigation for the Appointment Outcome view. Users can
+     * choose to view appointment outcomes or navigate back.
      */
     @Override
     public void viewApp() {
@@ -71,8 +75,9 @@ public class AppointmentOutcomeView extends MainView {
     }
 
     /**
-     * Displays all appointment outcomes that have pending prescriptions.
-     * For each outcome with pending prescriptions, the details and associated medicines are listed.
+     * Displays all appointment outcomes that have pending prescriptions. For
+     * each outcome with pending prescriptions, the details and associated
+     * medicines are listed.
      */
     public void displayAllPendingOutcome() {
         boolean hasPendingPrescriptions = false;
@@ -111,8 +116,8 @@ public class AppointmentOutcomeView extends MainView {
     }
 
     /**
-     * Displays the prescription status management menu.
-     * Allows users to update the status of prescriptions for a specific appointment outcome.
+     * Displays the prescription status management menu. Allows users to update
+     * the status of prescriptions for a specific appointment outcome.
      */
     public void displayPrescriptionStatus() {
         int opt = -1;

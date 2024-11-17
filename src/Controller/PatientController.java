@@ -22,7 +22,7 @@ import src.Repository.Repository;
  * <p>This class acts as a bridge between patient-related views and the repository layer, handling
  * the business logic and data operations for patient management.</p>
  *
- * @author Bryan, Darren
+ * @author Jasmine, Bryan, Darren
  * @version 1.0
  * @since 2024-11-17
  */
@@ -31,7 +31,7 @@ public class PatientController {
 
     /**
      * Retrieves a patient by their ID.
-     *
+     * @author Jasmine
      * @param loginId The ID of the patient.
      * @return The {@link Patient} object if found; {@code null} otherwise.
      */
@@ -41,7 +41,7 @@ public class PatientController {
     }
     /**
      * Authenticates a patient based on their ID and password.
-     *
+     * @author Jasmine
      * @param id The patient's ID.
      * @param password The patient's password.
      * @return {@code true} if the credentials are valid; {@code false} otherwise.
@@ -66,7 +66,7 @@ public class PatientController {
     }
     /**
      * Changes the password of the specified patient.
-     *
+     * @author Jasmine
      * @param patient The patient whose password is being updated.
      * @param password The new password.
      * @param confirmPassword The confirmation of the new password.
@@ -84,7 +84,7 @@ public class PatientController {
     }
     /**
      * Updates the contact information of the specified patient.
-     *
+     * @author Jasmine
      * @param patient The patient whose contact information is being updated.
      * @param newContactInformation The new contact information.
      */
@@ -97,7 +97,7 @@ public class PatientController {
     }
     /**
      * Displays the personal information of the patient with the given ID.
-     *
+     * @author Jasmine
      * @param loginId The ID of the patient.
      */
         public static void displayPersonalInformation(String loginId) {
@@ -117,7 +117,7 @@ public class PatientController {
     /**
      * Displays the medical record of the patient with the given ID, including diagnoses
      * and treatments.
-     *
+     * 
      * @param loginId The ID of the patient.
      */
 
@@ -164,7 +164,7 @@ public class PatientController {
     }
     /**
      * Displays past appointment outcomes for a specific patient.
-     *
+     * 
      * @param patientId The ID of the patient.
      */
 

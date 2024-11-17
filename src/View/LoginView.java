@@ -11,23 +11,26 @@ import src.Model.Patient;
 import src.Model.Staff;
 
 /**
- * The LoginView class provides an interface for handling user authentication 
- * for the hospital management system. Users can log in as staff (Admin, Doctor, Pharmacist) 
- * or as patients.
+ * The LoginView class provides an interface for handling user authentication
+ * for the hospital management system. Users can log in as staff (Admin, Doctor,
+ * Pharmacist) or as patients.
  * <p>
  * This class facilitates:
  * </p>
  * <ul>
- *   <li>Authentication of staff and patients.</li>
- *   <li>Redirecting users to their respective views upon successful login.</li>
- *   <li>Handling incorrect login attempts and error messages.</li>
+ * <li>Authentication of staff and patients.</li>
+ * <li>Redirecting users to their respective views upon successful login.</li>
+ * <li>Handling incorrect login attempts and error messages.</li>
  * </ul>
  *
- * <p><b>Key Features:</b></p>
+ * <p>
+ * <b>Key Features:</b></p>
  * <ul>
- *   <li>Integrates with {@link StaffController} to authenticate staff logins.</li>
- *   <li>Integrates with {@link PatientController} to authenticate patient logins.</li>
- *   <li>Provides redirection to views like {@link AdminView}, {@link DoctorView}, 
+ * <li>Integrates with {@link StaffController} to authenticate staff
+ * logins.</li>
+ * <li>Integrates with {@link PatientController} to authenticate patient
+ * logins.</li>
+ * <li>Provides redirection to views like {@link AdminView}, {@link DoctorView},
  *   {@link PharmacistView}, and {@link PatientView} based on user roles.</li>
  * </ul>
  *
@@ -39,20 +42,21 @@ import src.Model.Staff;
  * @see PatientView
  * @see Helper
  * @see MainView
- * @author Keng Jia Chi
+ * @author Keng Jia Chi, Jasmine Tye
  * @version 1.0
  * @since 2024-11-17
  */
-
 public class LoginView extends MainView {
 
     /**
-     * Reference to the AdminView for handling admin-related actions after login.
+     * Reference to the AdminView for handling admin-related actions after
+     * login.
      */
     private AdminView adminView = new AdminView();
 
     /**
-     * Reference to the PharmacistView for handling pharmacist-related actions after login.
+     * Reference to the PharmacistView for handling pharmacist-related actions
+     * after login.
      */
     private PharmacistView pharmacistView = new PharmacistView();
 
@@ -62,10 +66,10 @@ public class LoginView extends MainView {
      * The menu options include:
      * </p>
      * <ul>
-     *   <li>(1) Login as Admin</li>
-     *   <li>(2) Login as Doctor</li>
-     *   <li>(3) Login as Pharmacist</li>
-     *   <li>(4) Back to the previous menu</li>
+     * <li>(1) Login as Admin</li>
+     * <li>(2) Login as Doctor</li>
+     * <li>(3) Login as Pharmacist</li>
+     * <li>(4) Back to the previous menu</li>
      * </ul>
      */
     @Override
@@ -79,8 +83,8 @@ public class LoginView extends MainView {
     }
 
     /**
-     * Displays the login view for staff and redirects to appropriate staff views 
-     * upon successful authentication.
+     * Displays the login view for staff and redirects to appropriate staff
+     * views upon successful authentication.
      */
     @Override
     public void viewApp() {
@@ -88,13 +92,15 @@ public class LoginView extends MainView {
     }
 
     /**
-     * Manages the login process for staff or patients based on the specified mode.
+     * Manages the login process for staff or patients based on the specified
+     * mode.
      * <p>
-     * When {@code isStaff} is true, the method authenticates staff logins using 
+     * When {@code isStaff} is true, the method authenticates staff logins using
      * {@link StaffController}. Otherwise, it handles patient logins.
      * </p>
      *
-     * @param isStaff {@code true} for staff login; {@code false} for patient login.
+     * @param isStaff {@code true} for staff login; {@code false} for patient
+     * login.
      */
     public void viewApp(boolean isStaff) {
         if (isStaff) {
@@ -172,7 +178,7 @@ public class LoginView extends MainView {
     /**
      * Handles the login process for patients.
      * <p>
-     * Authenticates patients using {@link PatientController} and redirects to 
+     * Authenticates patients using {@link PatientController} and redirects to
      * {@link PatientView} upon successful login.
      * </p>
      */
@@ -202,4 +208,3 @@ public class LoginView extends MainView {
         }
     }
 }
-

@@ -6,20 +6,23 @@ import java.util.List;
 
 /**
  * Represents a medical treatment associated with a diagnosis.
- * 
- * <p>The {@code Treatment} class stores information about medications prescribed for
- * a specific treatment and the associated quantities.</p>
- * 
- * <p>This class implements {@link Serializable} to allow instances of {@code Treatment}
- * to be serialized and stored persistently.</p>
- * 
- * <p><b>Key Features:</b></p>
+ *
+ * <p>
+ * The {@code Treatment} class stores information about medications prescribed
+ * for a specific treatment and the associated quantities.</p>
+ *
+ * <p>
+ * This class implements {@link Serializable} to allow instances of
+ * {@code Treatment} to be serialized and stored persistently.</p>
+ *
+ * <p>
+ * <b>Key Features:</b></p>
  * <ul>
- *   <li>Stores the treatment ID to identify the treatment uniquely.</li>
- *   <li>Maintains a list of medications associated with the treatment.</li>
- *   <li>Tracks the quantities of the prescribed medications.</li>
+ * <li>Stores the treatment ID to identify the treatment uniquely.</li>
+ * <li>Maintains a list of medications associated with the treatment.</li>
+ * <li>Tracks the quantities of the prescribed medications.</li>
  * </ul>
- * 
+ *
  * @author Bryan, Darren
  * @version 1.0
  * @since 2024-11-17
@@ -32,7 +35,6 @@ public class Treatment implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // Attributes
-
     /**
      * The unique identifier for the treatment.
      */
@@ -49,13 +51,14 @@ public class Treatment implements Serializable {
     private List<Integer> medicineAmount;
 
     // Constructors
-
     /**
-     * Constructs a new {@code Treatment} with the specified ID, medications, and their quantities.
-     * 
-     * @param treatmentId   The unique identifier for the treatment.
-     * @param medications   The list of prescribed medications.
-     * @param medicineAmount The list of quantities corresponding to the medications.
+     * Constructs a new {@code Treatment} with the specified ID, medications,
+     * and their quantities.
+     *
+     * @param treatmentId The unique identifier for the treatment.
+     * @param medications The list of prescribed medications.
+     * @param medicineAmount The list of quantities corresponding to the
+     * medications.
      */
     public Treatment(int treatmentId, List<Medicine> medications, List<Integer> medicineAmount) {
         this.treatmentId = treatmentId;
@@ -64,10 +67,9 @@ public class Treatment implements Serializable {
     }
 
     // Getters and Setters
-
     /**
      * Returns the treatment ID.
-     * 
+     *
      * @return The unique identifier for the treatment.
      */
     public int getTreatmentId() {
@@ -76,7 +78,7 @@ public class Treatment implements Serializable {
 
     /**
      * Sets the treatment ID.
-     * 
+     *
      * @param treatmentId The new treatment ID.
      */
     public void setTreatmentId(int treatmentId) {
@@ -85,7 +87,7 @@ public class Treatment implements Serializable {
 
     /**
      * Returns the list of medications associated with the treatment.
-     * 
+     *
      * @return The list of medications.
      */
     public List<Medicine> getMedications() {
@@ -94,7 +96,7 @@ public class Treatment implements Serializable {
 
     /**
      * Adds a medication to the treatment.
-     * 
+     *
      * @param medicine The medication to add.
      */
     public void addMedication(Medicine medicine) {
@@ -105,7 +107,7 @@ public class Treatment implements Serializable {
 
     /**
      * Removes a medication from the treatment.
-     * 
+     *
      * @param medicine The medication to remove.
      */
     public void removeMedication(Medicine medicine) {
@@ -114,7 +116,7 @@ public class Treatment implements Serializable {
 
     /**
      * Returns the list of quantities corresponding to the medications.
-     * 
+     *
      * @return The list of quantities for each medication.
      */
     public List<Integer> getMedicineAmount() {
@@ -123,7 +125,7 @@ public class Treatment implements Serializable {
 
     /**
      * Sets the quantities of the prescribed medications.
-     * 
+     *
      * @param medicineAmount The new list of quantities.
      */
     public void setMedicineAmount(List<Integer> medicineAmount) {

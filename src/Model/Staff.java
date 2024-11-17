@@ -7,15 +7,17 @@ import src.Enum.StaffType;
 /**
  * The Staff class represents an employee in a hospital management system.
  * <p>
- * This class serves as a base class for specific staff roles such as {@link Admin}.
- * It includes common attributes such as name, password, age, role, gender, and hospital ID.
+ * This class serves as a base class for specific staff roles such as
+ * {@link Admin}. It includes common attributes such as name, password, age,
+ * role, gender, and hospital ID.
  * </p>
  *
- * <p><b>Key Features:</b></p>
+ * <p>
+ * <b>Key Features:</b></p>
  * <ul>
- *   <li>Tracks personal details like name, age, and gender.</li>
- *   <li>Defines the staff's role using {@link StaffType}.</li>
- *   <li>Manages the staff's credentials for authentication.</li>
+ * <li>Tracks personal details like name, age, and gender.</li>
+ * <li>Defines the staff's role using {@link StaffType}.</li>
+ * <li>Manages the staff's credentials for authentication.</li>
  * </ul>
  *
  * @see Admin
@@ -28,8 +30,8 @@ import src.Enum.StaffType;
 public class Staff implements Serializable {
 
     /**
-     * For Java Serializable.
-     * Ensures compatibility during serialization and deserialization processes.
+     * For Java Serializable. Ensures compatibility during serialization and
+     * deserialization processes.
      */
     private static final long serialVersionUID = 1L;
 
@@ -52,11 +54,12 @@ public class Staff implements Serializable {
     /**
      * Constructs a new Staff object with the specified attributes.
      *
-     * @param name       The name of the staff member.
-     * @param password   The password for the staff member's account.
-     * @param role       The role of the staff member (e.g., {@link StaffType#ADMIN}).
-     * @param gender     The gender of the staff member (e.g., {@link Gender#MALE}, {@link Gender#FEMALE}).
-     * @param age        The age of the staff member.
+     * @param name The name of the staff member.
+     * @param password The password for the staff member's account.
+     * @param role The role of the staff member (e.g., {@link StaffType#ADMIN}).
+     * @param gender The gender of the staff member (e.g.,
+     * {@link Gender#MALE}, {@link Gender#FEMALE}).
+     * @param age The age of the staff member.
      * @param hospitalId The unique hospital ID assigned to the staff member.
      */
     public Staff(String name, String password, StaffType role, Gender gender, int age, String hospitalId) {

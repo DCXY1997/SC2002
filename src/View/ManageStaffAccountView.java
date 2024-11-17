@@ -7,23 +7,27 @@ import src.Helper.Helper;
 import src.Repository.Repository;
 
 /**
- * The ManageStaffAccountView class provides an interface for administrators 
- * to manage hospital staff accounts in the hospital management system.
+ * The ManageStaffAccountView class provides an interface for administrators to
+ * manage hospital staff accounts in the hospital management system.
  * <p>
  * This class allows administrators to:
  * </p>
  * <ul>
- *   <li>Add new staff accounts with details such as name, role, gender, and age.</li>
- *   <li>Remove existing staff accounts by their hospital ID.</li>
- *   <li>Update staff account details, including name, gender, and age.</li>
- *   <li>Navigate back to the previous menu.</li>
+ * <li>Add new staff accounts with details such as name, role, gender, and
+ * age.</li>
+ * <li>Remove existing staff accounts by their hospital ID.</li>
+ * <li>Update staff account details, including name, gender, and age.</li>
+ * <li>Navigate back to the previous menu.</li>
  * </ul>
  *
- * <p><b>Key Features:</b></p>
+ * <p>
+ * <b>Key Features:</b></p>
  * <ul>
- *   <li>Integrates with {@link AdminController} to handle staff management operations.</li>
- *   <li>Provides prompts and validation to ensure accurate data input.</li>
- *   <li>Generates unique hospital IDs for staff accounts based on their roles.</li>
+ * <li>Integrates with {@link AdminController} to handle staff management
+ * operations.</li>
+ * <li>Provides prompts and validation to ensure accurate data input.</li>
+ * <li>Generates unique hospital IDs for staff accounts based on their
+ * roles.</li>
  * </ul>
  *
  * @see AdminController
@@ -44,10 +48,10 @@ public class ManageStaffAccountView extends MainView {
      * The menu options include:
      * </p>
      * <ul>
-     *   <li>(1) Add new staff</li>
-     *   <li>(2) Remove staff</li>
-     *   <li>(3) Update staff details</li>
-     *   <li>(4) Exit the menu</li>
+     * <li>(1) Add new staff</li>
+     * <li>(2) Remove staff</li>
+     * <li>(3) Update staff details</li>
+     * <li>(4) Exit the menu</li>
      * </ul>
      */
     @Override
@@ -64,8 +68,8 @@ public class ManageStaffAccountView extends MainView {
     /**
      * Controls the workflow of the Manage Staff Account View.
      * <p>
-     * Allows the administrator to select and execute staff management operations 
-     * such as adding, removing, or updating staff accounts.
+     * Allows the administrator to select and execute staff management
+     * operations such as adding, removing, or updating staff accounts.
      * </p>
      */
     @Override
@@ -105,11 +109,12 @@ public class ManageStaffAccountView extends MainView {
     /**
      * Prompts the administrator to add a new staff account.
      * <p>
-     * Collects details such as name, role, gender, and age, generates a unique hospital ID,
-     * and creates the staff account.
+     * Collects details such as name, role, gender, and age, generates a unique
+     * hospital ID, and creates the staff account.
      * </p>
      *
-     * @return {@code true} if the staff account is successfully added, {@code false} otherwise.
+     * @return {@code true} if the staff account is successfully added,
+     * {@code false} otherwise.
      */
     private boolean promptAddStaffAccount() {
         System.out.println("Enter staff name:");
@@ -140,7 +145,8 @@ public class ManageStaffAccountView extends MainView {
     }
 
     /**
-     * Generates a unique hospital ID for a new staff account based on their role.
+     * Generates a unique hospital ID for a new staff account based on their
+     * role.
      *
      * @param role The role of the staff (e.g., Doctor, Pharmacist, Admin).
      * @return A unique hospital ID string.
@@ -168,7 +174,8 @@ public class ManageStaffAccountView extends MainView {
      * Validates the hospital ID before proceeding with the removal.
      * </p>
      *
-     * @return {@code true} if the staff account is successfully removed, {@code false} otherwise.
+     * @return {@code true} if the staff account is successfully removed,
+     * {@code false} otherwise.
      */
     private boolean promptRemoveStaffAccount() {
         Helper.clearScreen();
@@ -192,10 +199,12 @@ public class ManageStaffAccountView extends MainView {
     /**
      * Prompts the administrator to update a staff account.
      * <p>
-     * Allows updating details such as name, gender, or age based on the user's choice.
+     * Allows updating details such as name, gender, or age based on the user's
+     * choice.
      * </p>
      *
-     * @return {@code true} if the staff account is successfully updated, {@code false} otherwise.
+     * @return {@code true} if the staff account is successfully updated,
+     * {@code false} otherwise.
      */
     private boolean promptUpdateStaff() {
         Helper.clearScreen();
@@ -239,9 +248,9 @@ public class ManageStaffAccountView extends MainView {
      * The options include updating:
      * </p>
      * <ul>
-     *   <li>(1) Name</li>
-     *   <li>(2) Gender</li>
-     *   <li>(3) Age</li>
+     * <li>(1) Name</li>
+     * <li>(2) Gender</li>
+     * <li>(3) Age</li>
      * </ul>
      */
     private void printUpdateStaffMenu() {
@@ -257,7 +266,8 @@ public class ManageStaffAccountView extends MainView {
      * Displays a menu and validates the selection.
      * </p>
      *
-     * @return The selected {@link Gender}, or {@code null} if the input is invalid.
+     * @return The selected {@link Gender}, or {@code null} if the input is
+     * invalid.
      */
     private Gender promptGender() {
         printGenderMenu();
@@ -278,12 +288,13 @@ public class ManageStaffAccountView extends MainView {
      * The options include:
      * </p>
      * <ul>
-     *   <li>(1) Doctor</li>
-     *   <li>(2) Pharmacist</li>
-     *   <li>(3) Admin</li>
+     * <li>(1) Doctor</li>
+     * <li>(2) Pharmacist</li>
+     * <li>(3) Admin</li>
      * </ul>
      *
-     * @return The selected {@link StaffType}, or {@code null} if the input is invalid.
+     * @return The selected {@link StaffType}, or {@code null} if the input is
+     * invalid.
      */
     private StaffType promptRole() {
         printRoleMenu();

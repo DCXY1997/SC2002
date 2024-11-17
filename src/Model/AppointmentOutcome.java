@@ -8,21 +8,24 @@ import src.Enum.PaymentStatus;
 import src.Enum.ServiceType;
 
 /**
- * The {@code AppointmentOutcome} class represents the outcome of a medical appointment,
- * including prescribed medicines, diagnoses, services provided, and payment status.
- * 
- * <p>This class provides functionality to manage the details of an appointment outcome,
- * including adding and removing prescribed medicines, diagnoses, and services, as well
- * as managing payment and diagnostic information.</p>
- * 
- * <p><b>Features:</b></p>
+ * The {@code AppointmentOutcome} class represents the outcome of a medical
+ * appointment, including prescribed medicines, diagnoses, services provided,
+ * and payment status.
+ *
+ * <p>
+ * This class provides functionality to manage the details of an appointment
+ * outcome, including adding and removing prescribed medicines, diagnoses, and
+ * services, as well as managing payment and diagnostic information.</p>
+ *
+ * <p>
+ * <b>Features:</b></p>
  * <ul>
- *   <li>Tracks prescribed medicines, their amounts, and statuses.</li>
- *   <li>Tracks patient diagnoses associated with the appointment.</li>
- *   <li>Tracks services provided during the appointment.</li>
- *   <li>Supports payment status management.</li>
+ * <li>Tracks prescribed medicines, their amounts, and statuses.</li>
+ * <li>Tracks patient diagnoses associated with the appointment.</li>
+ * <li>Tracks services provided during the appointment.</li>
+ * <li>Supports payment status management.</li>
  * </ul>
- * 
+ *
  * @author Cheah Wei Jun
  * @version 1.0
  * @since 2024-11-17
@@ -30,7 +33,8 @@ import src.Enum.ServiceType;
 public class AppointmentOutcome implements Serializable {
 
     /**
-     * For Java Serializable, used to ensure compatibility during deserialization.
+     * For Java Serializable, used to ensure compatibility during
+     * deserialization.
      */
     private static final long serialVersionUID = 1L;
 
@@ -75,19 +79,20 @@ public class AppointmentOutcome implements Serializable {
     private PaymentStatus paymentStatus;
 
     /**
-     * Constructs an {@code AppointmentOutcome} with default payment status set to {@code PENDING}.
+     * Constructs an {@code AppointmentOutcome} with default payment status set
+     * to {@code PENDING}.
      *
-     * @param outcomeId          Unique identifier for the outcome.
+     * @param outcomeId Unique identifier for the outcome.
      * @param prescribedMedicines List of prescribed medicines.
-     * @param medicineAmount      List of amounts for the prescribed medicines.
-     * @param patientDiagnosis    List of diagnoses for the patient.
-     * @param services            List of services provided during the appointment.
-     * @param doctorNotes         Notes from the doctor.
-     * @param dateDiagnosed       Date and time of the diagnosis.
+     * @param medicineAmount List of amounts for the prescribed medicines.
+     * @param patientDiagnosis List of diagnoses for the patient.
+     * @param services List of services provided during the appointment.
+     * @param doctorNotes Notes from the doctor.
+     * @param dateDiagnosed Date and time of the diagnosis.
      */
     public AppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Integer> medicineAmount,
-                              List<Diagnosis> patientDiagnosis, List<ServiceType> services, String doctorNotes,
-                              LocalDateTime dateDiagnosed) {
+            List<Diagnosis> patientDiagnosis, List<ServiceType> services, String doctorNotes,
+            LocalDateTime dateDiagnosed) {
         this.outcomeId = outcomeId;
         this.prescribedMedicines = new ArrayList<>(prescribedMedicines);
         this.medicineAmount = new ArrayList<>(medicineAmount);
@@ -101,27 +106,26 @@ public class AppointmentOutcome implements Serializable {
     /**
      * Constructs an {@code AppointmentOutcome} with a specified payment status.
      *
-     * @param outcomeId          Unique identifier for the outcome.
+     * @param outcomeId Unique identifier for the outcome.
      * @param prescribedMedicines List of prescribed medicines.
-     * @param medicineAmount      List of amounts for the prescribed medicines.
-     * @param patientDiagnosis    List of diagnoses for the patient.
-     * @param services            List of services provided during the appointment.
-     * @param doctorNotes         Notes from the doctor.
-     * @param dateDiagnosed       Date and time of the diagnosis.
-     * @param paymentStatus       Payment status for the appointment.
+     * @param medicineAmount List of amounts for the prescribed medicines.
+     * @param patientDiagnosis List of diagnoses for the patient.
+     * @param services List of services provided during the appointment.
+     * @param doctorNotes Notes from the doctor.
+     * @param dateDiagnosed Date and time of the diagnosis.
+     * @param paymentStatus Payment status for the appointment.
      */
     public AppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Integer> medicineAmount,
-                              List<Diagnosis> patientDiagnosis, List<ServiceType> services, String doctorNotes,
-                              LocalDateTime dateDiagnosed, PaymentStatus paymentStatus) {
+            List<Diagnosis> patientDiagnosis, List<ServiceType> services, String doctorNotes,
+            LocalDateTime dateDiagnosed, PaymentStatus paymentStatus) {
         this(outcomeId, prescribedMedicines, medicineAmount, patientDiagnosis, services, doctorNotes, dateDiagnosed);
         this.paymentStatus = paymentStatus;
     }
 
     // Getters and Setters with Javadoc descriptions...
-
     /**
      * Retrieves the unique identifier for the outcome.
-     * 
+     *
      * @return The unique outcome ID.
      */
     public String getOutcomeId() {
@@ -130,7 +134,7 @@ public class AppointmentOutcome implements Serializable {
 
     /**
      * Sets the unique identifier for the outcome.
-     * 
+     *
      * @param outcomeId The outcome ID to set.
      */
     public void setOutcomeId(String outcomeId) {
@@ -139,7 +143,7 @@ public class AppointmentOutcome implements Serializable {
 
     /**
      * Retrieves the list of prescribed medicines.
-     * 
+     *
      * @return A list of {@link Medicine} objects.
      */
     public List<Medicine> getPrescribedMedicines() {
@@ -149,7 +153,8 @@ public class AppointmentOutcome implements Serializable {
     /**
      * Adds a prescribed medicine to the appointment outcome.
      *
-     * @param medicine The {@link Medicine} object to add. If null, it will not be added.
+     * @param medicine The {@link Medicine} object to add. If null, it will not
+     * be added.
      */
     public void addPrescribedMedicine(Medicine medicine) {
         if (medicine != null) {
@@ -160,7 +165,8 @@ public class AppointmentOutcome implements Serializable {
     /**
      * Retrieves the list of amounts for each prescribed medicine.
      *
-     * @return A list of integers representing the prescribed quantities for each medicine.
+     * @return A list of integers representing the prescribed quantities for
+     * each medicine.
      */
     public List<Integer> getMedicineAmount() {
         return medicineAmount;
@@ -169,8 +175,10 @@ public class AppointmentOutcome implements Serializable {
     /**
      * Sets the quantity for a prescribed medicine.
      *
-     * @param medicine The {@link Medicine} to associate with the specified amount.
-     * @param amount   The quantity of the medicine prescribed. Must be greater than 0.
+     * @param medicine The {@link Medicine} to associate with the specified
+     * amount.
+     * @param amount The quantity of the medicine prescribed. Must be greater
+     * than 0.
      */
     public void setMedicineAmount(Medicine medicine, int amount) {
         if (medicine != null && amount > 0) {
@@ -181,16 +189,19 @@ public class AppointmentOutcome implements Serializable {
     /**
      * Removes a prescribed medicine from the appointment outcome.
      *
-     * @param medicine The {@link Medicine} object to remove. If the medicine is not found, no action is taken.
+     * @param medicine The {@link Medicine} object to remove. If the medicine is
+     * not found, no action is taken.
      */
     public void removePrescribedMedicine(Medicine medicine) {
         this.prescribedMedicines.remove(medicine);
     }
 
     /**
-     * Retrieves the list of patient diagnoses associated with the appointment outcome.
+     * Retrieves the list of patient diagnoses associated with the appointment
+     * outcome.
      *
-     * @return A list of {@link Diagnosis} objects representing the patient's diagnoses.
+     * @return A list of {@link Diagnosis} objects representing the patient's
+     * diagnoses.
      */
     public List<Diagnosis> getPatientDiagnosis() {
         return patientDiagnosis;
@@ -199,7 +210,8 @@ public class AppointmentOutcome implements Serializable {
     /**
      * Adds a patient diagnosis to the appointment outcome.
      *
-     * @param diagnosis The {@link Diagnosis} to add. If null, it will not be added.
+     * @param diagnosis The {@link Diagnosis} to add. If null, it will not be
+     * added.
      */
     public void addPatientDiagnosis(Diagnosis diagnosis) {
         if (diagnosis != null) {
@@ -210,7 +222,8 @@ public class AppointmentOutcome implements Serializable {
     /**
      * Removes a patient diagnosis from the appointment outcome.
      *
-     * @param diagnosis The {@link Diagnosis} to remove. If not found, no action is taken.
+     * @param diagnosis The {@link Diagnosis} to remove. If not found, no action
+     * is taken.
      */
     public void removePatientDiagnosis(Diagnosis diagnosis) {
         this.patientDiagnosis.remove(diagnosis);
@@ -237,7 +250,8 @@ public class AppointmentOutcome implements Serializable {
     /**
      * Retrieves the date and time when the diagnosis was made.
      *
-     * @return A {@link LocalDateTime} object representing the diagnosis date and time.
+     * @return A {@link LocalDateTime} object representing the diagnosis date
+     * and time.
      */
     public LocalDateTime getDateDiagnosed() {
         return dateDiagnosed;
@@ -246,7 +260,8 @@ public class AppointmentOutcome implements Serializable {
     /**
      * Sets the date and time when the diagnosis was made.
      *
-     * @param dateDiagnosed A {@link LocalDateTime} object representing the diagnosis date and time.
+     * @param dateDiagnosed A {@link LocalDateTime} object representing the
+     * diagnosis date and time.
      */
     public void setDateDiagnosed(LocalDateTime dateDiagnosed) {
         this.dateDiagnosed = dateDiagnosed;
@@ -289,9 +304,11 @@ public class AppointmentOutcome implements Serializable {
     }
 
     /**
-     * Removes a service from the list of services provided during the appointment.
+     * Removes a service from the list of services provided during the
+     * appointment.
      *
-     * @param service The {@link ServiceType} to remove. If not found, no action is taken.
+     * @param service The {@link ServiceType} to remove. If not found, no action
+     * is taken.
      */
     public void removeServices(ServiceType service) {
         if (services.contains(service)) {
@@ -300,7 +317,6 @@ public class AppointmentOutcome implements Serializable {
             System.out.println("Service is not in this appointment outcome.");
         }
 
-}
+    }
 
 }
-

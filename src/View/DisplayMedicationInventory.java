@@ -5,20 +5,23 @@ import src.Controller.InventoryController;
 import src.Helper.Helper;
 
 /**
- * The DisplayMedicationInventory class provides an interface for administrators 
+ * The DisplayMedicationInventory class provides an interface for administrators
  * to view the medical inventory in the hospital management system.
  * <p>
  * This class allows administrators to:
  * </p>
  * <ul>
- *   <li>View a detailed record of all medical inventory items.</li>
- *   <li>Navigate back to the previous menu.</li>
+ * <li>View a detailed record of all medical inventory items.</li>
+ * <li>Navigate back to the previous menu.</li>
  * </ul>
  *
- * <p><b>Key Features:</b></p>
+ * <p>
+ * <b>Key Features:</b></p>
  * <ul>
- *   <li>Integrates with {@link InventoryController} to fetch inventory records.</li>
- *   <li>Provides a simple interface to display all available medical inventory items.</li>
+ * <li>Integrates with {@link InventoryController} to fetch inventory
+ * records.</li>
+ * <li>Provides a simple interface to display all available medical inventory
+ * items.</li>
  * </ul>
  *
  * @see InventoryController
@@ -29,7 +32,6 @@ import src.Helper.Helper;
  * @version 1.0
  * @since 2024-11-17
  */
-
 public class DisplayMedicationInventory extends MainView {
 
     /**
@@ -38,8 +40,8 @@ public class DisplayMedicationInventory extends MainView {
      * The menu options include:
      * </p>
      * <ul>
-     *   <li>(1) View the medical inventory.</li>
-     *   <li>(2) Navigate back to the previous menu.</li>
+     * <li>(1) View the medical inventory.</li>
+     * <li>(2) Navigate back to the previous menu.</li>
      * </ul>
      */
     @Override
@@ -53,7 +55,8 @@ public class DisplayMedicationInventory extends MainView {
     /**
      * Controls the workflow of the Medical Inventory View.
      * <p>
-     * Allows the administrator to choose from the available options and interact with the medical inventory interface.
+     * Allows the administrator to choose from the available options and
+     * interact with the medical inventory interface.
      * </p>
      */
     @Override
@@ -80,5 +83,3 @@ public class DisplayMedicationInventory extends MainView {
         } while (opt != 2);
     }
 }
-
-

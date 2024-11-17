@@ -8,29 +8,32 @@ import src.Model.Appointment;
 import src.Model.Patient;
 
 /**
- * The {@code PaymentView} class handles the user interface for managing patient payments.
- * It interacts with the {@link PaymentController} and displays completed appointments 
- * where payment is required.
- * 
- * <p><b>Features:</b></p>
+ * The {@code PaymentView} class handles the user interface for managing patient
+ * payments. It interacts with the {@link PaymentController} and displays
+ * completed appointments where payment is required.
+ *
+ * <p>
+ * <b>Features:</b></p>
  * <ul>
- *   <li>Allows patients to view their completed appointments.</li>
- *   <li>Enables patients to select an appointment and make a payment.</li>
- *   <li>Provides navigation back to the previous menu.</li>
- * </ul>
- * 
- * <p><b>Associated Controllers:</b></p>
- * <ul>
- *   <li>{@link PaymentController}</li>
- *   <li>{@link AppointmentController}</li>
+ * <li>Allows patients to view their completed appointments.</li>
+ * <li>Enables patients to select an appointment and make a payment.</li>
+ * <li>Provides navigation back to the previous menu.</li>
  * </ul>
  *
- * <p><b>Usage:</b></p>
+ * <p>
+ * <b>Associated Controllers:</b></p>
  * <ul>
- *   <li>Initialize the view with a valid {@link Patient} object.</li>
- *   <li>Use {@link #viewApp()} to launch the payment interface.</li>
+ * <li>{@link PaymentController}</li>
+ * <li>{@link AppointmentController}</li>
  * </ul>
- * 
+ *
+ * <p>
+ * <b>Usage:</b></p>
+ * <ul>
+ * <li>Initialize the view with a valid {@link Patient} object.</li>
+ * <li>Use {@link #viewApp()} to launch the payment interface.</li>
+ * </ul>
+ *
  * @author Cheah Wei Jun
  * @version 1.0
  * @since 2024-11-17
@@ -44,9 +47,9 @@ public class PaymentView extends MainView {
 
     /**
      * Constructs a new {@code PaymentView} for a specific patient.
-     * 
-     * @param patient The {@link Patient} for whom the payment view is being initialized.
-     *                Must not be {@code null}.
+     *
+     * @param patient The {@link Patient} for whom the payment view is being
+     * initialized. Must not be {@code null}.
      * @throws IllegalArgumentException if the {@code patient} is {@code null}.
      */
     public PaymentView(Patient patient) {
@@ -58,8 +61,8 @@ public class PaymentView extends MainView {
     }
 
     /**
-     * Prints the actions available in the payment view.
-     * This includes options to make a payment or navigate back to the previous menu.
+     * Prints the actions available in the payment view. This includes options
+     * to make a payment or navigate back to the previous menu.
      */
     @Override
     public void printActions() {
@@ -69,8 +72,8 @@ public class PaymentView extends MainView {
     }
 
     /**
-     * Handles the main navigation for the payment view.
-     * Provides options for patients to make a payment or return to the previous menu.
+     * Handles the main navigation for the payment view. Provides options for
+     * patients to make a payment or return to the previous menu.
      */
     @Override
     public void viewApp() {
@@ -99,12 +102,15 @@ public class PaymentView extends MainView {
 
     /**
      * Prompts the patient to select a completed appointment for payment.
-     * 
-     * <p>Displays a list of completed appointments and allows the patient to choose one.
-     * The selected appointment is then returned for further processing.
+     *
+     * <p>
+     * Displays a list of completed appointments and allows the patient to
+     * choose one. The selected appointment is then returned for further
+     * processing.
      * </p>
-     * 
-     * @param patient The {@link Patient} whose completed appointments are being displayed.
+     *
+     * @param patient The {@link Patient} whose completed appointments are being
+     * displayed.
      * @return The {@link Appointment} selected by the patient.
      */
     public static Appointment promptCompletedAppointments(Patient patient) {

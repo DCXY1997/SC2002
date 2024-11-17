@@ -9,20 +9,21 @@ import src.Model.Appointment;
 import src.Model.Doctor;
 
 /**
- * The {@code DisplayDoctorAppointment} class manages the doctor's interface for handling appointments.
+ * The {@code DisplayDoctorAppointment} class manages the doctor's interface for
+ * handling appointments.
  * <p>
  * This class allows doctors to:
  * <ul>
- *     <li>View appointment requests</li>
- *     <li>Accept or decline appointment requests</li>
- *     <li>View upcoming appointments</li>
- *     <li>View past appointments</li>
+ * <li>View appointment requests</li>
+ * <li>Accept or decline appointment requests</li>
+ * <li>View upcoming appointments</li>
+ * <li>View past appointments</li>
  * </ul>
  * <p>
  * This class is part of the {@code View} layer in the application.
  * </p>
- * 
- * @author Bryan
+ *
+ * @author Jasmine Tye
  * @version 1.0
  * @since 2024-11-17
  */
@@ -31,8 +32,9 @@ public class DisplayDoctorAppointment extends MainView {
     private Doctor doctor;
 
     /**
-     * Constructs a {@code DisplayDoctorAppointment} object for the specified doctor.
-     * 
+     * Constructs a {@code DisplayDoctorAppointment} object for the specified
+     * doctor.
+     *
      * @param doctor The doctor associated with this view.
      * @throws IllegalArgumentException If the doctor is {@code null}.
      */

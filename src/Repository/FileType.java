@@ -7,27 +7,32 @@ package src.Repository;
  * to a particular category of data managed by the system.
  * </p>
  *
- * <p><b>Enum Constants:</b></p>
+ * <p>
+ * <b>Enum Constants:</b></p>
  * <ul>
- *   <li>{@link #STAFF} - Represents the staff data file.</li>
- *   <li>{@link #INVENTORY} - Represents the medical inventory data file.</li>
- *   <li>{@link #REPLENISHMENT_REQUEST} - Represents the replenishment request data file.</li>
- *   <li>{@link #PATIENT} - Represents the patient data file.</li>
- *   <li>{@link #MEDICINE} - Represents the medicine data file.</li>
- *   <li>{@link #APPOINTMENT_OUTCOME} - Represents the appointment outcome data file.</li>
- *   <li>{@link #APPOINTMENT_LIST} - Represents the appointment list data file.</li>
- *   <li>{@link #MEDICAL_RECORD} - Represents the medical record data file.</li>
- *   <li>{@link #DIAGNOSIS} - Represents the diagnosis data file.</li>
- *   <li>{@link #TREATMENT} - Represents the treatment data file.</li>
+ * <li>{@link #STAFF} - Represents the staff data file.</li>
+ * <li>{@link #INVENTORY} - Represents the medical inventory data file.</li>
+ * <li>{@link #REPLENISHMENT_REQUEST} - Represents the replenishment request
+ * data file.</li>
+ * <li>{@link #PATIENT} - Represents the patient data file.</li>
+ * <li>{@link #MEDICINE} - Represents the medicine data file.</li>
+ * <li>{@link #APPOINTMENT_OUTCOME} - Represents the appointment outcome data
+ * file.</li>
+ * <li>{@link #APPOINTMENT_LIST} - Represents the appointment list data
+ * file.</li>
+ * <li>{@link #MEDICAL_RECORD} - Represents the medical record data file.</li>
+ * <li>{@link #DIAGNOSIS} - Represents the diagnosis data file.</li>
+ * <li>{@link #TREATMENT} - Represents the treatment data file.</li>
  * </ul>
  *
- * <p>Each constant has an associated file name that is used to identify the file in the system.</p>
+ * <p>
+ * Each constant has an associated file name that is used to identify the file
+ * in the system.</p>
  *
  * @author Keng Jia Chi
  * @version 1.0
  * @since 2024-11-17
  */
-
 public enum FileType {
     /**
      * Represents the staff data file.
@@ -84,4 +89,3 @@ public enum FileType {
         this.fileName = name;
     }
 }
-

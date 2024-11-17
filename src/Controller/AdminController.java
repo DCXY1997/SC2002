@@ -15,24 +15,27 @@ import src.View.AdminView;
 import src.View.DisplayStaffView;
 import src.View.ManageStaffAccountView;
 
-/** AdminController is a controller class that acts as a "middleman"
- * between the view classes - {@link AdminView},  {@link DisplayStaffView} and 
- * {@link ManageStaffAccountView} and the model class - {@link Admin} and {@link Staff}. <p>
- * 
- * It can view/add/update/remove staff 
+/**
+ * AdminController is a controller class that acts as a "middleman" between the
+ * view classes - {@link AdminView},  {@link DisplayStaffView} and
+ * {@link ManageStaffAccountView} and the model class - {@link Admin} and
+ * {@link Staff}.
+ * <p>
+ *
+ * It can view/add/update/remove staff
+ *
  * @author Keng Jia Chi
  * @version 1.0
  * @since 2024-11-17
  */
-
 public class AdminController {
 
     /**
      * Overloading function to display staff list according to role
+     *
      * @param role the role of staff
      * @return {@code true} if display successfully. Otherwise, {@code false}
      */
-
     public static boolean displayStaffListByRole(StaffType role) {
         ArrayList<Staff> staffNameList = new ArrayList<Staff>();
         //can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
@@ -49,14 +52,14 @@ public class AdminController {
             return true;
         }
         return false;
-	}
+    }
 
-     /**
+    /**
      * Overloading function to display staff list according to gender
+     *
      * @param gender the gender of the staff
      * @return {@code true} if display successfully. Otherwise, {@code false}
-     */ 
-
+     */
     public static boolean displayStaffListByGender(Gender gender) {
         ArrayList<Staff> staffNameList = new ArrayList<Staff>();
         //can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
@@ -73,14 +76,14 @@ public class AdminController {
             return true;
         }
         return false;
-	}
+    }
 
-     /**
+    /**
      * Overloading function to display staff list according to age
+     *
      * @param age the age of the staff
      * @return {@code true} if display successfully. Otherwise, {@code false}
      */
-
     public static boolean displayStaffListByAge(int age) {
         ArrayList<Staff> staffNameList = new ArrayList<Staff>();
         //can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
@@ -97,18 +100,18 @@ public class AdminController {
             return true;
         }
         return false;
-	}
+    }
 
     /**
-	 * function to add new staff account
-	 * @param name the name of the new staff 	
-	 * @param password the password of the new staff
-	 * @param gender the gender of the new staff
-	 * @param age the age of the new staff
-	 * @param hospitalId the loginId of the new staff
+     * function to add new staff account
+     *
+     * @param name the name of the new staff
+     * @param password the password of the new staff
+     * @param gender the gender of the new staff
+     * @param age the age of the new staff
+     * @param hospitalId the loginId of the new staff
      * @param role the role of the new staff
-	 */
-
+     */
     public static void addStaffAccount(String name, String password, Gender gender, int age, String hospitalId, StaffType role) {
         Staff staff;
         if (role == StaffType.DOCTOR) {
@@ -121,14 +124,15 @@ public class AdminController {
         // Persist data to file
         Repository.persistData(FileType.STAFF);
         System.out.println("Staff added successfully! ID: " + hospitalId);
-	}
+    }
 
-     /**
-     * Function to remove staff from the database <p>
+    /**
+     * Function to remove staff from the database
+     * <p>
      * @param hospitalID the targeted staff's login ID
-     * @return {@code true} if remove successfully. Otherwise, {@code false} if staff id is not found
+     * @return {@code true} if remove successfully. Otherwise, {@code false} if
+     * staff id is not found
      */
-
     public static boolean removeStaffAccount(String hospitalId) {
         if (Repository.STAFF.containsKey(hospitalId)) {
             // Prompt confirmation before removal
@@ -145,13 +149,13 @@ public class AdminController {
             return false;
         }
     }
-    
-     /**
+
+    /**
      * function to return the staff object by searching staff's login id
+     *
      * @param hospitalId the targeted staff's login id
      * @return staff object as a list
      */
-
     public static ArrayList<Staff> searchStaffById(String hospitalId) {
         //create an array list to store staff object
         ArrayList<Staff> searchList = new ArrayList<Staff>();
@@ -165,12 +169,14 @@ public class AdminController {
 
     /**
      * function to update staff name
+     *
      * @param hospitalId targeted staff's login id
      * @param name targeted staff's name
-     * @param attributeCode the attribute code for the detail that user choose to update
-     * @return {@code true} if update staff is successful. Otherwise, {@code false}
+     * @param attributeCode the attribute code for the detail that user choose
+     * to update
+     * @return {@code true} if update staff is successful. Otherwise,
+     * {@code false}
      */
-
     public static boolean updateStaffAccount(String hospitalId, String name, int attributeCode) {
         // Create a list to store Staff objects
         ArrayList<Staff> updateList = searchStaffById(hospitalId);
@@ -194,14 +200,16 @@ public class AdminController {
         return true;
     }
 
-     /**
-     * Overloading method of update staff gender <p>
+    /**
+     * Overloading method of update staff gender
+     * <p>
      * @param hospitalId targeted staff's login id
-     * @param attributeCode the attribute code for the detail that user choose to update
+     * @param attributeCode the attribute code for the detail that user choose
+     * to update
      * @param gender targeted staff's gender
-     * @return {@code true} if update staff is successful. Otherwise, {@code false}
+     * @return {@code true} if update staff is successful. Otherwise,
+     * {@code false}
      */
-    
     public static boolean updateStaffAccount(String hospitalId, int attributeCode, Gender gender) {
         // Create a list to store Staff objects
         ArrayList<Staff> updateList = searchStaffById(hospitalId);
@@ -226,13 +234,15 @@ public class AdminController {
     }
 
     /**
-     * Overloading method that update the age of the staff <p>
+     * Overloading method that update the age of the staff
+     * <p>
      * @param hospitalId targeted staff's login id
-     * @param attributeCode the attribute code for the detail that user choose to update
+     * @param attributeCode the attribute code for the detail that user choose
+     * to update
      * @param age targeted staff's age
-     * @return {@code true} if update staff is successful. Otherwise, {@code false}
+     * @return {@code true} if update staff is successful. Otherwise,
+     * {@code false}
      */
-    
     public static boolean updateStaffAccount(String hospitalId, int attributeCode, int age) {
         // Create a list to store Staff objects
         ArrayList<Staff> updateList = searchStaffById(hospitalId);

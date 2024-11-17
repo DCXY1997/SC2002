@@ -3,21 +3,24 @@ package src.View;
 import src.Helper.Helper;
 
 /**
- * The HospitalManagementAppView class represents the main interface of the hospital management system.
+ * The HospitalManagementAppView class represents the main interface of the
+ * hospital management system.
  * <p>
  * This class serves as the entry point for the application, allowing users to:
  * </p>
  * <ul>
- *   <li>Log in as staff members.</li>
- *   <li>Log in as patients.</li>
- *   <li>Quit the application.</li>
+ * <li>Log in as staff members.</li>
+ * <li>Log in as patients.</li>
+ * <li>Quit the application.</li>
  * </ul>
  *
- * <p><b>Key Features:</b></p>
+ * <p>
+ * <b>Key Features:</b></p>
  * <ul>
- *   <li>Integrates with {@link LoginView} for authentication.</li>
- *   <li>Provides navigation options for staff and patients.</li>
- *   <li>Offers a clean and user-friendly interface for starting the application.</li>
+ * <li>Integrates with {@link LoginView} for authentication.</li>
+ * <li>Provides navigation options for staff and patients.</li>
+ * <li>Offers a clean and user-friendly interface for starting the
+ * application.</li>
  * </ul>
  *
  * @see LoginView
@@ -28,7 +31,6 @@ import src.Helper.Helper;
  * @version 1.0
  * @since 2024-11-17
  */
-
 public class HospitalManagementAppView extends MainView {
 
     /**
@@ -42,14 +44,15 @@ public class HospitalManagementAppView extends MainView {
     private LoginView loginView = new LoginView();
 
     /**
-     * Displays the main menu actions available in the Hospital Management App View.
+     * Displays the main menu actions available in the Hospital Management App
+     * View.
      * <p>
      * The menu options include:
      * </p>
      * <ul>
-     *   <li>(1) Continue as Staff.</li>
-     *   <li>(2) Continue as Patient.</li>
-     *   <li>(3) Quit the application.</li>
+     * <li>(1) Continue as Staff.</li>
+     * <li>(2) Continue as Patient.</li>
+     * <li>(3) Quit the application.</li>
      * </ul>
      */
     @Override
@@ -64,8 +67,9 @@ public class HospitalManagementAppView extends MainView {
     /**
      * Controls the main workflow of the Hospital Management App.
      * <p>
-     * Allows the user to choose their role (Staff or Patient) or quit the application.
-     * Redirects to the appropriate view based on the user's selection.
+     * Allows the user to choose their role (Staff or Patient) or quit the
+     * application. Redirects to the appropriate view based on the user's
+     * selection.
      * </p>
      */
     @Override
