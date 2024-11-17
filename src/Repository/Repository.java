@@ -107,7 +107,7 @@ public class Repository {
                     objectOutputStream.writeObject(APPOINTMENT_LIST);
                     break;
                 case MEDICINE:
-                	objectOutputStream.writeObject(MEDICINE);
+                    objectOutputStream.writeObject(MEDICINE);
                     break;
                 case MEDICAL_RECORD:
                     objectOutputStream.writeObject(MEDICAL_RECORD);
@@ -169,7 +169,7 @@ public class Repository {
                     APPOINTMENT_LIST = new HashMap<>();
                     break;
                 case MEDICINE:
-                	    MEDICINE = new HashMap<>();
+                    MEDICINE = new HashMap<>();
                 case MEDICAL_RECORD:
                     MEDICAL_RECORD = new HashMap<>();
                     break;
@@ -297,13 +297,13 @@ public class Repository {
         }
 
         // Dummy data based on provided table
-        Medicine paracetamol = new Medicine("001", "Paracetamol", 5, "To treat fever");
+        Medicine paracetamol = new Medicine("001", "Paracetamol", 5, "Relieves mild to moderate pain and reduces fever");
         InventoryList inventoryParacetamol = new InventoryList(paracetamol, 100, 20);
 
-        Medicine ibuprofen = new Medicine("002", "Ibuprofen", 4, "To treat fever");
+        Medicine ibuprofen = new Medicine("002", "Ibuprofen", 4, "Eases inflammation, pain, and fever.");
         InventoryList inventoryIbuprofen = new InventoryList(ibuprofen, 5, 10);
 
-        Medicine amoxicillin = new Medicine("003", "Amoxicillin", 3, "To treat fever");
+        Medicine amoxicillin = new Medicine("003", "Amoxicillin", 3, "An antibiotic used to treat bacterial infections.");
         InventoryList inventoryAmoxicillin = new InventoryList(amoxicillin, 75, 15);
 
         // Add to INVENTORY with String keys
@@ -339,8 +339,8 @@ public class Repository {
         }
 
         // Create sample Medicine objects
-        Medicine medicine1 = new Medicine("001", "Paracetamol", 5, "To treat fever");
-        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, "To treat inflammation");
+        Medicine medicine1 = new Medicine("001", "Paracetamol", 5, "Relieves mild to moderate pain and reduces fever");
+        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, "Eases inflammation, pain, and fever.");
 
         List<Integer> medicineAmount1 = new ArrayList<>(Arrays.asList(1, 2));
         List<Integer> medicineAmount2 = new ArrayList<>(Arrays.asList(2));

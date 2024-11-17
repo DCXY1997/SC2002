@@ -89,9 +89,9 @@ public class DoctorView extends MainView {
                     displayDoctorAppointmentView.viewApp();
                     break;
                 case 7:
-                	Helper.clearScreen();
-                	recordAppointmentOutcome(doctor);
-                	break;
+                    Helper.clearScreen();
+                    recordAppointmentOutcome(doctor);
+                    break;
                 case 8:
                     Helper.clearScreen();
                     printBreadCrumbs(
@@ -118,10 +118,9 @@ public class DoctorView extends MainView {
 
     public void displayAllPatients(Doctor doctor) {
         List<Patient> patientList = DoctorController.getAllPatients(doctor); // Update to get patients by hospitalId
-        if (patientList.isEmpty()){
+        if (patientList.isEmpty()) {
             System.out.println("This doctor has no patients.");
-        }
-        else{
+        } else {
             for (Patient patient : patientList) {
                 System.out.println("Patient ID: " + patient.getPatientId());
                 System.out.println("Patient Name: " + patient.getName());
@@ -227,14 +226,13 @@ public class DoctorView extends MainView {
         }
     }
 
-
     private void promptGetPatientRecords() {
         System.out.println("Key in PatientID of Patient");
         String pid = Helper.readString();
         PatientController.displayPatientRecord(pid);
     }
-    
-    private void promptUpdatePatientRecords(){
+
+    private void promptUpdatePatientRecords() {
         System.out.println("Key in PatientID of Patient");
         String pid = Helper.readString();
         Patient patient = Repository.PATIENT.get(pid);
@@ -260,7 +258,7 @@ public class DoctorView extends MainView {
             Medicine medicine = Repository.INVENTORY.get(medKey).getMedicine();
             if (medicine != null) {
                 treatmentMedicines.add(new Medicine(medicine));
-                
+
                 System.out.println("Enter amount of Medicine:");
                 int amount = Helper.readInt();
                 medicineAmount.add(amount);
@@ -283,7 +281,7 @@ public class DoctorView extends MainView {
 
         // Filter appointments for the specified doctor
         docAppointments = AppointmentController.viewConfirmAppointments(doctor);
-        
+
         // Check if the doctor has any appointments
         if (docAppointments.isEmpty()) {
             System.out.println("No confirmed appointments found for Dr. " + doctor.getName());
@@ -294,9 +292,9 @@ public class DoctorView extends MainView {
         System.out.println("Select an appointment to record outcome:");
         for (int i = 0; i < docAppointments.size(); i++) {
             Appointment appoint = docAppointments.get(i);
-            System.out.println((i + 1) + ". Appointment ID: " + appoint.getAppointmentId() + 
-                               ", Patient: " + appoint.getPatient().getName() + 
-                               ", Date: " + appoint.getAppointmentStartDate());
+            System.out.println((i + 1) + ". Appointment ID: " + appoint.getAppointmentId()
+                    + ", Patient: " + appoint.getPatient().getName()
+                    + ", Date: " + appoint.getAppointmentStartDate());
         }
 
         int selectedIndex = Helper.readInt(1, docAppointments.size()) - 1;
@@ -317,7 +315,7 @@ public class DoctorView extends MainView {
         System.out.println("Enter number of Diagnoses: ");
         int diagnoses = Helper.readInt();
         List<Medicine> prescribedMedicines = new ArrayList<>();
-        for(int a = 0; a < diagnoses; a++) {
+        for (int a = 0; a < diagnoses; a++) {
             System.out.println("Enter Diagnosis:");
             String diagnosisName = Helper.readString();
             System.out.println("Enter Description:");
@@ -352,7 +350,7 @@ public class DoctorView extends MainView {
                     System.out.println("Warning: Medicine with ID '" + medKey + "' not found.");
                 }
             }
-            
+
             medicalRecord.addDiagnosis(diagnosis);
             diagList.add(diagnosis);
         }
@@ -361,12 +359,13 @@ public class DoctorView extends MainView {
 
         // Create the AppointmentOutcome
         AppointmentOutcome outcome = new AppointmentOutcome(
-            "OUT" + System.currentTimeMillis(),
-            prescribedMedicines,
-            medicineAmounts,
-            diagList,
-            note,
-            LocalDateTime.now()
+                generateApptOutcomeId(),
+                //"OUT" + System.currentTimeMillis(),
+                prescribedMedicines,
+                medicineAmounts,
+                diagList,
+                note,
+                LocalDateTime.now()
         );
 
         // Set the outcome and update the medical record
@@ -381,18 +380,22 @@ public class DoctorView extends MainView {
         System.out.println("Outcome recorded successfully.");
     }
 
-    
+    public static String generateApptOutcomeId() {
+        String prefix = "OUT";
+        int uniqueId = Helper.generateUniqueId(Repository.APPOINTMENT_OUTCOME);
+        return prefix + String.format("%03d", uniqueId);
+    }
+
     public static List<Appointment> getAllAppointment() {
         List<Appointment> appointments = new ArrayList<>();
 
         for (Object apptObj : Repository.APPOINTMENT_LIST.values()) {
             if (apptObj instanceof Appointment) {
                 Appointment appointment = (Appointment) apptObj;
-                
+
                 // Add any specific filtering conditions here if needed, for example:
                 // - Check if the appointment has an attending doctor
                 // - Filter based on certain criteria in appointment ID, attending doctor, etc.
-
                 // Example: add appointment if it has an attending doctor
                 if (appointment.getAttendingDoctor() != null) {
                     appointments.add(appointment);
@@ -401,6 +404,5 @@ public class DoctorView extends MainView {
         }
         return appointments;
     }
-
 
 }
