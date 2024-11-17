@@ -12,7 +12,7 @@ import java.util.List;
  * data persistence. It maintains details about the diagnosis, such as its ID, name, description,
  * and a list of treatments.</p>
  *
- * @author Bryan
+ * @author Bryan, Darren Chia
  * @version 1.0
  * @since 2024-11-17
  */
