@@ -8,21 +8,72 @@ import src.Model.Admin;
 import src.Model.Staff;
 import src.Repository.Repository;
 
+/**
+ * The AdminView class represents the main interface for administrators in the hospital management system.
+ * <p>
+ * This class provides administrators with access to various functionalities, such as managing staff,
+ * appointments, medication inventory, and replenishment requests. It also supports password changes
+ * and logout functionality.
+ * </p>
+ *
+ * <p><b>Key Features:</b></p>
+ * <ul>
+ *   <li>View and manage hospital staff accounts.</li>
+ *   <li>View and manage appointments.</li>
+ *   <li>View and manage medication inventory.</li>
+ *   <li>Approve replenishment requests.</li>
+ *   <li>Change administrator password.</li>
+ *   <li>Logout functionality.</li>
+ * </ul>
+ *
+ * @see DisplayStaffView
+ * @see ManageStaffAccountView
+ * @see DisplayAppointmentDetailView
+ * @see DisplayMedicationInventory
+ * @see ManageMedicalInventory
+ * @see ManageReplenishmentRequestView
+ * @see StaffController
+ * @see AdminController
+ * @author Keng Jia Chi
+ * @version 1.0
+ * @since 2024-11-17
+ */
+
 public class AdminView extends MainView{
 	
-	/**
-	 * initialize objects to call their view app
-	 */
-	private DisplayStaffView displayStaffView = new DisplayStaffView();
-    private ManageStaffAccountView manageStaffAccountView = new ManageStaffAccountView();
-	private DisplayAppointmentDetailView displayAppointmentDetailsView = new DisplayAppointmentDetailView();
-	private DisplayMedicationInventory displayMedicalInventoryView = new DisplayMedicationInventory();
-	private ManageMedicalInventory manageMedicalInventory = new ManageMedicalInventory();
-	private ManageReplenishmentRequestView manageReplenishmentRequestView = new ManageReplenishmentRequestView();
-	/**
-     * View Actions of the AdminView.
+ 	/**
+     * View for displaying hospital staff.
      */
-    @Override
+    private DisplayStaffView displayStaffView = new DisplayStaffView();
+
+    /**
+     * View for managing staff accounts.
+     */
+    private ManageStaffAccountView manageStaffAccountView = new ManageStaffAccountView();
+
+    /**
+     * View for displaying appointment details.
+     */
+    private DisplayAppointmentDetailView displayAppointmentDetailsView = new DisplayAppointmentDetailView();
+
+    /**
+     * View for displaying medication inventory.
+     */
+    private DisplayMedicationInventory displayMedicalInventoryView = new DisplayMedicationInventory();
+
+    /**
+     * View for managing medication inventory.
+     */
+    private ManageMedicalInventory manageMedicalInventory = new ManageMedicalInventory();
+
+    /**
+     * View for managing replenishment requests.
+     */
+    private ManageReplenishmentRequestView manageReplenishmentRequestView = new ManageReplenishmentRequestView();
+	/**
+     * Displays the actions available to the administrator.
+     */
+	@Override
 	public void printActions() {
 		Helper.clearScreen();
         printBreadCrumbs("Hospital Management App View > Login View > Admin View");
@@ -36,7 +87,10 @@ public class AdminView extends MainView{
 		System.out.println("(7) Change Password");
         System.out.println("(8) Logout");
 	}
-
+	/**
+     * Controls the main workflow of the administrator's view.
+     * Allows the administrator to select actions from a menu of options.
+     */
     @Override
 	public void viewApp() { 
 		int opt = -1; 
@@ -83,7 +137,9 @@ public class AdminView extends MainView{
             }
         } while (opt != 8);
 	}
-
+	/**
+     * Prompts the administrator to change their password after verifying their credentials.
+     */
 	private void promptChangePassword() {
 		System.out.println("Verify your loginID: ");
 		String loginId = Helper.readString();

@@ -5,7 +5,18 @@ import src.Repository.FileType;
 import src.Repository.Repository;
 import src.View.HospitalManagementAppView;
 
+/**
+ * The starting point of the application.
+ * @author Keng Jia Chi
+ * @version 1.0
+ * @since 2024-11-17
+ */
+
 public class HMSApp {
+        /**
+     * Main function that is the starting point of the application.
+     * @param args Arguments passed to the app
+     */
     public static void main(String[] args) {
         //Repository.clearDatabase();
 
@@ -32,6 +43,10 @@ public class HMSApp {
         HospitalManagementAppView hospitalManagementAppView = new HospitalManagementAppView();
         hospitalManagementAppView.viewApp();
     }
+
+    /**
+     * Prints the HMS title.
+     */
 
     private static void printHMSTitle() {
         System.out.println();
