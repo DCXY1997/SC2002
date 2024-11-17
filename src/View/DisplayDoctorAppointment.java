@@ -8,10 +8,34 @@ import src.Helper.Helper;
 import src.Model.Appointment;
 import src.Model.Doctor;
 
+/**
+ * The {@code DisplayDoctorAppointment} class manages the doctor's interface for handling appointments.
+ * <p>
+ * This class allows doctors to:
+ * <ul>
+ *     <li>View appointment requests</li>
+ *     <li>Accept or decline appointment requests</li>
+ *     <li>View upcoming appointments</li>
+ *     <li>View past appointments</li>
+ * </ul>
+ * <p>
+ * This class is part of the {@code View} layer in the application.
+ * </p>
+ * 
+ * @author Bryan
+ * @version 1.0
+ * @since 2024-11-17
+ */
 public class DisplayDoctorAppointment extends MainView {
 
     private Doctor doctor;
 
+    /**
+     * Constructs a {@code DisplayDoctorAppointment} object for the specified doctor.
+     * 
+     * @param doctor The doctor associated with this view.
+     * @throws IllegalArgumentException If the doctor is {@code null}.
+     */
     public DisplayDoctorAppointment(Doctor doctor) {
         if (doctor == null) {
             System.out.println("Error: Doctor is null in DisplayDoctorAppointment.");
@@ -21,6 +45,9 @@ public class DisplayDoctorAppointment extends MainView {
         System.out.println("DisplayDoctorAppointment initialized with doctor: " + doctor.getHospitalId());
     }
 
+    /**
+     * Prints the available actions for the doctor.
+     */
     @Override
     public void printActions() {
         Helper.clearScreen();
@@ -33,6 +60,9 @@ public class DisplayDoctorAppointment extends MainView {
         System.out.println("(5) Back");
     }
 
+    /**
+     * Handles the doctor's interactions with appointments.
+     */
     @Override
     public void viewApp() {
         int opt = -1;
@@ -72,15 +102,16 @@ public class DisplayDoctorAppointment extends MainView {
         } while (opt != 5);
     }
 
+    /**
+     * Displays the appointment requests for the doctor.
+     */
     private void viewAppointmentRequests() {
-        // Implement logic to display the appointment requests for the doctor
         List<Appointment> appointmentRequests = AppointmentController.viewDoctorAppointments(doctor);
 
         if (appointmentRequests.isEmpty()) {
             System.out.println("No appointment requests found for you.");
         } else {
             System.out.println("Your Appointment Requests:");
-
             for (Appointment appointment : appointmentRequests) {
                 if (appointment.getStatus() == AppointmentStatus.PENDING) {
                     System.out.println("Appointment - " + appointment.getAppointmentId() + ":");
@@ -93,46 +124,24 @@ public class DisplayDoctorAppointment extends MainView {
         }
     }
 
-    private void viewUpcomingAppointments() {
-        // Implement logic to display the appointment requests for the doctor
-        List<Appointment> appointmentRequests = AppointmentController.viewConfirmAppointments(doctor);
-
-        if (appointmentRequests.isEmpty()) {
-            System.out.println("No upcoming appointments found for you.");
-        } else {
-            System.out.println("Your Upcoming Appointments:");
-
-            for (Appointment appointment : appointmentRequests) {
-                if (appointment.getStatus() == AppointmentStatus.CONFIRMED) {
-                    System.out.println("Appointment - " + appointment.getAppointmentId() + ":");
-                    System.out.println("Patient: " + appointment.getPatient().getName());
-                    System.out.println("From: " + appointment.getAppointmentStartDate() + " to " + appointment.getAppointmentEndDate());
-                    System.out.println("Status: " + appointment.getStatus());
-                    System.out.println();
-                }
-            }
-        }
-    }
-
+    /**
+     * Displays and handles pending appointment requests for the doctor.
+     */
     private void handleAppointmentRequests() {
-        // Get the list of pending appointments for the doctor
         List<Appointment> allAppointments = AppointmentController.viewDoctorAppointments(doctor);
         List<Appointment> pendingAppointments = new ArrayList<>();
 
-        // Filter for only pending appointments
         for (Appointment appointment : allAppointments) {
             if (appointment.getStatus() == AppointmentStatus.PENDING) {
                 pendingAppointments.add(appointment);
             }
         }
 
-        // Check if there are any pending appointments
         if (pendingAppointments.isEmpty()) {
             System.out.println("No pending appointment requests.");
             return;
         }
 
-        // Display the pending appointments to the doctor
         System.out.println("Pending Appointment Requests:");
         for (int i = 0; i < pendingAppointments.size(); i++) {
             Appointment appointment = pendingAppointments.get(i);
@@ -143,20 +152,16 @@ public class DisplayDoctorAppointment extends MainView {
             System.out.println("-----------------------------------------------------------------");
         }
 
-        // Ask for the appointment index to handle
         System.out.print("Enter the appointment number you want to handle: ");
         int appointmentIndex = Helper.readInt(1, pendingAppointments.size());
 
-        // Get the selected appointment (index is 1-based, so we subtract 1)
         Appointment selectedAppointment = pendingAppointments.get(appointmentIndex - 1);
 
-        // Display the selected appointment details
         System.out.println("Selected Appointment with Patient: " + selectedAppointment.getPatient().getName());
         System.out.println("From: " + selectedAppointment.getAppointmentStartDate()
                 + " to " + selectedAppointment.getAppointmentEndDate());
         System.out.println("Status: " + selectedAppointment.getStatus());
 
-        // Prompt to accept or decline the appointment
         System.out.println("(1) Accept");
         System.out.println("(2) Decline");
         System.out.print("Enter your choice: ");
@@ -170,15 +175,38 @@ public class DisplayDoctorAppointment extends MainView {
         }
     }
 
+    /**
+     * Displays the doctor's upcoming confirmed appointments.
+     */
+    private void viewUpcomingAppointments() {
+        List<Appointment> appointmentRequests = AppointmentController.viewConfirmAppointments(doctor);
+
+        if (appointmentRequests.isEmpty()) {
+            System.out.println("No upcoming appointments found for you.");
+        } else {
+            System.out.println("Your Upcoming Appointments:");
+            for (Appointment appointment : appointmentRequests) {
+                if (appointment.getStatus() == AppointmentStatus.CONFIRMED) {
+                    System.out.println("Appointment - " + appointment.getAppointmentId() + ":");
+                    System.out.println("Patient: " + appointment.getPatient().getName());
+                    System.out.println("From: " + appointment.getAppointmentStartDate() + " to " + appointment.getAppointmentEndDate());
+                    System.out.println("Status: " + appointment.getStatus());
+                    System.out.println();
+                }
+            }
+        }
+    }
+
+    /**
+     * Displays the doctor's completed past appointments.
+     */
     private void viewPastAppointments() {
-        // Implement logic to display the past appointments for the doctor
         List<Appointment> appointmentRequests = AppointmentController.viewCompleteAppointments(doctor);
 
         if (appointmentRequests.isEmpty()) {
-            System.out.println("No appointment requests found for you.");
+            System.out.println("No past appointments found for you.");
         } else {
-            System.out.println("Your Past Appointment Requests:");
-
+            System.out.println("Your Past Appointments:");
             for (Appointment appointment : appointmentRequests) {
                 if (appointment.getStatus() == AppointmentStatus.COMPLETED) {
                     System.out.println("Appointment - " + appointment.getAppointmentId() + ":");

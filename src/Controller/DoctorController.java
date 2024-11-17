@@ -12,7 +12,26 @@ import src.Model.Specialization;
 import src.Repository.FileType;
 import src.Repository.Repository;
 
+/**
+ * The {@code DoctorController} class provides methods for managing doctor-related
+ * operations, such as retrieving schedules, handling availability, managing specializations,
+ * and retrieving associated patients and appointments.
+ *
+ * <p>This controller acts as the middle layer between the views and the model, handling
+ * data processing and business logic for operations related to doctors.</p>
+ *
+ * @author Bryan
+ * @version 1.0
+ * @since 2024-11-17
+ */
+
 public class DoctorController {
+    /**
+     * Retrieves all patients who have appointments with the specified doctor.
+     *
+     * @param doctor The doctor whose patients are to be retrieved.
+     * @return A list of patients under the specified doctor.
+     */
 
     public static List<Patient> getAllPatients(Doctor doctor) {
         Doctor currentDoctor = (Doctor) Repository.STAFF.get(doctor.getHospitalId());
@@ -26,6 +45,12 @@ public class DoctorController {
         }
         return patientsUnderDoctor;
     }
+    /**
+     * Retrieves the schedule (availability) of the specified doctor.
+     *
+     * @param doctor The doctor whose schedule is to be retrieved.
+     * @return A list of schedules representing the doctor's availability.
+     */
 
     public static List<Schedule> getSchedule(Doctor doctor) {
         // Retrieve the doctor using the hospitalId from the repository
@@ -39,6 +64,13 @@ public class DoctorController {
             return new ArrayList<>();
         }
     }
+     /**
+     * Adds availability to the specified doctor's schedule.
+     *
+     * @param doctor The doctor whose availability is being added.
+     * @param from The start time of the new availability period.
+     * @param to The end time of the new availability period.
+     */
 
     public static void addAvailability(Doctor doctor, LocalDateTime from, LocalDateTime to) {
         Schedule newSchedule = new Schedule(from, to);
@@ -75,6 +107,15 @@ public class DoctorController {
             System.out.println("Error: Doctor with ID " + doctor.getHospitalId() + " does not exist in the repository.");
         }
     }
+    /**
+     * Updates the availability of the specified doctor with the filtered schedules.
+     *
+     * @param doctor The doctor whose availability is being updated.
+     * @param startTime The start time of the availability.
+     * @param endTime The end time of the availability.
+     * @param filteredSchedules The updated list of schedules.
+     * @return {@code true} if the update was successful; {@code false} otherwise.
+     */
 
     public static boolean updateDoctorAvailability(Doctor doctor, LocalDateTime startTime, LocalDateTime endTime, List<Schedule> filteredSchedules) {
         List<Schedule> doctorAvailability = new ArrayList<>(doctor.getAvailability());
@@ -87,6 +128,12 @@ public class DoctorController {
         Repository.persistData(FileType.STAFF);
         return true;
     }
+    /**
+     * Retrieves all requested appointments for the specified doctor.
+     *
+     * @param doctor The doctor whose requested appointments are to be retrieved.
+     * @return A list of pending appointments for the doctor.
+     */
 
     public static List<Appointment> getRequestedAppointments(Doctor doctor) {
         List<Appointment> appointments = new ArrayList<>();
@@ -99,6 +146,11 @@ public class DoctorController {
         }
         return appointments;
     }
+    /**
+     * Displays the personal information of a doctor based on their login ID.
+     *
+     * @param loginId The login ID of the doctor.
+     */
 
     public static void displayPersonalInformation(String loginId) {
         Doctor doctor = (Doctor) Repository.STAFF.get(loginId);
@@ -123,6 +175,12 @@ public class DoctorController {
         }
 
     }
+    /**
+     * Adds a specialization to the specified doctor.
+     *
+     * @param doctor The doctor to whom the specialization is being added.
+     * @param specialization The specialization to be added.
+     */
 
     public static void addSpecialization(Doctor doctor, Specialization specialization) {
         if (doctor != null && specialization != null) {
@@ -153,8 +211,12 @@ public class DoctorController {
             System.out.println("Error: Doctor or Specialization is null.");
         }
     }
-
-    public static List<Doctor> getAllDoctors() {
+/**
+     * Retrieves all doctors whose hospital IDs start with "D".
+     *
+     * @return A list of doctors with hospital IDs starting with "D".
+     */
+        public static List<Doctor> getAllDoctors() {
         List<Doctor> doctors = new ArrayList<>();
 
         // Iterate through all doctors in the repository (STAFF)

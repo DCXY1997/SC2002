@@ -18,7 +18,7 @@ import src.View.InventoryView;
  * {@link ManageMedicalInventoryView} and {@link ManagReplenishmentRequestView} and the model class - {@link Admin}, {@link InventoryList} and {@link Medicine}. <p>
  * 
  * It can view/add/update/remove medical inventory items and get/approve/reject replenishment requsts
- * @author Keng Jia Chi
+ * @author Keng Jia Chi, Cheah Wei Jun
  * @version 1.0
  * @since 2024-11-17
  */

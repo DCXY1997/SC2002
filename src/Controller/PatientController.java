@@ -14,11 +14,38 @@ import src.Model.Treatment;
 import src.Repository.FileType;
 import src.Repository.Repository;
 
+/**
+ * The {@code PatientController} class provides functionality for managing patient-related
+ * operations, such as authentication, updating contact information, displaying personal
+ * information, viewing medical records, and retrieving appointment outcomes.
+ *
+ * <p>This class acts as a bridge between patient-related views and the repository layer, handling
+ * the business logic and data operations for patient management.</p>
+ *
+ * @author Bryan
+ * @version 1.0
+ * @since 2024-11-17
+ */
+
 public class PatientController {
+
+    /**
+     * Retrieves a patient by their ID.
+     *
+     * @param loginId The ID of the patient.
+     * @return The {@link Patient} object if found; {@code null} otherwise.
+     */
 
     public static Patient getPatientById(String loginId) {
         return Repository.PATIENT.get(loginId);
     }
+    /**
+     * Authenticates a patient based on their ID and password.
+     *
+     * @param id The patient's ID.
+     * @param password The patient's password.
+     * @return {@code true} if the credentials are valid; {@code false} otherwise.
+     */
 
     public static boolean authenticate(String id, String password) {
         // Retrieve the Patient object from the PATIENT map
@@ -37,6 +64,14 @@ public class PatientController {
         // Authentication successful
         return true;
     }
+    /**
+     * Changes the password of the specified patient.
+     *
+     * @param patient The patient whose password is being updated.
+     * @param password The new password.
+     * @param confirmPassword The confirmation of the new password.
+     * @return {@code true} if the password was successfully changed; {@code false} otherwise.
+     */
 
     public static boolean changePassword(Patient patient, String password, String confirmPassword) {
         if (password.equals(confirmPassword)) {
@@ -47,6 +82,12 @@ public class PatientController {
             return false;
         }
     }
+    /**
+     * Updates the contact information of the specified patient.
+     *
+     * @param patient The patient whose contact information is being updated.
+     * @param newContactInformation The new contact information.
+     */
 
     public static void updateContactInformation(Patient patient, String newContactInformation) {
         // Update the patient's contact information
@@ -54,8 +95,12 @@ public class PatientController {
         // Persist the updated patient details
         Repository.persistData(FileType.PATIENT);
     }
-
-    public static void displayPersonalInformation(String loginId) {
+    /**
+     * Displays the personal information of the patient with the given ID.
+     *
+     * @param loginId The ID of the patient.
+     */
+        public static void displayPersonalInformation(String loginId) {
         Patient patient = Repository.PATIENT.get(loginId);
 
         if (patient != null) {
@@ -69,6 +114,12 @@ public class PatientController {
             System.out.println("Patient not found.");
         }
     }
+    /**
+     * Displays the medical record of the patient with the given ID, including diagnoses
+     * and treatments.
+     *
+     * @param loginId The ID of the patient.
+     */
 
     public static void displayPatientRecord(String loginId) {
     	Patient patient = Repository.PATIENT.get(loginId);
@@ -111,7 +162,12 @@ public class PatientController {
             System.out.println("No medical record found for this patient.");
         }
     }
-    
+    /**
+     * Displays past appointment outcomes for a specific patient.
+     *
+     * @param patientId The ID of the patient.
+     */
+
     public static void viewPastAppointmentOutcome(String patientId) {
         Patient patient = Repository.PATIENT.get(patientId);
 
@@ -176,7 +232,13 @@ public class PatientController {
             }
         }
     }
-
+    /**
+     * Retrieves the last diagnosis ID for the specified patient.
+     *
+     * @param patient The patient whose last diagnosis ID is being retrieved.
+     * @return The last diagnosis ID, or {@code 0} if no diagnoses exist.
+     */
+    
     public static int getLastDiagId(Patient patient){
         MedicalRecord medicalRecord = patient.getMedicalRecord();
         if(medicalRecord != null){
@@ -187,8 +249,4 @@ public class PatientController {
         }
         return 0;
     }
-
-
-
-    // }
 }

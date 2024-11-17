@@ -26,10 +26,37 @@ import src.Model.Treatment;
 import src.Repository.FileType;
 import src.Repository.Repository;
 
+/**
+ * The {@code DoctorView} class provides the interface for doctors to manage their responsibilities.
+ * <p>
+ * It includes functionalities such as:
+ * <ul>
+ *     <li>Viewing and updating patient medical records</li>
+ *     <li>Viewing and setting personal schedules</li>
+ *     <li>Handling appointments</li>
+ *     <li>Recording appointment outcomes</li>
+ *     <li>Adding specializations</li>
+ * </ul>
+ * </p>
+ *
+ * <p>This class is part of the {@code View} layer in the application.</p>
+ *
+ * @author Bryan
+ * @version 1.0
+ * @since 2024-11-17
+ */
+
 public class DoctorView extends MainView {
 
     private Doctor doctor;
     private DisplayDoctorAppointment displayDoctorAppointmentView;
+
+    /**
+     * Constructs a {@code DoctorView} object for the specified doctor.
+     *
+     * @param doctor The doctor for whom the view is being initialized.
+     * @throws IllegalArgumentException if the doctor is {@code null}.
+     */
 
     public DoctorView(Doctor doctor) {
         this.doctor = doctor;
@@ -39,6 +66,9 @@ public class DoctorView extends MainView {
             System.out.println("Error: Doctor is null in DoctorView.");
         }
     }
+    /**
+     * Displays the actions available to the doctor.
+     */
 
     @Override
     public void printActions() {
@@ -55,6 +85,9 @@ public class DoctorView extends MainView {
         System.out.println("(8) Add Specialization");
         System.out.println("(9) Logout");
     }
+    /**
+     * Handles the doctor's interactions with the system.
+     */
 
     @Override
     public void viewApp() {
@@ -120,6 +153,12 @@ public class DoctorView extends MainView {
             }
         } while (opt != 9);
     }
+    /**
+     * Prompts the doctor to view their patients' medical records.
+     *
+     * @param doctor The doctor whose patients' records are to be viewed.
+     * @return The patient ID of the selected patient, or an empty string if no selection was made.
+     */
 
     private String promptGetPatientRecords(Doctor doctor) {
         List<Patient> patientList = DoctorController.getAllPatients(doctor); // Update to get patients by hospitalId
@@ -143,6 +182,11 @@ public class DoctorView extends MainView {
         }
         
     }
+    /**
+     * Prompts the doctor to update a patient's medical record.
+     *
+     * @param doctor The doctor performing the update.
+     */
 
     private void promptUpdatePatientRecords(Doctor doctor){
         String pid = promptGetPatientRecords(doctor);
@@ -201,6 +245,14 @@ public class DoctorView extends MainView {
         Repository.PATIENT.put(patient.getPatientId(), patient);
         Repository.persistData(FileType.PATIENT);
     }
+    /**
+    * Displays the schedule for the given doctor, grouped by date.
+    * <p>
+    * Also displays upcoming confirmed appointments.
+    * </p>
+    * 
+    * @param doctor The doctor whose schedule will be displayed.
+    */
 
     private void promptDisplaySchedule(Doctor doctor) {
         // Retrieve the schedule using the DoctorController method
@@ -250,6 +302,15 @@ public class DoctorView extends MainView {
         }
         }
     }
+    /**
+    * Prompts the doctor to set availability for appointments by entering a valid
+    * time range.
+    * 
+    * <p>The availability is validated to ensure it is within business hours and
+    * does not exceed 24 hours.</p>
+    * 
+    * @param doctor The doctor setting their availability.
+    */
 
     private void promptAddAvailability(Doctor doctor) {
         LocalDateTime[] availability = Helper.promptAndValidateTimeRange(
@@ -264,11 +325,20 @@ public class DoctorView extends MainView {
             DoctorController.addAvailability(doctor, availability[0], availability[1]);
         }
     }
+    /**
+    * Displays the personal information of the doctor including their ID, name,
+    * age, and specializations.
+    */
 
     private void promptPersonalInformation() {
         // Retrieve and display personal information using the DoctorController
         DoctorController.displayPersonalInformation(doctor.getHospitalId());
     }
+    /**
+    * Prompts the doctor to add a specialization from a predefined list.
+    * 
+    * @param doctor The doctor adding a specialization to their profile.
+    */
 
     public void promptSpecialization(Doctor doctor) {
         String specialization = null;
@@ -317,6 +387,14 @@ public class DoctorView extends MainView {
             return;
         }
     }
+    /**
+    * Records the outcome for a selected appointment by the doctor.
+    * 
+    * <p>This includes details such as diagnoses, treatments, prescribed medicines,
+    * and additional services provided.</p>
+    * 
+    * @param doctor The doctor recording the outcome of the appointment.
+    */
 
     public void recordAppointmentOutcome(Doctor doctor) {
         List<Appointment> docAppointments = new ArrayList<>();
@@ -455,6 +533,13 @@ public class DoctorView extends MainView {
         Repository.persistData(FileType.PATIENT);
         System.out.println("Outcome recorded successfully.");
     }
+    /**
+    * Retrieves all appointments associated with doctors from the repository.
+    * 
+    * <p>Filters out appointments that do not have an attending doctor.</p>
+    * 
+    * @return A list of all valid appointments.
+    */
 
     public static List<Appointment> getAllAppointment() {
         List<Appointment> appointments = new ArrayList<>();

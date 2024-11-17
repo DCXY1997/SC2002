@@ -12,8 +12,22 @@ import src.Model.Medicine;
 import src.Repository.FileType;
 import src.Repository.Repository;
 
+/**
+ * The {@code AppointmentOutcomeController} class manages operations related to appointment outcomes,
+ * specifically handling pending medicine prescriptions, approval, and inventory updates.
+ * It interacts with the {@link Repository} to manage appointment outcomes and inventory data.
+ * 
+ * @author Cheah Wei Jun
+ * @version 1.0
+ * @since 2024-11-17
+ */
+
 public class AppointmentOutcomeController {
 	
+	 /**
+     * Checks for appointment outcomes with pending medicine prescriptions.
+     * If found, displays pending medicine details for each outcome.
+     */
 	public static void checkPendingMedicinePrescription() {
 	    String pendingRequests = null;
 		AppointmentOutcomeController controller = new AppointmentOutcomeController();
@@ -57,6 +71,13 @@ public class AppointmentOutcomeController {
 	    }
 	}
 	
+	/**
+     * Allows the management of a specific appointment outcome with pending medicine prescriptions.
+     * Prompts the user to approve or dispense prescribed medicines based on stock availability.
+     * 
+     * @param outcomeId The ID of the appointment outcome to manage.
+     */
+
 	public static void managePendingMedicinePrescription(String outcomeId) {
 		int i = 0, again = 0, stockLevel = 0;
 		String pendingRequests = null;
@@ -161,6 +182,17 @@ public class AppointmentOutcomeController {
 		Helper.pressAnyKeyToContinue(); 
 	}
 
+	/**
+     * Generates a formatted summary of pending medicines for an appointment outcome.
+     * Includes prescription details and optional inventory information.
+     * 
+     * @param pendingMedicines The list of pending medicines.
+     * @param appointmentOutcome The appointment outcome containing the pending prescriptions.
+     * @param pendingAmount The list of prescription amounts for the pending medicines.
+     * @param inventory A boolean flag indicating whether to include inventory details in the summary.
+     * @return A formatted string containing the details of pending medicines.
+     */
+	
 	public String manageAppointmentOutcome(List<Medicine> pendingMedicines, AppointmentOutcome appointmentOutcome, List<Integer> pendingAmount, boolean Inventory)
 	{
 		int i = 0;

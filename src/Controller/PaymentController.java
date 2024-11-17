@@ -13,7 +13,33 @@ import src.Model.Medicine;
 import src.Repository.FileType;
 import src.Repository.Repository;
 
+/**
+ * The {@code PaymentController} class handles the logic for generating payment receipts,
+ * processing payments, and updating payment statuses for medical appointments.
+ *
+ * <p>This class interacts with the {@link Repository} to retrieve appointment outcomes
+ * and update payment information.</p>
+ * 
+ * <p><b>Main Responsibilities:</b></p>
+ * <ul>
+ *   <li>Generate receipts for appointment outcomes.</li>
+ *   <li>Process payments using cash transactions.</li>
+ *   <li>Update payment statuses in the system.</li>
+ * </ul>
+ * 
+ * @author Cheah Wei Jun
+ * @version 1.0
+ * @since 2024-11-17
+ */
+
 public class PaymentController {
+
+    /**
+     * Generates a receipt for the specified appointment outcome.
+     *
+     * @param outcomeId The unique identifier of the appointment outcome.
+     * @return The total amount to be paid for the appointment.
+     */
 
     public static double generateReceipt(String outcomeId)
     {
@@ -57,11 +83,11 @@ public class PaymentController {
                     total += medicine.getMedicinePrice();   
 	            }
 
-                if(outcome.getservices().isEmpty()){
+                if(outcome.getServices().isEmpty()){
                     prescribedBuilder.append("No Services to be paid");
                 }
                 else{
-                    for (ServiceType service : outcome.getservices()){
+                    for (ServiceType service : outcome.getServices()){
                         switch(service){
                             case CONSULTATION:
                                 prescribedBuilder.append("Consulation fee: ").append("$25.00").append("\n\n");
@@ -91,6 +117,11 @@ public class PaymentController {
 
         return total;
     }
+    /**
+     * Checks if an appointment has an associated outcome and processes payment if available.
+     *
+     * @param appointment The appointment to check.
+     */
 
     public void checkAppointmentId(Appointment appointment)
     {
@@ -110,6 +141,11 @@ public class PaymentController {
             System.out.println("No appointment "+outcomeId+" found.\n");
         }
     }
+     /**
+     * Processes payment for the specified appointment outcome.
+     *
+     * @param outcomeId The unique identifier of the appointment outcome to process payment for.
+     */
 
     public void makePayment(String outcomeId)
     {
@@ -139,7 +175,13 @@ public class PaymentController {
             }
         }
     }
-
+    /**
+     * Handles cash payments for a specified total amount.
+     *
+     * @param total The total amount to be paid.
+     * @return {@code true} if the payment is successful, {@code false} otherwise.
+     */
+    
     public boolean payByCash(double total)
     {
         double insert = 0;

@@ -27,7 +27,7 @@ import src.Controller.*;
  * @see PharmacistController
  * @see Helper
  * @see MainView
- * @author Keng Jia Chi
+ * @author Keng Jia Chi, Cheah Wei Jun
  * @version 1.0
  * @since 2024-11-17
  */
