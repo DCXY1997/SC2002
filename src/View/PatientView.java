@@ -11,7 +11,7 @@ import src.Model.Patient;
  * <p>This includes managing appointments, viewing medical records, updating personal
  * details, handling payments, and accessing past appointment outcomes.</p>
  * 
- * @author Bryan
+ * @author Bryan, Darren
  * @version 1.0
  * @since 2024-11-17
  */
