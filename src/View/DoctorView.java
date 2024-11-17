@@ -2,6 +2,7 @@ package src.View;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import src.Controller.AppointmentController;
 import src.Controller.AppointmentOutcomeController;
 import src.Controller.DoctorController;
 import src.Controller.PatientController;
+import src.Enum.AppointmentStatus;
 import src.Enum.ServiceType;
 import src.Helper.Helper;
 import src.Model.Appointment;
@@ -228,6 +230,24 @@ public class DoctorView extends MainView {
                 }
                 System.out.println();
             }
+
+        List<Appointment> appointmentRequests = AppointmentController.viewConfirmAppointments(doctor);
+
+        if (appointmentRequests.isEmpty()) {
+            System.out.println("No upcoming appointments for you.");
+        } else {
+            System.out.println("Your Upcoming Appointments:");
+
+            for (Appointment appointment : appointmentRequests) {
+                if (appointment.getStatus() == AppointmentStatus.CONFIRMED) {
+                    System.out.println("Appointment - " + appointment.getAppointmentId() + ":");
+                    System.out.println("Patient: " + appointment.getPatient().getName());
+                    System.out.println("From: " + appointment.getAppointmentStartDate() + " to " + appointment.getAppointmentEndDate());
+                    System.out.println("Status: " + appointment.getStatus());
+                    System.out.println();
+                }
+            }
+        }
         }
     }
 
@@ -298,56 +318,6 @@ public class DoctorView extends MainView {
         }
     }
 
-    private void promptGetPatientRecords() {
-        System.out.println("Key in PatientID of Patient");
-        String pid = Helper.readString();
-        PatientController.displayPatientRecord(pid);
-    }
-
-    private void promptUpdatePatientRecords() {
-        System.out.println("Key in PatientID of Patient");
-        String pid = Helper.readString();
-        Patient patient = Repository.PATIENT.get(pid);
-        System.out.println("Enter new Diagnosis and Treatment plan:");
-        System.out.println("Enter Diagnosis:");
-        String diagnosisName = Helper.readString();
-        System.out.println("Enter Description:");
-        String description = Helper.readString();
-
-        int diagId = PatientController.getLastDiagId(patient);
-        Diagnosis diagnosis = new Diagnosis(++diagId, diagnosisName, description);
-
-        // Prompt for medications and create a unique treatment
-        List<Medicine> treatmentMedicines = new ArrayList<>();
-        List<Integer> medicineAmount = new ArrayList<>();
-
-        System.out.println("Enter number of medicines prescribed:");
-        int numMedicines = Helper.readInt();
-        for (int i = 0; i < numMedicines; i++) {
-            System.out.println("Enter Medicine ID or Name:");
-            String medKey = Helper.readString();
-
-            Medicine medicine = Repository.INVENTORY.get(medKey).getMedicine();
-            if (medicine != null) {
-                treatmentMedicines.add(new Medicine(medicine));
-
-                System.out.println("Enter amount of Medicine:");
-                int amount = Helper.readInt();
-                medicineAmount.add(amount);
-                // Create a unique Treatment for each Diagnosis
-                Treatment treatment = new Treatment(i, treatmentMedicines, medicineAmount);
-                // Add the treatment to the diagnosis
-                diagnosis.addTreatment(treatment);
-            } else {
-                System.out.println("Warning: Medicine with ID '" + medKey + "' not found.");
-            }
-        }
-        patient.getMedicalRecord().addDiagnosis(diagnosis);
-        System.out.println("Diagnosis added");
-        Repository.PATIENT.put(patient.getPatientId(), patient);
-        Repository.persistData(FileType.PATIENT);
-    }
-
     public void recordAppointmentOutcome(Doctor doctor) {
         List<Appointment> docAppointments = new ArrayList<>();
 
@@ -407,20 +377,24 @@ public class DoctorView extends MainView {
                 System.out.println("Enter number of medicines prescribed:");
                 int numMedicines = Helper.readInt();
                 for (int i = 0; i < numMedicines; i++) {
+                    Medicine medicine = null;
                     System.out.println("Enter Medicine ID or Name:");
-                    String medKey = Helper.readString();
+                    while (medicine == null){
+                        String medKey = Helper.readString();
 
-                    Medicine medicine = Repository.INVENTORY.get(medKey).getMedicine();
-                    if (medicine != null) {
-                        treatmentMedicines.add(new Medicine(medicine));
-                        prescribedMedicines.add(new Medicine(medicine));
+                        
+                        if (Repository.INVENTORY.containsKey(medKey)) {
+                            medicine = Repository.INVENTORY.get(medKey).getMedicine();
+                            treatmentMedicines.add(new Medicine(medicine));
+                            prescribedMedicines.add(new Medicine(medicine));
 
-                        System.out.println("Enter amount of Medicine:");
-                        int amount = Helper.readInt();
-                        medicineAmount.add(amount);
-                        medicineAmounts.add(amount);
-                    } else {
-                        System.out.println("Warning: Medicine with ID '" + medKey + "' not found.");
+                            System.out.println("Enter amount of Medicine:");
+                            int amount = Helper.readInt();
+                            medicineAmount.add(amount);
+                            medicineAmounts.add(amount);
+                        } else {
+                            System.out.println("Warning: Medicine with ID '" + medKey + "' not found.");
+                        }
                     }
                 }
                 // Create a unique Treatment for each Diagnosis
@@ -440,6 +414,8 @@ public class DoctorView extends MainView {
             ServiceType service = null;
             while (service == null){
                 System.out.println("Enter Service provided: ");
+                System.out.print("Services: ");
+                System.out.println(Arrays.toString(ServiceType.values()));
                 String serviceInput = Helper.readString();
                 try {
                     // Convert the input to uppercase and then get the corresponding enum
@@ -478,12 +454,6 @@ public class DoctorView extends MainView {
         Repository.PATIENT.put(patient.getPatientId(), patient);
         Repository.persistData(FileType.PATIENT);
         System.out.println("Outcome recorded successfully.");
-    }
-
-    public static String generateApptOutcomeId() {
-        String prefix = "OUT";
-        int uniqueId = Helper.generateUniqueId(Repository.APPOINTMENT_OUTCOME);
-        return prefix + String.format("%03d", uniqueId);
     }
 
     public static List<Appointment> getAllAppointment() {

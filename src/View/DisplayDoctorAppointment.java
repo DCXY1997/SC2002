@@ -95,10 +95,10 @@ public class DisplayDoctorAppointment extends MainView {
 
     private void viewUpcomingAppointments() {
         // Implement logic to display the appointment requests for the doctor
-        List<Appointment> appointmentRequests = AppointmentController.viewDoctorAppointments(doctor);
+        List<Appointment> appointmentRequests = AppointmentController.viewConfirmAppointments(doctor);
 
         if (appointmentRequests.isEmpty()) {
-            System.out.println("No appointment requests found for you.");
+            System.out.println("No upcoming appointments found for you.");
         } else {
             System.out.println("Your Upcoming Appointments:");
 
