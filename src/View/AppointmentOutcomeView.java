@@ -27,16 +27,7 @@ public class AppointmentOutcomeView extends MainView{
                 case 1:
                     Helper.clearScreen();
                     printBreadCrumbs("Hospital Management App View > Login View > Pharmacist View > View Appointment Outcome");
-                    String pendingRequests = AppointmentOutcomeController.checkPendingMedicinePrescription();
-                    
-                    if (pendingRequests.contains("No pending medicine prescription found.")) 
-                    {
-                        System.out.println("No appointment outcome with pending medicine prescription available.");
-                    } 
-                    else 
-                    {
-                        System.out.println(pendingRequests);
-                    }
+                    AppointmentOutcomeController.checkPendingMedicinePrescription();
                     Helper.pressAnyKeyToContinue();
                     break;
                 case 2:

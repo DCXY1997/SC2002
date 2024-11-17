@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -75,11 +76,19 @@ public class Repository {
      * HashMap to store appointment list data.
      */
     public static HashMap<String, Appointment> APPOINTMENT_LIST = new HashMap<>();
+<<<<<<< HEAD
     /**
      * Persists the data of a given file type by writing it to a serialized file.
      *
      * @param fileType The type of file to persist, defined in {@link FileType}.
      */
+=======
+    public static HashMap<String, Medicine> MEDICINE = new HashMap<>();
+    public static HashMap<String, MedicalRecord> MEDICAL_RECORD = new HashMap<>();
+    public static HashMap<String, Diagnosis> DIAGNOSIS = new HashMap<>();
+    public static HashMap<String, Treatment> TREATMENT = new HashMap<>();
+
+>>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
     public static void persistData(FileType fileType) {
         writeSerializedObject(fileType);
     }
@@ -102,6 +111,10 @@ public class Repository {
         persistData(FileType.REPLENISHMENT_REQUEST);
         persistData(FileType.APPOINTMENT_OUTCOME);
         persistData(FileType.APPOINTMENT_LIST);
+        persistData(FileType.MEDICINE);
+        persistData(FileType.MEDICAL_RECORD);
+        persistData(FileType.DIAGNOSIS);
+        persistData(FileType.TREATMENT);
     }
    /**
      * Clears the database by resetting all HashMaps and creating empty serialized files.
@@ -114,12 +127,22 @@ public class Repository {
         PATIENT = new HashMap<>();
         INVENTORY = new HashMap<>();
         REPLENISHMENT_REQUEST = new HashMap<>();
+        MEDICINE = new HashMap<>();
+        APPOINTMENT_LIST = new HashMap<>();
+        APPOINTMENT_OUTCOME = new HashMap<>();
+        MEDICAL_RECORD = new HashMap<>();
+        DIAGNOSIS = new HashMap<>();
+        TREATMENT = new HashMap<>();
         writeSerializedObject(FileType.STAFF);
         writeSerializedObject(FileType.PATIENT);
         writeSerializedObject(FileType.INVENTORY);
         writeSerializedObject(FileType.REPLENISHMENT_REQUEST);
         writeSerializedObject(FileType.APPOINTMENT_OUTCOME);
         writeSerializedObject(FileType.APPOINTMENT_LIST);
+        writeSerializedObject(FileType.MEDICINE);
+        writeSerializedObject(FileType.MEDICAL_RECORD);
+        writeSerializedObject(FileType.DIAGNOSIS);
+        writeSerializedObject(FileType.TREATMENT);
         return true;
 
     }
@@ -157,6 +180,18 @@ public class Repository {
                     break;
                 case APPOINTMENT_LIST:
                     objectOutputStream.writeObject(APPOINTMENT_LIST);
+                    break;
+                case MEDICINE:
+                    objectOutputStream.writeObject(MEDICINE);
+                    break;
+                case MEDICAL_RECORD:
+                    objectOutputStream.writeObject(MEDICAL_RECORD);
+                    break;
+                case DIAGNOSIS:
+                    objectOutputStream.writeObject(DIAGNOSIS);
+                    break;
+                case TREATMENT:
+                    objectOutputStream.writeObject(TREATMENT);
                     break;
                 default:
                     System.out.println("Unsupported file type: " + fileType);
@@ -213,6 +248,17 @@ public class Repository {
                 case APPOINTMENT_LIST:
                     APPOINTMENT_LIST = new HashMap<>();
                     break;
+                case MEDICINE:
+                    MEDICINE = new HashMap<>();
+                case MEDICAL_RECORD:
+                    MEDICAL_RECORD = new HashMap<>();
+                    break;
+                case DIAGNOSIS:
+                    DIAGNOSIS = new HashMap<>();
+                    break;
+                case TREATMENT:
+                    TREATMENT = new HashMap<>();
+                    break;
                 default:
                     System.out.println("Unsupported file type: " + fileType);
                     return false;
@@ -252,6 +298,18 @@ public class Repository {
                 case APPOINTMENT_LIST:
                     APPOINTMENT_LIST = (HashMap<String, Appointment>) object;
                     break;
+                case MEDICINE:
+                    MEDICINE = (HashMap<String, Medicine>) object;
+                    break;
+                case MEDICAL_RECORD:
+                    MEDICAL_RECORD = (HashMap<String, MedicalRecord>) object;
+                    break;
+                case DIAGNOSIS:
+                    DIAGNOSIS = (HashMap<String, Diagnosis>) object;
+                    break;
+                case TREATMENT:
+                    TREATMENT = (HashMap<String, Treatment>) object;
+                    break;
                 default:
                     System.out.println("Unsupported file type: " + fileType);
                     return false;
@@ -275,10 +333,6 @@ public class Repository {
             return false;
         }
 
-        // Staff staff1 = new Staff("John Smith", "password", StaffType.DOCTOR,
-        // Gender.MALE, 45, "D001");
-        // Staff staff2 = new Staff("Emily Clarke", "password", StaffType.DOCTOR,
-        // Gender.FEMALE, 38, "D002");
         Staff staff1 = new Doctor("John Doe", "password", Gender.MALE, 30, "D001", null, null, null);
         Staff staff2 = new Doctor("Emily Clarke", "password", Gender.FEMALE, 28, "D002", null, null, null);
         Staff staff3 = new Staff("Mark Lee", "password", StaffType.PHARMACIST, Gender.MALE, 29, "P001");
@@ -336,13 +390,13 @@ public class Repository {
         }
 
         // Dummy data based on provided table
-        Medicine paracetamol = new Medicine("001", "Paracetamol", 5, "To treat fever");
+        Medicine paracetamol = new Medicine("001", "Paracetamol", 5, "Relieves mild to moderate pain and reduces fever");
         InventoryList inventoryParacetamol = new InventoryList(paracetamol, 100, 20);
 
-        Medicine ibuprofen = new Medicine("002", "Ibuprofen", 4, "To treat fever");
+        Medicine ibuprofen = new Medicine("002", "Ibuprofen", 4, "Eases inflammation, pain, and fever.");
         InventoryList inventoryIbuprofen = new InventoryList(ibuprofen, 5, 10);
 
-        Medicine amoxicillin = new Medicine("003", "Amoxicillin", 3, "To treat fever");
+        Medicine amoxicillin = new Medicine("003", "Amoxicillin", 3, "An antibiotic used to treat bacterial infections.");
         InventoryList inventoryAmoxicillin = new InventoryList(amoxicillin, 75, 15);
 
         // Add to INVENTORY with String keys
@@ -381,13 +435,16 @@ public class Repository {
      * @return {@code true} if dummy appointment outcomes were successfully initialized, {@code false} otherwise.
      */
     public static boolean initializeDummyAppointmentOutcome() {
-        if (!Repository.APPOINTMENT_OUTCOME.isEmpty()) {
+        /*if (!Repository.APPOINTMENT_OUTCOME.isEmpty()) {
             return false;
         }
 
         // Create sample Medicine objects
-        Medicine medicine1 = new Medicine("001", "Paracetamol", 5, "To treat fever");
-        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, "To treat inflammation");
+        Medicine medicine1 = new Medicine("001", "Paracetamol", 5, "Relieves mild to moderate pain and reduces fever");
+        Medicine medicine2 = new Medicine("002", "Ibuprofen", 4, "Eases inflammation, pain, and fever.");
+
+        List<Integer> medicineAmount1 = new ArrayList<>(Arrays.asList(1, 2));
+        List<Integer> medicineAmount2 = new ArrayList<>(Arrays.asList(2));
 
         // Create independent copies of the medicines for each AppointmentOutcome
         List<Medicine> prescribedMedicinesList1 = Arrays.asList(new Medicine(medicine1), new Medicine(medicine2));
@@ -405,6 +462,7 @@ public class Repository {
         AppointmentOutcome appointmentOutcome1 = new AppointmentOutcome(
                 "101",
                 prescribedMedicinesList1,
+                medicineAmount1,
                 diagnosisList1,
                 "Patient needs rest and fluids.",
                 LocalDateTime.now(),
@@ -414,6 +472,7 @@ public class Repository {
         AppointmentOutcome appointmentOutcome2 = new AppointmentOutcome(
                 "102",
                 prescribedMedicinesList2,
+                medicineAmount2,
                 diagnosisList2,
                 "Prescribed light medication and rest.",
                 LocalDateTime.now().minusDays(1),
@@ -424,7 +483,7 @@ public class Repository {
         Repository.APPOINTMENT_OUTCOME.put(appointmentOutcome1.getOutcomeId(), appointmentOutcome1);
         Repository.APPOINTMENT_OUTCOME.put(appointmentOutcome2.getOutcomeId(), appointmentOutcome2);
 
-        // Return true indicating dummy data is initialized
+        // Return true indicating dummy data is initialized*/
         return true;
     }
 

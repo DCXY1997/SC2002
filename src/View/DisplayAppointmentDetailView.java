@@ -1,7 +1,6 @@
 package src.View;
 
 import java.util.List;
-
 import src.Controller.AdminController;
 import src.Controller.AppointmentController;
 import src.Helper.Helper;

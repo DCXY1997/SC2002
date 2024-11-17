@@ -2,6 +2,7 @@ package src.View;
 
 import src.Controller.*;
 import src.Helper.Helper;
+import src.Model.Patient;
 import src.Model.Staff;
 import src.Repository.Repository;
 
@@ -9,8 +10,8 @@ public class PharmacistView extends MainView{
 	
 	private AppointmentOutcomeView appointmentOutcomeView = new AppointmentOutcomeView();
 	//private PharmacistController pharmacistController = new PharmacistController();
-	//private PharmacistController pharmacistController = new PharmacistController();
 	private InventoryView inventoryView = new InventoryView();
+	private PaymentView paymentView;
 	
 	public void printActions()
 	{
@@ -91,4 +92,12 @@ public class PharmacistView extends MainView{
 			System.out.println("Verification failed. Either the user ID or password is incorrect.");
 		}
 	}	
+	
+	private void promptPatientId(){
+		System.out.println("Enter Patient ID: ");
+		String pid = Helper.readString();
+		Patient patient = Repository.PATIENT.get(pid);
+		paymentView = new PaymentView(patient);
+	}
 }
+

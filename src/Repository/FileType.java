@@ -1,5 +1,6 @@
 package src.Repository;
 
+<<<<<<< HEAD
 /**
  * The FileType enum represents different types of files used in the system.
  * <p>
@@ -57,6 +58,19 @@ public enum FileType {
     /**
      * The file name associated with the file type.
      */
+=======
+public enum FileType {
+    STAFF("Staff"),
+    INVENTORY("Inventory"),
+    REPLENISHMENT_REQUEST("Replenishment_Request"),
+    PATIENT("Patient"),
+    MEDICINE("Medicine"),
+    APPOINTMENT_OUTCOME("Appointment_Outcome"),
+    APPOINTMENT_LIST("Appointment_List"),
+    MEDICAL_RECORD("Medical_Record"),
+    DIAGNOSIS("Diagnosis"),
+    TREATMENT("Treatment");
+>>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
     public final String fileName;
 
     /**

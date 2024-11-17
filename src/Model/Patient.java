@@ -17,6 +17,7 @@ public class Patient implements Serializable {
     private String bloodType;
     private AppointmentList appointList;
     private static final long serialVersionUID = 1L;
+    private MedicalRecord medicalRecord;
 
     // Empty constructor
     public Patient() {
@@ -110,7 +111,15 @@ public class Patient implements Serializable {
         this.appointList = appointList;
     }
 
-    // Override equals to compare patients by their patientId
+    public MedicalRecord getMedicalRecord() {
+		return medicalRecord;
+	}
+
+	public void setMedicalRecord(MedicalRecord medicalRecord) {
+		this.medicalRecord = medicalRecord;
+	}
+
+	// Override equals to compare patients by their patientId
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

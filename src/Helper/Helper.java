@@ -192,7 +192,7 @@ public class Helper {
                 }
             }
         }
-        String maxId = currentMax.substring(1);
+        String maxId = currentMax.replaceAll("\\D", "");
         return Integer.parseInt(maxId) + 1;
     }
 

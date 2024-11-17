@@ -1,4 +1,5 @@
 package src.Controller;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import src.Enum.StaffType;
 import src.Helper.Helper;
 import src.Model.Admin;
 import src.Model.Staff;
+import src.Model.Doctor;
 import src.Repository.FileType;
 import src.Repository.Repository;
 import src.View.AdminView;
@@ -32,19 +34,19 @@ public class AdminController {
      */
 
     public static boolean displayStaffListByRole(StaffType role) {
-    	ArrayList<Staff> staffNameList = new ArrayList<Staff>();
-    	//can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
+        ArrayList<Staff> staffNameList = new ArrayList<Staff>();
+        //can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
         for (Map.Entry<String, Staff> entry : Repository.STAFF.entrySet()) {
-        	Staff staff = entry.getValue();
-        	if (staff.getRole().equals(role)) {
-        		staffNameList.add(staff);
-        	}    
-        }
-        if(staffNameList.size() != 0) {
-        	for(Staff staff : staffNameList) {
-            	System.out.println(staff.getName());
+            Staff staff = entry.getValue();
+            if (staff.getRole().equals(role)) {
+                staffNameList.add(staff);
             }
-        	return true;
+        }
+        if (staffNameList.size() != 0) {
+            for (Staff staff : staffNameList) {
+                System.out.println(staff.getName());
+            }
+            return true;
         }
         return false;
 	}
@@ -56,19 +58,19 @@ public class AdminController {
      */ 
 
     public static boolean displayStaffListByGender(Gender gender) {
-    	ArrayList<Staff> staffNameList = new ArrayList<Staff>();
-    	//can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
+        ArrayList<Staff> staffNameList = new ArrayList<Staff>();
+        //can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
         for (Map.Entry<String, Staff> entry : Repository.STAFF.entrySet()) {
-        	Staff staff = entry.getValue();
-        	if (staff.getGender().equals(gender)) {
-        		staffNameList.add(staff);
-        	}
-        }
-        if(staffNameList.size() != 0) {
-        	for(Staff staff : staffNameList) {
-            	System.out.println(staff.getName());
+            Staff staff = entry.getValue();
+            if (staff.getGender().equals(gender)) {
+                staffNameList.add(staff);
             }
-        	return true;
+        }
+        if (staffNameList.size() != 0) {
+            for (Staff staff : staffNameList) {
+                System.out.println(staff.getName());
+            }
+            return true;
         }
         return false;
 	}
@@ -80,19 +82,19 @@ public class AdminController {
      */
 
     public static boolean displayStaffListByAge(int age) {
-    	ArrayList<Staff> staffNameList = new ArrayList<Staff>();
-    	//can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
+        ArrayList<Staff> staffNameList = new ArrayList<Staff>();
+        //can't just iterate through map, need to do modification to loop through, need to import packages for map.entry
         for (Map.Entry<String, Staff> entry : Repository.STAFF.entrySet()) {
-        	Staff staff = entry.getValue();
-        	if (staff.getAge() == age) {
-        		staffNameList.add(staff);
-        	}
-        }
-        if(staffNameList.size() != 0) {
-        	for(Staff staff : staffNameList) {
-            	System.out.println(staff.getName());
+            Staff staff = entry.getValue();
+            if (staff.getAge() == age) {
+                staffNameList.add(staff);
             }
-        	return true;
+        }
+        if (staffNameList.size() != 0) {
+            for (Staff staff : staffNameList) {
+                System.out.println(staff.getName());
+            }
+            return true;
         }
         return false;
 	}
@@ -108,14 +110,16 @@ public class AdminController {
 	 */
 
     public static void addStaffAccount(String name, String password, Gender gender, int age, String hospitalId, StaffType role) {
-		Staff staff = new Staff(name, password, role, gender, age, hospitalId);
-        
+        Staff staff;
+        if (role == StaffType.DOCTOR) {
+            staff = new Doctor(name, password, gender, age, hospitalId, null, null, null);
+        } else {
+            staff = new Staff(name, password, role, gender, age, hospitalId);
+        }
         //Update Hash Map
         Repository.STAFF.put(staff.getHospitalId(), staff);
-    
         // Persist data to file
         Repository.persistData(FileType.STAFF);
-
         System.out.println("Staff added successfully! ID: " + hospitalId);
 	}
 
@@ -125,7 +129,7 @@ public class AdminController {
      * @return {@code true} if remove successfully. Otherwise, {@code false} if staff id is not found
      */
 
-    public static boolean removeStaffAccount(String hospitalId) { 
+    public static boolean removeStaffAccount(String hospitalId) {
         if (Repository.STAFF.containsKey(hospitalId)) {
             // Prompt confirmation before removal
             if (Helper.promptConfirmation("remove this staff")) {
@@ -149,7 +153,7 @@ public class AdminController {
      */
 
     public static ArrayList<Staff> searchStaffById(String hospitalId) {
-    	//create an array list to store staff object
+        //create an array list to store staff object
         ArrayList<Staff> searchList = new ArrayList<Staff>();
         //if STAFF hash map contains a key equal to the value stored in the variable name
         if (Repository.STAFF.containsKey(hospitalId)) {
@@ -174,7 +178,7 @@ public class AdminController {
             // Staff not found
             return false;
         }
-    
+
         // Loop through staff objects
         for (Staff staff : updateList) {
             Staff staffToUpdate = Repository.STAFF.get(hospitalId);
@@ -185,7 +189,7 @@ public class AdminController {
                 Repository.STAFF.put(hospitalId, staffToUpdate);
             }
         }
-    
+
         Repository.persistData(FileType.STAFF);
         return true;
     }
@@ -205,7 +209,7 @@ public class AdminController {
             // Staff not found
             return false;
         }
-    
+
         // Loop through staff objects
         for (Staff staff : updateList) {
             Staff staffToUpdate = Repository.STAFF.get(hospitalId);
@@ -216,7 +220,7 @@ public class AdminController {
                 Repository.STAFF.put(hospitalId, staffToUpdate);
             }
         }
-    
+
         Repository.persistData(FileType.STAFF);
         return true;
     }
@@ -236,7 +240,7 @@ public class AdminController {
             // Staff not found
             return false;
         }
-    
+
         // Loop through staff objects
         for (Staff staff : updateList) {
             Staff staffToUpdate = Repository.STAFF.get(hospitalId);
@@ -247,7 +251,7 @@ public class AdminController {
                 Repository.STAFF.put(hospitalId, staffToUpdate);
             }
         }
-    
+
         Repository.persistData(FileType.STAFF);
         return true;
     }

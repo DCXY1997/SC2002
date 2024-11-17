@@ -42,8 +42,8 @@ public class Appointment implements Serializable {
     private Doctor attendingDoctor;
     private LocalDateTime appointmentStartDate;
     private LocalDateTime appointmentEndDate;
-    private AppointmentOutcome outcome;
     private AppointmentStatus status;
+    private AppointmentOutcome outcome;
 
     /**
      * Constructs a new Appointment object with the specified patient, doctor, start time, and end time.
@@ -60,6 +60,7 @@ public class Appointment implements Serializable {
         this.attendingDoctor = attendingDoctor;
         this.appointmentStartDate = appointmentStartDate;
         this.appointmentEndDate = appointmentEndDate;
+        // this.status = AppointmentStatus.PENDING;
     }
 
     /**
@@ -177,6 +178,7 @@ public class Appointment implements Serializable {
      */
 
     public void setOutcome(AppointmentOutcome outcome) {
+        this.status = AppointmentStatus.COMPLETED;
         this.outcome = outcome;
     }
     /**
