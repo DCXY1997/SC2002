@@ -13,7 +13,7 @@ import java.util.List;
  * <p>This class implements {@link Serializable} to allow medical records to be
  * serialized for persistence.</p>
  * 
- * @author Bryan
+ * @author Darren, Bryan
  * @version 1.0
  * @since 2024-11-17
  */
