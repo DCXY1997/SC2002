@@ -61,6 +61,16 @@ public class AppointmentOutcome implements Serializable {
         }
     }
 
+    public List<Integer> getMedicineAmount() {
+        return medicineAmount;
+    }
+
+    public void setMedicineAmount(Medicine medicine, int amount) {
+        if (medicine!=null && amount>0) {
+            this.medicineAmount.add(amount);
+        }
+    }
+
     public void removePrescribedMedicine(Medicine medicine) {
         this.prescribedMedicines.remove(medicine);
     }

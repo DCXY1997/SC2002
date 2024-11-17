@@ -345,7 +345,7 @@ public class DoctorView extends MainView {
                     Treatment treatment = new Treatment(i, treatmentMedicines, medicineAmount);
                     // Add the treatment to the diagnosis
                     diagnosis.addTreatment(treatment);
-                    medicineAmounts.addAll(medicineAmount);
+                    medicineAmounts.add(amount);
                 } else {
                     System.out.println("Warning: Medicine with ID '" + medKey + "' not found.");
                 }
