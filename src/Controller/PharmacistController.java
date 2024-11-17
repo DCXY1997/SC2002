@@ -35,11 +35,12 @@ public class PharmacistController {
 			return false;
 	}
 	
-	public void changePrescriptionStatus(AppointmentOutcome appointmentOutcome, InventoryList inventory) {
+	/*public void changePrescriptionStatus(AppointmentOutcome appointmentOutcome, InventoryList inventory) {
+		int i = 0;
 	    for (Medicine medicine : appointmentOutcome.getPrescribedMedicines()) {
 	        if (inventory.getMedicine().equals(medicine)) {
 	            int currentStock = inventory.getInitialStock(); 
-	            int medicineAmount = 0; 
+	            int medicineAmount = appointmentOutcome.getMedicineAmount().get(i); 
 	            
 	            if (currentStock >= medicineAmount) {
 	                inventory.setInitialStock(currentStock - medicineAmount);
@@ -50,8 +51,9 @@ public class PharmacistController {
 	                System.out.println("Not enough stock for " + medicine.getMedicineName() + ". Current stock: " + currentStock + ", Required: " + medicineAmount);
 	            }
 	        }
+			i++;
 	    }
-	}
+	}*/
 
 	
 	/*public String getLowStock(InventoryList inventory) {

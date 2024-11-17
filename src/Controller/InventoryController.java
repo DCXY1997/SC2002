@@ -180,7 +180,7 @@ public class InventoryController {
         String medicineId = request.getMedicineId();
         InventoryList inventoryItem = Repository.INVENTORY.get(medicineId);
     
-        if (inventoryItem != null && inventoryItem.getInitialStock() < inventoryItem.getLowStocklevelAlert()) {
+        if (inventoryItem != null) {
             int updatedStock = inventoryItem.getInitialStock() + request.getStockLevel();
             inventoryItem.setInitialStock(updatedStock);
     
