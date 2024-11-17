@@ -22,7 +22,7 @@ import src.Repository.Repository;
  * <p>This class acts as a bridge between patient-related views and the repository layer, handling
  * the business logic and data operations for patient management.</p>
  *
- * @author Bryan
+ * @author Bryan, Darren
  * @version 1.0
  * @since 2024-11-17
  */
