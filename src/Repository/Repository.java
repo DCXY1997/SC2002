@@ -76,19 +76,28 @@ public class Repository {
      * HashMap to store appointment list data.
      */
     public static HashMap<String, Appointment> APPOINTMENT_LIST = new HashMap<>();
-<<<<<<< HEAD
+    /**
+     * HashMap to store medicine data.
+     */
+    public static HashMap<String, MedicalRecord> MEDICAL_RECORD= new HashMap<>();
+    /**
+     * HashMap to store diagnosis data.
+     */
+    public static HashMap<String, Diagnosis> DIAGNOSIS= new HashMap<>();
+    /**
+     * HashMap to store treatment data.
+     */
+    public static HashMap<String, Treatment> TREATMENT= new HashMap<>();
+    /**
+     * HashMap to store medicine data.
+     */
+    public static HashMap<String, Medicine> MEDICINE= new HashMap<>();
+    
     /**
      * Persists the data of a given file type by writing it to a serialized file.
      *
      * @param fileType The type of file to persist, defined in {@link FileType}.
      */
-=======
-    public static HashMap<String, Medicine> MEDICINE = new HashMap<>();
-    public static HashMap<String, MedicalRecord> MEDICAL_RECORD = new HashMap<>();
-    public static HashMap<String, Diagnosis> DIAGNOSIS = new HashMap<>();
-    public static HashMap<String, Treatment> TREATMENT = new HashMap<>();
-
->>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
     public static void persistData(FileType fileType) {
         writeSerializedObject(fileType);
     }

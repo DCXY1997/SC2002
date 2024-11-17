@@ -1,6 +1,5 @@
 package src.Repository;
 
-<<<<<<< HEAD
 /**
  * The FileType enum represents different types of files used in the system.
  * <p>
@@ -17,6 +16,9 @@ package src.Repository;
  *   <li>{@link #MEDICINE} - Represents the medicine data file.</li>
  *   <li>{@link #APPOINTMENT_OUTCOME} - Represents the appointment outcome data file.</li>
  *   <li>{@link #APPOINTMENT_LIST} - Represents the appointment list data file.</li>
+ *   <li>{@link #MEDICAL_RECORD} - Represents the medical record data file.</li>
+ *   <li>{@link #DIAGNOSIS} - Represents the diagnosis data file.</li>
+ *   <li>{@link #TREATMENT} - Represents the treatment data file.</li>
  * </ul>
  *
  * <p>Each constant has an associated file name that is used to identify the file in the system.</p>
@@ -54,23 +56,23 @@ public enum FileType {
     /**
      * Represents the appointment list data file.
      */
-    APPOINTMENT_LIST("Appointment_List");
+    APPOINTMENT_LIST("Appointment_List"),
+    /**
+     * Represents the medical record data file.
+     */
+    MEDICAL_RECORD("Medical_Record"),
+    /**
+     * Represents the diagnosis data file.
+     */
+    DIAGNOSIS("Diagnosis"),
+    /**
+     * Represents the treatment data file.
+     */
+    TREATMENT("Treatment");
+
     /**
      * The file name associated with the file type.
      */
-=======
-public enum FileType {
-    STAFF("Staff"),
-    INVENTORY("Inventory"),
-    REPLENISHMENT_REQUEST("Replenishment_Request"),
-    PATIENT("Patient"),
-    MEDICINE("Medicine"),
-    APPOINTMENT_OUTCOME("Appointment_Outcome"),
-    APPOINTMENT_LIST("Appointment_List"),
-    MEDICAL_RECORD("Medical_Record"),
-    DIAGNOSIS("Diagnosis"),
-    TREATMENT("Treatment");
->>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
     public final String fileName;
 
     /**
@@ -78,8 +80,8 @@ public enum FileType {
      *
      * @param name The file name associated with the file type.
      */
-    
     private FileType(String name) {
         this.fileName = name;
     }
 }
+

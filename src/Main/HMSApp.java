@@ -13,14 +13,10 @@ import src.View.HospitalManagementAppView;
  */
 
 public class HMSApp {
-<<<<<<< HEAD
         /**
      * Main function that is the starting point of the application.
      * @param args Arguments passed to the app
      */
-=======
-
->>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
     public static void main(String[] args) {
         //Repository.clearDatabase();
 

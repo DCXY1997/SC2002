@@ -6,7 +6,6 @@ import src.Enum.StaffType;
 import src.Helper.Helper;
 import src.Repository.Repository;
 
-<<<<<<< HEAD
 /**
  * The ManageStaffAccountView class provides an interface for administrators 
  * to manage hospital staff accounts in the hospital management system.
@@ -50,12 +49,6 @@ public class ManageStaffAccountView extends MainView {
      *   <li>(3) Update staff details</li>
      *   <li>(4) Exit the menu</li>
      * </ul>
-=======
-public class ManageStaffAccountView extends MainView {
-
-    /**
-     * View Actions of the ManageStaffAccountView.
->>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
      */
     @Override
     public void printActions() {
@@ -69,16 +62,11 @@ public class ManageStaffAccountView extends MainView {
     }
 
     /**
-<<<<<<< HEAD
      * Controls the workflow of the Manage Staff Account View.
      * <p>
      * Allows the administrator to select and execute staff management operations 
      * such as adding, removing, or updating staff accounts.
      * </p>
-=======
-     * View Application of the ManageStaffAccountView.
-     * <p>
->>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
      */
     @Override
     public void viewApp() {
@@ -114,7 +102,6 @@ public class ManageStaffAccountView extends MainView {
         } while (opt != 4);
     }
 
-<<<<<<< HEAD
     /**
      * Prompts the administrator to add a new staff account.
      * <p>
@@ -124,8 +111,6 @@ public class ManageStaffAccountView extends MainView {
      *
      * @return {@code true} if the staff account is successfully added, {@code false} otherwise.
      */
-=======
->>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
     private boolean promptAddStaffAccount() {
         System.out.println("Enter staff name:");
         String name = Helper.readString();
@@ -149,16 +134,11 @@ public class ManageStaffAccountView extends MainView {
 
         // Generate the hospital ID based on the role prefix
         String hospitalId = generateHospitalId(role);
-<<<<<<< HEAD
-=======
-        System.out.println("hospital id: " + hospitalId);
->>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
 
         AdminController.addStaffAccount(name, password, gender, age, hospitalId, role);
         return true;
     }
 
-<<<<<<< HEAD
     /**
      * Generates a unique hospital ID for a new staff account based on their role.
      *
@@ -180,81 +160,6 @@ public class ManageStaffAccountView extends MainView {
         }
         int uniqueId = Helper.generateUniqueId(Repository.STAFF);
         return prefix + String.format("%03d", uniqueId); // e.g., D001
-=======
-    // Helper function to generate hospital ID based on role
-    private String generateHospitalId(StaffType role) {
-        String prefix = switch (role) {
-            case DOCTOR ->
-                "D";
-            case PHARMACIST ->
-                "P";
-            case ADMIN ->
-                "A";
-            default ->
-                throw new IllegalArgumentException("Unknown role");
-        };
-
-        // Find the maximum existing ID for this prefix in the database
-        int maxId = Repository.STAFF.keySet().stream()
-                .filter(key -> key instanceof String && ((String) key).startsWith(prefix))
-                .mapToInt(key -> Integer.parseInt(((String) key).substring(1))) // Extract the numerical part
-                .max()
-                .orElse(0); // Default to 0 if no IDs exist for this prefix
-
-        int uniqueId = maxId + 1; // Increment to get the next unique ID
-        return prefix + String.format("%03d", uniqueId); // e.g., D003
-    }
-
-    private void printGenderMenu() {
-        System.out.println("Please enter the staff's gender (1-2)");
-        System.out.println("(1) Male");
-        System.out.println("(2) Female");
-    }
-
-    private Gender promptGender() {
-        printGenderMenu();
-        int choice = Helper.readInt(1, 2);
-        if (choice != 1 && choice != 2) {
-            return null;
-        } else {
-            switch (choice) {
-                case 1:
-                    return Gender.MALE;
-                case 2:
-                    return Gender.FEMALE;
-                default:
-                    break;
-            }
-        }
-        return null;
-    }
-
-    private void printRoleMenu() {
-        System.out.println("Please enter the staff's role (1-3)");
-        System.out.println("(1) Doctor");
-        System.out.println("(2) Pharmacist");
-        System.out.println("(3) Admin");
-    }
-
-    private StaffType promptRole() {
-        printRoleMenu();
-        int choice = Helper.readInt(1, 3);
-        if (choice < 1 || choice > 4) {
-            return null;
-        } else {
-            switch (choice) {
-                case 1:
-                    return StaffType.DOCTOR;
-                case 2:
-                    return StaffType.PHARMACIST;
-                case 3:
-                    return StaffType.ADMIN;
-                default:
-                    break;
-            }
-        }
-        return null;
->>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
     }
 
     /**
@@ -268,19 +173,11 @@ public class ManageStaffAccountView extends MainView {
     private boolean promptRemoveStaffAccount() {
         Helper.clearScreen();
         printBreadCrumbs("Hotel Management App View > Admin View > Remove a staff");
-<<<<<<< HEAD
         System.out.println("Enter the hospital ID of the staff that you want to remove: ");
-=======
-        System.out.println("Enter the hospital id of the staff that you want to remove: ");
->>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
         String hospitalId = Helper.readString();
 
         // First, check if the staff exists
         if (Repository.STAFF.containsKey(hospitalId)) {
-<<<<<<< HEAD
-=======
-            // Call removeStaffAccount and handle the result accordingly
->>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
             if (!AdminController.removeStaffAccount(hospitalId)) {
                 System.out.println("Staff removal canceled!");
                 return false;
@@ -354,7 +251,6 @@ public class ManageStaffAccountView extends MainView {
         System.out.println("(3) Age");
     }
 
-<<<<<<< HEAD
     /**
      * Prompts the administrator to select a gender for the staff account.
      * <p>
@@ -423,6 +319,3 @@ public class ManageStaffAccountView extends MainView {
         System.out.println("(3) Admin");
     }
 }
-=======
-}
->>>>>>> 9f13667fef1bff181ceb9bdfee5c7161c5340f34
