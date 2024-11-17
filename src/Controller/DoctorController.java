@@ -20,7 +20,7 @@ import src.Repository.Repository;
  * <p>This controller acts as the middle layer between the views and the model, handling
  * data processing and business logic for operations related to doctors.</p>
  *
- * @author Bryan
+ * @author Bryan, Darren
  * @version 1.0
  * @since 2024-11-17
  */
