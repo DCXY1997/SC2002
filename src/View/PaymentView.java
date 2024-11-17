@@ -40,8 +40,8 @@ public class PaymentView extends MainView{
             {
                 case 1:
                     Helper.clearScreen();
-                    viewCompletedAppointments(patient);
-                    paymentController.checkAppointmentId();
+                    printBreadCrumbs("Hospital Management App View > Login View > Patient View > Payment View > Make Payment");
+                    paymentController.checkAppointmentId(promptCompletedAppointments(patient));
                     Helper.pressAnyKeyToContinue();
                     Helper.clearScreen();
                     break; 
@@ -56,10 +56,15 @@ public class PaymentView extends MainView{
 
     }
 
-    public static void viewCompletedAppointments(Patient patient){
+    public static Appointment promptCompletedAppointments(Patient patient){
         List<Appointment> appointments = AppointmentController.viewCompleteAppointments(patient);
-        for (Appointment appointment : appointments){
-            PaymentController.generateReceipt(appointment.getOutcome().getOutcomeId());
+        for (int i = 0; i < appointments.size(); i++){
+            System.out.println((i+1)+".");
+            PaymentController.generateReceipt(appointments.get(i).getOutcome().getOutcomeId());
         }
+        System.out.println("====================================================");
+        System.out.println("Enter the index of the appointment to be paid for: ");
+        int index = Helper.readInt(1, appointments.size());
+        return appointments.get(index-1);
     }
 }

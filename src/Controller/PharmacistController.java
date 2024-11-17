@@ -1,10 +1,10 @@
 package src.Controller;
 
-import src.Repository.*;
-import src.Model.*;
-import src.Enum.*;
 import java.util.Scanner;
+import src.Enum.*;
 import src.Helper.*;
+import src.Model.*;
+import src.Repository.*;
 
 public class PharmacistController {
 	
@@ -35,7 +35,7 @@ public class PharmacistController {
 			return false;
 	}
 	
-	public void changePrescriptionStatus(AppointmentOutcome appointmentOutcome, InventoryList inventory) {
+	/*public void changePrescriptionStatus(AppointmentOutcome appointmentOutcome, InventoryList inventory) {
 	    for (Medicine medicine : appointmentOutcome.getPrescribedMedicines()) {
 	        if (inventory.getMedicine().equals(medicine)) {
 	            int currentStock = inventory.getInitialStock(); 
@@ -51,7 +51,7 @@ public class PharmacistController {
 	            }
 	        }
 	    }
-	}
+	}*/
 
 	
 	/*public String getLowStock(InventoryList inventory) {

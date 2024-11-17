@@ -210,7 +210,7 @@ public class DisplayPatientAppointment extends MainView {
             if (appointment.getAppointmentId().equals(currentAppointment.getAppointmentId())) {
                 // Allow rescheduling if the time slot overlaps only with the current appointment
                 if (startTime.isBefore(appointment.getAppointmentEndDate()) && endTime.isAfter(appointment.getAppointmentStartDate())) {
-                    System.out.println("Rescheduling allowed as the time slot overlaps with the current appointment.");
+                    //System.out.println("Rescheduling allowed as the time slot overlaps with the current appointment.");
                     continue;
                 }
 
@@ -243,8 +243,12 @@ public class DisplayPatientAppointment extends MainView {
         System.out.println("Your Pending Appointments:");
         for (int i = 0; i < pendingAppointments.size(); i++) {
             Appointment appointment = pendingAppointments.get(i);
-            System.out.println((i + 1) + ". Appointment ID: " + appointment.getAppointmentId() + " - Doctor: "
-                    + appointment.getAttendingDoctor().getName() + " from " + appointment.getAppointmentStartDate() + " to " + appointment.getAppointmentEndDate());
+            System.out.println((i + 1) + ". Appointment ID - " + appointment.getAppointmentId() + ":");
+            System.out.println("Patient: " + appointment.getPatient().getName());
+            System.out.println("Doctor: " + appointment.getAttendingDoctor().getName());
+            System.out.println("From: " + appointment.getAppointmentStartDate() + " to " + appointment.getAppointmentEndDate());
+            System.out.println("Status: " + appointment.getStatus());
+            System.out.println();
         }
 
         System.out.print("Select an appointment to cancel (1-" + pendingAppointments.size() + "): ");

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import src.Enum.PaymentStatus;
+import src.Enum.ServiceType;
 
 public class AppointmentOutcome implements Serializable {
 
@@ -15,28 +16,31 @@ public class AppointmentOutcome implements Serializable {
     private List<Medicine> prescribedMedicines;
     private List<Integer> medicineAmount;
     private List<Diagnosis> patientDiagnosis;
+    private List<ServiceType> services;
     private String doctorNotes;
     private LocalDateTime dateDiagnosed;
     private PaymentStatus paymentStatus;
 
     // Constructor
     public AppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Integer> medicineAmount, List<Diagnosis> patientDiagnosis,
-            String doctorNotes, LocalDateTime dateDiagnosed) {
+        List<ServiceType> services, String doctorNotes, LocalDateTime dateDiagnosed) {
         this.outcomeId = outcomeId;
         this.prescribedMedicines = new ArrayList<>(prescribedMedicines); // Initialize with a copy
         this.medicineAmount = new ArrayList<>(medicineAmount);
         this.patientDiagnosis = new ArrayList<>(patientDiagnosis); // Initialize with a copy
+        this.services = new ArrayList<>(services);
         this.doctorNotes = doctorNotes;
         this.dateDiagnosed = dateDiagnosed;
         this.paymentStatus = PaymentStatus.PENDING;
     }
 
     public AppointmentOutcome(String outcomeId, List<Medicine> prescribedMedicines, List<Integer> medicineAmount, List<Diagnosis> patientDiagnosis,
-            String doctorNotes, LocalDateTime dateDiagnosed, PaymentStatus paymentStatus) {
+        List<ServiceType> services, String doctorNotes, LocalDateTime dateDiagnosed, PaymentStatus paymentStatus) {
         this.outcomeId = outcomeId;
         this.prescribedMedicines = new ArrayList<>(prescribedMedicines); // Initialize with a copy
         this.medicineAmount = new ArrayList<>(medicineAmount);
         this.patientDiagnosis = new ArrayList<>(patientDiagnosis); // Initialize with a copy
+        this.services = new ArrayList<>(services);
         this.doctorNotes = doctorNotes;
         this.dateDiagnosed = dateDiagnosed;
         this.paymentStatus = paymentStatus;
@@ -110,5 +114,20 @@ public class AppointmentOutcome implements Serializable {
     }
     public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
+    }
+
+    public List<ServiceType> getservices() {
+        return services;
+    }
+    public void addServices(ServiceType service) {
+        this.services.add(service);
+    }
+    public void removeServices(ServiceType service) {
+        if (services.contains(service)){
+            this.services.remove(service);
+        }
+        else{
+            System.out.println("Service is not in this appointment outcome.");
+        }
     }
 }

@@ -86,23 +86,27 @@ public class PatientController {
             System.out.println("Diagnoses and Treatments:");
             List<Diagnosis> diagnoses = record.getDiagnoses(); // Assuming outcome links to a list of Diagnosis
             
-        for (Diagnosis diagnosis : diagnoses) {
-            System.out.println("  Diagnosis ID: " + diagnosis.getDiagnosisId());
-            System.out.println("  Name: " + diagnosis.getDiagnosisName());
-            System.out.println("  Description: " + diagnosis.getDescription());
-            
-            for (Treatment treatment : diagnosis.getTreatments()) {
-                    System.out.println("  Treatment ID: " + treatment.getTreatmentId());
-                    System.out.println("  Medicine Amount: " + treatment.getMedicineAmount());
-                    
-                    for (Medicine medicine : treatment.getMedications()) {
-                        System.out.println("   Medicine: " + medicine.getMedicineName());
-                        System.out.println("   Description: " + medicine.getMedicineDescription());
-                    }
-                }
+            for (Diagnosis diagnosis : diagnoses) {
+                System.out.println("  Diagnosis ID: " + diagnosis.getDiagnosisId());
+                System.out.println("  Name: " + diagnosis.getDiagnosisName());
+                System.out.println("  Description: " + diagnosis.getDescription());
                 
+                for (Treatment treatment : diagnosis.getTreatments()) {
+                    System.out.println("  Treatment ID: " + treatment.getTreatmentId());
+                        
+                    for (int i = 0; i < treatment.getMedications().size(); i++) {
+                        System.out.println("   Medicine: " + treatment.getMedications().get(i).getMedicineName());
+                        System.out.println("   Description: " + treatment.getMedications().get(i).getMedicineDescription());
+                        System.out.println("   Medicine Amount: " + treatment.getMedicineAmount().get(i));
+                        System.out.println();
+                    }
+                    System.out.println("-----------------------------------");
+                }
                 System.out.println();
+                System.out.println("===================================");
+                
             }
+            System.out.println();
         } else {
             System.out.println("No medical record found for this patient.");
         }

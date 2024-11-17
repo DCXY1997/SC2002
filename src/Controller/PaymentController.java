@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import src.Enum.PaymentStatus;
+import src.Enum.ServiceType;
 import src.Helper.Helper;
+import src.Model.Appointment;
 import src.Model.AppointmentOutcome;
 import src.Model.Medicine;
 import src.Repository.FileType;
@@ -54,12 +56,34 @@ public class PaymentController {
 	                prescribedBuilder.append("------------------------------------------------------------\n");
                     total += medicine.getMedicinePrice();   
 	            }
+
+                if(outcome.getservices().isEmpty()){
+                    prescribedBuilder.append("No Services to be paid");
+                }
+                else{
+                    for (ServiceType service : outcome.getservices()){
+                        switch(service){
+                            case CONSULTATION:
+                                prescribedBuilder.append("Consulation fee: ").append("$25.00").append("\n\n");
+                                total += 25;
+                                break;
+                            case XRAY:
+                                prescribedBuilder.append("XRAY fee: ").append("$100.00").append("\n\n");
+                                total += 100;
+                                break;
+                            case BLOOD_TEST:
+                                prescribedBuilder.append("Blood test fee: ").append("$50.00").append("\n\n");
+                                total += 50;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
             }        	
 	    }
         if (!paid)
         {
-            prescribedBuilder.append("Consulation fee: ").append("$25.00").append("\n\n");
-            total += 25;
             prescribedBuilder.append("Total pending amount: $").append(String.format("%.2f", total)).append("\n");
             prescribedBuilder.append("***********************************************************").append("\n");     
             System.out.println(prescribedBuilder.toString());
@@ -68,11 +92,10 @@ public class PaymentController {
         return total;
     }
 
-    public void checkAppointmentId()
+    public void checkAppointmentId(Appointment appointment)
     {
         boolean hasOutcome = false;
-        System.out.println("Enter the appointment outcome ID: ");
-        String outcomeId = Helper.readString();
+        String outcomeId = appointment.getOutcome().getOutcomeId();
         for (Map.Entry<String, AppointmentOutcome> entry : Repository.APPOINTMENT_OUTCOME.entrySet()) 
         {
 	        AppointmentOutcome outcome = entry.getValue();

@@ -153,15 +153,20 @@ public class AppointmentOutcomeController {
 		{
 			pendingRequests.append("Medicine ID: ").append(medicine.getMedicineId()).append("\n");
 			pendingRequests.append("Medicine Name: ").append(medicine.getMedicineName()).append("\n");
-			pendingRequests.append("Amount: ").append(appointmentOutcome.getMedicineAmount().get(i++)).append("\n");
+			//System.out.println("Here: "+appointmentOutcome.getMedicineAmount());
+			pendingRequests.append("Amount: ").append(appointmentOutcome.getMedicineAmount().get(i)).append("\n");
 			pendingRequests.append("Status: ").append(medicine.getStatus()).append("\n");
 			pendingRequests.append("------------------------------------------------------------\n");
-			
+			i++;
 		}
 		pendingRequests.append("------------------------------------------------------------\n");
 		return pendingRequests.toString();
 	}
 
-
+	public static String generateApptOutcomeId(){
+        String prefix = "OUT";
+        int uniqueId = Helper.generateUniqueId(Repository.APPOINTMENT_OUTCOME);
+        return prefix + String.format("%03d", uniqueId);
+    }
 	
 }

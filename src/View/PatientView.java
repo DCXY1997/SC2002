@@ -60,6 +60,8 @@ public class PatientView extends MainView {
             switch (opt) {
                 case 1:
                     Helper.clearScreen();
+                    printBreadCrumbs(
+                    "Hospital Management App View > Patient View > View Medical Record");
                     viewMedicalRecord();
                     break;
                 case 2:
@@ -67,16 +69,19 @@ public class PatientView extends MainView {
                     displayPatientAppointmentView.viewApp();
                     break;
                 case 3:
+                    Helper.clearScreen();
                     printBreadCrumbs(
                     "Hospital Management App View > Patient View > View Past Appointment Outcomes");
                     viewPastAppointmentOutcome();
                     break;
                 case 4:
+                    Helper.clearScreen();
                     printBreadCrumbs(
                             "Hospital Management App View > Patient View > Update Personal Information");
                     promptUpdateDetails();
                     break;
                 case 5:
+                    Helper.clearScreen();
                     printBreadCrumbs(
                             "Hospital Management App View > Patient View > View Personal Information Details");
                     viewPersonalInformation();
@@ -84,6 +89,7 @@ public class PatientView extends MainView {
                 case 6:
                     Helper.clearScreen();
                     displayPaymentView.viewApp();
+                    break;
                 case 7:
                     break;
                 default:
