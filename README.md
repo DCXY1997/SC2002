@@ -7,6 +7,7 @@ Darren Chia Xin Yang,
 Cheah Wei Jun,
 Bryan Lim Yu Cheng
 
+## Introduction
 The Hospital Management System (HMS) is a Java console application developed using the object-oriented concepts. This project illustrates how different roles communicate efficient with each other, ensuring the functionality of the application.
 The application takes account on reusability, extensibility, and maintainability, allowing for effortless update for future development. It provides flexibility to accommodate different user types and their requirements.
 
