@@ -96,16 +96,6 @@ Database cleared. Returning to the main menu...
 
 `Database is cleared successfully if the above message is shown`
 
-# Java docs
-
-Create javadocs - make sure you are at SC2002_HRPS directory
-
-```terminal
-javadoc -d ./docs/ ./src/*java ./src/controller/*java ./src/database/*java ./src/helper/*java ./src/model/*java ./src/model/enums/*java ./src/view/*java -encoding ISO-8859-1
-```
-
-Launch the index.html under ./javadoc/index.html
-
 ## UML Class Diagram
 The UML diagram is generated using 
 
