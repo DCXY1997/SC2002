@@ -1,64 +1,121 @@
-SC2002 Group Project - Hospital Management System
+# SC2002_Hospital Management System
 
-## Team Members
-Keng Jia Chi,
-Jasmine Tye Jia Wen,
-Darren Chia Xin Yang,
-Cheah Wei Jun,
-Bryan Lim Yu Cheng
+This is our group assignment for SC2002 (Object Oriented Programming).
+
+![HMS preview](https://github.com/user-attachments/assets/0c332592-f1df-4be2-ae18-2f2ed15da71b)
 
 ## Introduction
 The Hospital Management System (HMS) is a Java console application developed using the object-oriented concepts. This project illustrates how different roles communicate efficient with each other, ensuring the functionality of the application.
-The application takes account on reusability, extensibility, and maintainability, allowing for effortless update for future development. It provides flexibility to accommodate different user types and their requirements.
 
-## Links
-- [Main Page](https://github.com/DCXY1997/SC2002/tree/Main/src/Main)
-- [Repository](https://github.com/DCXY1997/SC2002/tree/Main/src/Repository)
-- [Report](https://github.com/DCXY1997/SC2002/tree/Main/Doc)
+# Setup Instructions
 
-## Features
-- [x] Patient
-  - [x] View Medical Record
-  - [x] View Past Appointment Outcome
-  - [x] View Personal Information
-  - [x] View Schedule Appointment
-  - [x] Update Personal Information
-  - [x] Schedule Appointment
-  - [x] Reschedule Appointment
-  - [x] Cancel Appointment
-- [x] Doctor
-  - [x] View Patient Medical Record
-  - [x] View Personal Schedule
-  - [x] View Upcoming Appointment
-  - [x] Update Patient Medical Record
-  - [x] Set Availability for Appointment
-  - [x] Accept or Decline Appointment Request
-  - [x] Record Appointment Outcome
-- [x] Pharmist
-  - [x] View Appointment Outcome Record
-  - [x] Update Prescription Status
-  - [x] View Medical Inventory
-  - [x] Submit Replenishment Request
-- [x] Admin
-  - [x] View All Hospital Staff
-  - [x] View Medical Inventory Item
-  - [x] Add New Hospital Staff
-  - [x] Add Medical Inventory Item
-  - [x] Update Hospital Staff
-  - [x] Update Stock Count of Medical Inventory Item
-  - [x] Remove Medical Inventory Item
-  - [x] Remove Hospital Staff
-  - [x] Approve Replenishment Request
-- [x] Others
-  - [x] Login
-  - [x] Change Password
-- [x] Repository
-  - [x] Read and Write into .DAT file (Persistency)
+## Project Folder Structure
 
-## Build
-Download this project from Github or Clone this repository using git clone https://github.com/DCXY1997/SC2002.git
+> Folder structure of our project
+
+#### Top Level Directory Layout
+
+```terminal
+.                
+├── Doc                     # Javadocs generated as html
+├── src                     # Source files (all the codes)
+└── README.md
+```
+
+#### Source files
+
+```terminal
+.
+├── ...
+├── src                    # Source files (all the codes)
+│   ├── Controller         # Managers classes
+│   ├── Enum               # Enumeration classes
+│   ├── Helper             # Helper classes
+│   ├── Main               # Main Driver file (HMS App)
+│   ├── Model              # Model classes
+│   └── Repository         # Repository
+|   └── View               # View classes
+└── ...
+```
+
+## Scripts
+
+> How to run our project
+
+1. In your command line change directory into SC2002_HMS
+
+```terminal
+C:\file_path_to_source_codes\SC2002
+```
+
+2. Reset our database first before using our interface, steps are as follows
+
+```terminal
+╔═════════════════════════════════════════════════════════════════╗
+║ Hospital Management App View                                    ║
+╚═════════════════════════════════════════════════════════════════╝
+Who would you like to continue as?
+(1) Staff
+(2) Patient
+(3) Reset database
+(4) Quit Hospital Management App
+```
+
+`Press "3" then <ENTER>`
+
+```terminal
+╔═════════════════════════════════════════════════════════════════╗
+║ Hotel App View > Database View                                  ║
+╚═════════════════════════════════════════════════════════════════╝
+What would you like to do ?
+(1) Initialize guests
+(2) Initialize menu
+(3) Reset database
+(4) Exit Database View
+```
+
+`Press "3" then <ENTER>`
+
+```terminal
+╔═════════════════════════════════════════════════════════════════╗
+║ Hospital Mangement App View > Repository View > Reset database  ║
+╚═════════════════════════════════════════════════════════════════╝
+Are you sure you want to reset the database? (yes/no)
+```
+
+`Type "yes" then <ENTER>`
+
+```terminal
+╔═════════════════════════════════════════════════════════════════╗
+║ Hospital Mangement App View > Repository View > Reset database  ║
+╚═════════════════════════════════════════════════════════════════╝
+Are you sure you want to reset the database? (yes/no)
+yes
+Database cleared
+Database cleared. Returning to the main menu...
+```
+
+`Database is cleared successfully if the above message is shown`
+
+# Java docs
+
+Create javadocs - make sure you are at SC2002_HRPS directory
+
+```terminal
+javadoc -d ./docs/ ./src/*java ./src/controller/*java ./src/database/*java ./src/helper/*java ./src/model/*java ./src/model/enums/*java ./src/view/*java -encoding ISO-8859-1
+```
+
+Launch the index.html under ./javadoc/index.html
 
 ## UML Class Diagram
-The UML diagram is generated using [draw.io](https://app.diagrams.net/#G1ZO_XOMw6CpmUeYPNvQO8yeEtHpswneE5)
+The UML diagram is generated using 
 
-Alternatively, You can choose to refer to our [Report](https://github.com/DCXY1997/SC2002/tree/Main/Doc)
+Alternatively, You can choose to refer to our 
+
+# Contributors
+
+- @JiachiK      
+- @WeijunCheah
+- @JasmineTye
+- @DCXY1997
+- @bryanlyc20
