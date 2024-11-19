@@ -4,20 +4,23 @@ import java.io.Serializable;
 
 /**
  * Represents a specialization in a particular medical field or expertise.
- * 
- * <p>The {@code Specialization} class is used to define and manage the
+ *
+ * <p>
+ * The {@code Specialization} class is used to define and manage the
  * specializations of medical professionals such as doctors.</p>
- * 
- * <p>This class implements {@link Serializable} to allow instances of
+ *
+ * <p>
+ * This class implements {@link Serializable} to allow instances of
  * {@code Specialization} to be serialized and stored persistently.</p>
- * 
- * <p><b>Key Features:</b></p>
+ *
+ * <p>
+ * <b>Key Features:</b></p>
  * <ul>
- *   <li>Stores the name and description of the specialization.</li>
- *   <li>Supports comparison and meaningful string representation.</li>
+ * <li>Stores the name and description of the specialization.</li>
+ * <li>Supports comparison and meaningful string representation.</li>
  * </ul>
- * 
- * @author Bryan
+ *
+ * @author Jasmine Tye
  * @version 1.0
  * @since 2024-11-17
  */
@@ -29,7 +32,6 @@ public class Specialization implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // Attributes
-
     /**
      * The name of the specialization.
      */
@@ -41,12 +43,13 @@ public class Specialization implements Serializable {
     private String specializationDescription;
 
     // Constructors
-
     /**
-     * Constructs a new {@code Specialization} with the specified name and description.
-     * 
-     * @param specializationName        The name of the specialization.
-     * @param specializationDescription A brief description of the specialization.
+     * Constructs a new {@code Specialization} with the specified name and
+     * description.
+     *
+     * @param specializationName The name of the specialization.
+     * @param specializationDescription A brief description of the
+     * specialization.
      */
     public Specialization(String specializationName, String specializationDescription) {
         this.specializationName = specializationName;
@@ -54,10 +57,9 @@ public class Specialization implements Serializable {
     }
 
     // Getters
-
     /**
      * Returns the name of the specialization.
-     * 
+     *
      * @return The specialization name.
      */
     public String getSpecializationName() {
@@ -66,7 +68,7 @@ public class Specialization implements Serializable {
 
     /**
      * Returns a brief description of the specialization.
-     * 
+     *
      * @return The specialization description.
      */
     public String getSpecializationDescription() {
@@ -74,10 +76,9 @@ public class Specialization implements Serializable {
     }
 
     // Setters
-
     /**
      * Sets the name of the specialization.
-     * 
+     *
      * @param specializationName The new specialization name.
      */
     public void setSpecializationName(String specializationName) {
@@ -86,7 +87,7 @@ public class Specialization implements Serializable {
 
     /**
      * Sets the description of the specialization.
-     * 
+     *
      * @param specializationDescription The new specialization description.
      */
     public void setSpecializationDescription(String specializationDescription) {
@@ -94,11 +95,11 @@ public class Specialization implements Serializable {
     }
 
     // Overrides
-
     /**
      * Returns a string representation of the specialization.
-     * 
-     * @return A string combining the name and description of the specialization.
+     *
+     * @return A string combining the name and description of the
+     * specialization.
      */
     @Override
     public String toString() {
@@ -107,11 +108,14 @@ public class Specialization implements Serializable {
 
     /**
      * Compares this specialization to another object for equality.
-     * 
-     * <p>Two specializations are considered equal if their names are identical.</p>
-     * 
+     *
+     * <p>
+     * Two specializations are considered equal if their names are
+     * identical.</p>
+     *
      * @param obj The object to compare with.
-     * @return {@code true} if the specializations have the same name; {@code false} otherwise.
+     * @return {@code true} if the specializations have the same name;
+     * {@code false} otherwise.
      */
     @Override
     public boolean equals(Object obj) {
@@ -127,7 +131,7 @@ public class Specialization implements Serializable {
 
     /**
      * Returns a hash code value for the specialization.
-     * 
+     *
      * @return A hash code based on the specialization name.
      */
     @Override

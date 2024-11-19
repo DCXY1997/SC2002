@@ -8,13 +8,18 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-// import java.util.ArrayList;
-// import java.util.HashMap;
-// import java.util.InputMismatchException;
-// import java.util.List;
-// import java.util.Scanner;
 
-//Helper class to provide support functions for other classes
+/**
+ * A utility class that provides Helper methods and utilities for common
+ * operations such as input validation, date-time processing, and user
+ * interaction. The class includes methods for reading and validating user
+ * input, generating unique IDs, validating date and time formats, and managing
+ * console-based UI operations.
+ *
+ * @author Jasmine Tye, Keng Jia Chi
+ * @version 1.0
+ * @since 2024-11-17
+ */
 public class Helper {
 
     /**
@@ -47,8 +52,8 @@ public class Helper {
      * <p>
      *
      * Repeatedly tries to read an integer until an integer is actually being
-     * read. Keeps catching the exception {@link InputMismatchException} when
-     * invalid characters are entered
+     * read. Keeps catching the exception {@link InputMismatch} when invalid
+     * characters are entered
      *
      * @return The read integer entered in the terminal.
      */
@@ -131,6 +136,16 @@ public class Helper {
         }
     }
 
+    /**
+     * Function to read a float value from terminal.
+     * <p>
+     *
+     * Repeatedly tries to read a float until a float is actually being read.
+     * Keeps catching the exception {@link InputMismatchException} when invalid
+     * characters are entered
+     *
+     * @return returns the read float entered in the terminal.
+     */
     public static double readFloat() {
 
         while (true) {
@@ -197,73 +212,6 @@ public class Helper {
     }
 
     /**
-     * Method to set the date for either current date or user input date
-     *
-     * @param now {@code true} to return the current time. Otherwise,
-     * {@code false} to prompt user for new time.
-     * @return String object for the date in the format "yyyy-MM-dd HH:mm"
-     */
-    public static String setDate(boolean now) {
-
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        if (now) {
-            return getTimeNow();
-        }
-        System.out.println("Please enter the date in this format: 'yyyy-MM-dd HH:mm'");
-        String date = sc.nextLine();
-        try {
-            LocalDateTime Date = LocalDateTime.parse(date, format);
-            date = format.format(Date);
-            if (validateDate(date, format)) {
-                return date;
-
-            } else {
-                System.out.println("Invalid Date");
-            }
-        } catch (DateTimeParseException e) {
-            System.out.println("Invalid Date format");
-        }
-        return "";
-    }
-
-    /**
-     * Method to parse a string date in a format
-     *
-     * @param date Date in string
-     * @param format {@link DateTimeFormatter} object for formatting of dates
-     * @return {@link LocalDateTime} object after parsing the string date with
-     * the formatter
-     */
-    public static LocalDateTime getDate(String date, DateTimeFormatter format) {
-        return LocalDateTime.parse(date, format);
-    }
-
-    /**
-     * Method to get current date and time
-     *
-     * @return String object for the date in the format "yyyy-MM-dd HH:mm"
-     */
-    public static String getTimeNow() {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime date = LocalDateTime.now();
-        return date.format(format);
-    }
-
-    /**
-     * Method to validate date
-     *
-     * @param date Date in string
-     * @param format {@link DateTimeFormatter} object for formatting of dates
-     * @return {@code true} if date is valid. Otherwise, {@code false} if the
-     * date is invalid (date is in the past)
-     */
-    public static boolean validateDate(String date, DateTimeFormatter format) {
-        LocalDateTime Date = getDate(date, format);
-        LocalDateTime now = LocalDateTime.now();
-        return (Date.compareTo(now) >= 0 ? true : false);
-    }
-
-    /**
      * Function to validate a date string in the format "yyyy-MM-dd".
      *
      * @param dateString the date string
@@ -299,8 +247,11 @@ public class Helper {
     }
 
     /**
-     * Validates a single date-time value against specified validation rules
-     * Returns a list of failed validation messages
+     * Validates a date-time value against a set of specified validation rules.
+     *
+     * @param dateTime The LocalDateTime to validate.
+     * @param rules The validation rules to apply.
+     * @return A list of validation error messages.
      */
     public static List<String> validateDateTime(LocalDateTime dateTime, TimeValidationRule... rules) {
         List<String> failedValidations = new ArrayList<>();
@@ -350,8 +301,14 @@ public class Helper {
     }
 
     /**
-     * Method to validate and prompt for time period input with customizable
-     * validation rules.
+     * Prompts the user to enter and validate a time range. Continues prompting
+     * until a valid range is provided.
+     *
+     * @param startPrompt The message to display when asking for the start time.
+     * @param endPrompt The message to display when asking for the end time.
+     * @param validationRules Rules to apply when validating the time range.
+     * @return An array of two {@link LocalDateTime} objects representing the
+     * start and end times.
      */
     public static LocalDateTime[] promptAndValidateTimeRange(
             String startPrompt,
@@ -460,7 +417,13 @@ public class Helper {
     }
 
     /**
-     * Validates if a time range is valid according to all rules
+     * Validates if a given time range is valid based on the provided rules.
+     *
+     * @param start The start time of the range.
+     * @param end The end time of the range.
+     * @param rules The validation rules to apply.
+     * @return {@code true} if the time range is valid, otherwise {@code false}.
+     *
      */
     public static boolean isValidTimeRange(LocalDateTime start, LocalDateTime end, TimeValidationRule... rules) {
         if (start == null || end == null || !end.isAfter(start)) {
@@ -487,58 +450,6 @@ public class Helper {
         }
 
         return startValidationErrors.isEmpty() && endValidationErrors.isEmpty();
-    }
-
-    /**
-     * Prints appropriate error messages based on the validation rules
-     *
-     * @param rules Array of validation rules
-     */
-    private static void printValidationErrors(TimeValidationRule... rules) {
-        if (rules == null) {
-            return;
-        }
-
-        System.out.println("Please ensure the following conditions are met:");
-        for (TimeValidationRule rule : rules) {
-            switch (rule) {
-                case FUTURE_DATE:
-                    System.out.println("- Date must be in the future");
-                    break;
-                case PAST_DATE:
-                    System.out.println("- Date must be in the past");
-                    break;
-                case WORKING_HOURS:
-                    System.out.println("- Time must be between 9 AM and 5 PM");
-                    break;
-                case NO_WEEKENDS:
-                    System.out.println("- Date cannot fall on weekends");
-                    break;
-                case MAX_DURATION_24H:
-                    System.out.println("- Duration cannot exceed 24 hours");
-                    break;
-                case MAX_DURATION_48H:
-                    System.out.println("- Duration cannot exceed 48 hours");
-                    break;
-                case BUSINESS_HOURS:
-                    System.out.println("- Time must be between 8 AM and 6 PM");
-                    break;
-            }
-            System.out.println("\n");
-        }
-    }
-
-    /**
-     * Helper method to combine date and time into a LocalDateTime object.
-     *
-     * @param date the date string in format yyyy-MM-dd
-     * @param time the time string in format HH:mm
-     * @return the combined LocalDateTime object
-     */
-    public static LocalDateTime parseDateTime(String date, String time) {
-        // Combine the date and time parts and parse as LocalDateTime
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return LocalDateTime.parse(date + " " + time, formatter);
     }
 
     /**
@@ -601,80 +512,6 @@ public class Helper {
     }
 
     /**
-     * Method to check if the time difference of the input date and current time
-     * exceeds 1 hour (Hotel check in / check out checking)
-     *
-     * @param date Date in string
-     * @return {@code true} if the date does not exceed 1 hour. Otherwise,
-     * {@code false}.
-     */
-    public static boolean LocalDateTimediff(String date) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime from = getDate(date, format);
-        LocalDateTime to = LocalDateTime.now();
-        LocalDateTime fromTemp = LocalDateTime.from(from);
-
-        long hours = fromTemp.until(to, ChronoUnit.HOURS);
-        fromTemp = fromTemp.plusHours(hours);
-
-        long minutes = fromTemp.until(to, ChronoUnit.MINUTES);
-        fromTemp = fromTemp.plusMinutes(minutes);
-
-        if (hours > 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Method to calculate the days elapsed between two dates.
-     *
-     * @param fromDate From date in string.
-     * @param toDate To date in string.
-     * @return Days difference of the two dates.
-     */
-    public static long calculateDaysElapsed(String fromDate, String toDate) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime from = getDate(fromDate, format);
-        LocalDateTime to = getDate(toDate, format);
-        long daysBetween = from.until(to, ChronoUnit.DAYS);
-        return daysBetween + 1;
-    }
-
-    /**
-     * Method to check if fromDate is earlier than toDate
-     *
-     * @param fromDate From date in string.
-     * @param toDate To date in string.
-     * @return {@code true} if the fromDate is earlier than toDate. Otherwise,
-     * {@code false}
-     */
-    public static boolean validateTwoDates(String fromDate, String toDate) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime from = getDate(fromDate, format);
-        LocalDateTime to = getDate(toDate, format);
-        return (to.compareTo(from) >= 0 ? true : false);
-    }
-
-    /**
-     * Method to check if the date is weekend
-     *
-     * @param dateToCheck Date to check in String
-     * @return {@code true} if the date to check is weekend. Otherwise,
-     * {@code false}.
-     */
-    public static boolean checkIsDateWeekend(String dateToCheck) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTime = getDate(dateToCheck, format);
-        DayOfWeek dayOfWeek = dateTime.getDayOfWeek();
-        if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Method to pause the application and prompt user to press the ENTER key to
      * continue using the app.
      */
@@ -687,8 +524,10 @@ public class Helper {
     }
 
     /**
-     * Method to clear the screen of the terminal for user experience and neat
-     * interface.
+     * Clears the terminal screen for a neat interface experience.
+     * <p>
+     * Uses the system's command to clear the screen.
+     * </p>
      */
     public static void clearScreen() {
         try {

@@ -8,22 +8,26 @@ import src.Helper.Helper;
 import src.Repository.Repository;
 
 /**
- * The ManageMedicalInventory class provides an interface for administrators 
- * to manage the medical inventory in the hospital management system.
+ * The ManageMedicalInventory class provides an interface for administrators to
+ * manage the medical inventory in the hospital management system.
  * <p>
  * This class allows administrators to:
  * </p>
  * <ul>
- *   <li>Add new medical inventory items.</li>
- *   <li>Remove existing medical inventory items.</li>
- *   <li>Update medical inventory details such as stock level or low-stock alert thresholds.</li>
- *   <li>Navigate back to the previous menu.</li>
+ * <li>Add new medical inventory items.</li>
+ * <li>Remove existing medical inventory items.</li>
+ * <li>Update medical inventory details such as stock level or low-stock alert
+ * thresholds.</li>
+ * <li>Navigate back to the previous menu.</li>
  * </ul>
  *
- * <p><b>Key Features:</b></p>
+ * <p>
+ * <b>Key Features:</b></p>
  * <ul>
- *   <li>Integrates with {@link InventoryController} to manage inventory operations.</li>
- *   <li>Provides detailed prompts to guide users through inventory management actions.</li>
+ * <li>Integrates with {@link InventoryController} to manage inventory
+ * operations.</li>
+ * <li>Provides detailed prompts to guide users through inventory management
+ * actions.</li>
  * </ul>
  *
  * @see InventoryController
@@ -35,7 +39,6 @@ import src.Repository.Repository;
  * @version 1.0
  * @since 2024-11-17
  */
-
 public class ManageMedicalInventory extends MainView {
 
     /**
@@ -44,10 +47,10 @@ public class ManageMedicalInventory extends MainView {
      * The menu options include:
      * </p>
      * <ul>
-     *   <li>(1) Add a new medical inventory item.</li>
-     *   <li>(2) Remove an existing medical inventory item.</li>
-     *   <li>(3) Update details of a medical inventory item.</li>
-     *   <li>(4) Exit the menu.</li>
+     * <li>(1) Add a new medical inventory item.</li>
+     * <li>(2) Remove an existing medical inventory item.</li>
+     * <li>(3) Update details of a medical inventory item.</li>
+     * <li>(4) Exit the menu.</li>
      * </ul>
      */
     @Override
@@ -64,8 +67,8 @@ public class ManageMedicalInventory extends MainView {
     /**
      * Controls the workflow of the Manage Medical Inventory View.
      * <p>
-     * Allows the administrator to choose from the available inventory management actions 
-     * and perform the desired operation.
+     * Allows the administrator to choose from the available inventory
+     * management actions and perform the desired operation.
      * </p>
      */
     @Override
@@ -108,14 +111,15 @@ public class ManageMedicalInventory extends MainView {
      * Collects the required details for the new inventory item, such as:
      * </p>
      * <ul>
-     *   <li>Medicine name</li>
-     *   <li>Price</li>
-     *   <li>Description</li>
-     *   <li>Initial stock level</li>
-     *   <li>Low-stock alert threshold</li>
+     * <li>Medicine name</li>
+     * <li>Price</li>
+     * <li>Description</li>
+     * <li>Initial stock level</li>
+     * <li>Low-stock alert threshold</li>
      * </ul>
      *
-     * @return {@code true} if the inventory item is successfully added, {@code false} otherwise.
+     * @return {@code true} if the inventory item is successfully added,
+     * {@code false} otherwise.
      */
     private boolean promptAddMedicalInventory() {
         System.out.println("Enter Medicine Name:");
@@ -157,7 +161,8 @@ public class ManageMedicalInventory extends MainView {
      * Validates the item ID before proceeding with the removal.
      * </p>
      *
-     * @return {@code true} if the inventory item is successfully removed, {@code false} otherwise.
+     * @return {@code true} if the inventory item is successfully removed,
+     * {@code false} otherwise.
      */
     public boolean promptRemoveMedicalInventory() {
         System.out.println("Enter the medical inventory item ID you want to remove: ");
@@ -181,11 +186,12 @@ public class ManageMedicalInventory extends MainView {
      * The administrator can choose to update:
      * </p>
      * <ul>
-     *   <li>Stock count</li>
-     *   <li>Low-stock alert threshold</li>
+     * <li>Stock count</li>
+     * <li>Low-stock alert threshold</li>
      * </ul>
      *
-     * @return {@code true} if the inventory item is successfully updated, {@code false} otherwise.
+     * @return {@code true} if the inventory item is successfully updated,
+     * {@code false} otherwise.
      */
     private boolean promptUpdateMedicalInventory() {
         Helper.clearScreen();
@@ -232,4 +238,3 @@ public class ManageMedicalInventory extends MainView {
         return success;
     }
 }
-

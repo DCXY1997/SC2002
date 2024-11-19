@@ -5,17 +5,18 @@ import src.Helper.Helper;
 import src.Model.Patient;
 
 /**
- * The {@code PatientView} class provides an interface for patients to interact with
- * the hospital management system.
- * 
- * <p>This includes managing appointments, viewing medical records, updating personal
- * details, handling payments, and accessing past appointment outcomes.</p>
- * 
- * @author Bryan
+ * The {@code PatientView} class provides an interface for patients to interact
+ * with the hospital management system.
+ *
+ * <p>
+ * This includes managing appointments, viewing medical records, updating
+ * personal details, handling payments, and accessing past appointment
+ * outcomes.</p>
+ *
+ * @author Jasmine Tye, Bryan, Darren
  * @version 1.0
  * @since 2024-11-17
  */
-
 public class PatientView extends MainView {
 
     private Patient patient;
@@ -24,11 +25,10 @@ public class PatientView extends MainView {
 
     /**
      * Constructs a {@code PatientView} instance for the specified patient.
-     * 
+     *
      * @param patient The patient associated with this view.
      * @throws IllegalArgumentException if the {@code patient} is {@code null}.
      */
-
     public PatientView(Patient patient) {
         this.patient = patient;
         // System.out.println("PatientView initialized with patient: " + (patient != null ? patient.getPatientId() : "null"));
@@ -64,6 +64,7 @@ public class PatientView extends MainView {
         System.out.println("(6) Handle Payment");
         System.out.println("(7) Logout");
     }
+
     /**
      * Displays the patient dashboard and handles user interactions.
      */
@@ -77,7 +78,7 @@ public class PatientView extends MainView {
                 case 1:
                     Helper.clearScreen();
                     printBreadCrumbs(
-                    "Hospital Management App View > Patient View > View Medical Record");
+                            "Hospital Management App View > Patient View > View Medical Record");
                     viewMedicalRecord();
                     break;
                 case 2:
@@ -87,7 +88,7 @@ public class PatientView extends MainView {
                 case 3:
                     Helper.clearScreen();
                     printBreadCrumbs(
-                    "Hospital Management App View > Patient View > View Past Appointment Outcomes");
+                            "Hospital Management App View > Patient View > View Past Appointment Outcomes");
                     viewPastAppointmentOutcome();
                     break;
                 case 4:
@@ -117,6 +118,7 @@ public class PatientView extends MainView {
             }
         } while (opt != 7);
     }
+
     /**
      * Prompts the patient to update their personal details.
      */
@@ -140,9 +142,10 @@ public class PatientView extends MainView {
                 System.out.println("Invalid option.");
         }
     }
-   /**
+
+    /**
      * Prompts the patient to update their contact information.
-     */ 
+     */
     private void promptUpdateContactInformation() {
         // String loginId = patient.getPatientId();
         System.out.println("Welcome, " + patient.getName());
@@ -160,6 +163,7 @@ public class PatientView extends MainView {
             System.out.println("Patient not found. Please check your login ID.");
         }
     }
+
     /**
      * Prompts the patient to update their password.
      */
@@ -189,6 +193,7 @@ public class PatientView extends MainView {
             System.out.println("Verification failed. Either the user ID or password is incorrect.");
         }
     }
+
     /**
      * Displays the personal information of the patient.
      */
@@ -198,6 +203,7 @@ public class PatientView extends MainView {
         // Retrieve and display personal information using the PatientController
         PatientController.displayPersonalInformation(loginId);
     }
+
     /**
      * Displays the medical record of the patient.
      */
@@ -207,9 +213,10 @@ public class PatientView extends MainView {
         // Retrieve and display personal information using the PatientController
         PatientController.displayPatientRecord(loginId);
     }
+
     /**
      * Displays the past appointment outcomes for the patient.
-     */   
+     */
     private void viewPastAppointmentOutcome() {
         String loginId = patient.getPatientId();
 

@@ -7,12 +7,14 @@ import src.Enum.StaffType;
 
 /**
  * Represents a doctor in the hospital management system.
- * 
- * <p>The {@code Doctor} class extends {@link Staff} and includes additional attributes
- * and methods specific to doctors, such as specializations, appointment lists,
- * and availability schedules.</p>
- * 
- * <p>This class ensures the use of a singleton instance of {@link AppointmentList}
+ *
+ * <p>
+ * The {@code Doctor} class extends {@link Staff} and includes additional
+ * attributes and methods specific to doctors, such as specializations,
+ * appointment lists, and availability schedules.</p>
+ *
+ * <p>
+ * This class ensures the use of a singleton instance of {@link AppointmentList}
  * to manage appointments across the system.</p>
  *
  * @author Jasmine Tye Jia Wen, Bryan
@@ -32,8 +34,8 @@ public class Doctor extends Staff {
     private List<Specialization> docSpecialization;
 
     /**
-     * The list of appointments assigned to the doctor. 
-     * This uses a singleton {@link AppointmentList}.
+     * The list of appointments assigned to the doctor. This uses a singleton
+     * {@link AppointmentList}.
      */
     private AppointmentList appointList;
 
@@ -44,7 +46,9 @@ public class Doctor extends Staff {
 
     /**
      * Default constructor for {@code Doctor}.
-     * <p>Initializes the doctor with a default role and a singleton appointment list.</p>
+     * <p>
+     * Initializes the doctor with a default role and a singleton appointment
+     * list.</p>
      */
     public Doctor() {
         super();
@@ -54,16 +58,17 @@ public class Doctor extends Staff {
 
     /**
      * Parameterized constructor for {@code Doctor}.
-     * <p>Initializes the doctor with specified attributes.</p>
-     * 
-     * @param name              The name of the doctor.
-     * @param password          The doctor's password for authentication.
-     * @param gender            The gender of the doctor.
-     * @param age               The age of the doctor.
-     * @param hospitalId        The unique hospital ID assigned to the doctor.
+     * <p>
+     * Initializes the doctor with specified attributes.</p>
+     *
+     * @param name The name of the doctor.
+     * @param password The doctor's password for authentication.
+     * @param gender The gender of the doctor.
+     * @param age The age of the doctor.
+     * @param hospitalId The unique hospital ID assigned to the doctor.
      * @param docSpecialization The list of specializations for the doctor.
-     * @param appointList       The appointment list assigned to the doctor.
-     * @param availability      The schedule representing the doctor's availability.
+     * @param appointList The appointment list assigned to the doctor.
+     * @param availability The schedule representing the doctor's availability.
      */
     public Doctor(String name, String password, Gender gender, int age, String hospitalId,
             List<Specialization> docSpecialization, AppointmentList appointList, List<Schedule> availability) {
@@ -144,7 +149,7 @@ public class Doctor extends Staff {
 
     /**
      * Returns a string representation of the doctor.
-     * 
+     *
      * @return A string containing the doctor's ID and name.
      */
     @Override
@@ -153,7 +158,8 @@ public class Doctor extends Staff {
     }
 
     /**
-     * Compares this doctor with another object for equality based on their hospital IDs.
+     * Compares this doctor with another object for equality based on their
+     * hospital IDs.
      *
      * @param obj The object to compare.
      * @return {@code true} if the objects are equal; otherwise, {@code false}.

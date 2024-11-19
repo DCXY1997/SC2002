@@ -6,14 +6,16 @@ import src.Enum.Gender;
 
 /**
  * Represents a patient in the hospital management system.
- * 
- * <p>The {@code Patient} class contains the patient's personal information,
+ *
+ * <p>
+ * The {@code Patient} class contains the patient's personal information,
  * medical history, and associated appointments.</p>
- * 
- * <p>This class implements {@link Serializable} to allow patient data to be serialized
- * for persistence.</p>
- * 
- * @author Bryan
+ *
+ * <p>
+ * This class implements {@link Serializable} to allow patient data to be
+ * serialized for persistence.</p>
+ *
+ * @author Jasmine, Bryan, Darren
  * @version 1.0
  * @since 2024-11-17
  */
@@ -25,7 +27,6 @@ public class Patient implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // Attributes
-
     /**
      * The unique identifier for the patient.
      */
@@ -77,7 +78,6 @@ public class Patient implements Serializable {
     private AppointmentList appointList;
 
     // Constructors
-
     /**
      * Constructs a new {@code Patient} with no initial values.
      */
@@ -86,15 +86,15 @@ public class Patient implements Serializable {
 
     /**
      * Constructs a new {@code Patient} with the specified details.
-     * 
-     * @param patientId         The unique identifier for the patient.
-     * @param name              The patient's full name.
-     * @param password          The patient's password for authentication.
-     * @param age               The patient's age.
-     * @param dateOfBirth       The patient's date of birth.
-     * @param gender            The patient's gender.
+     *
+     * @param patientId The unique identifier for the patient.
+     * @param name The patient's full name.
+     * @param password The patient's password for authentication.
+     * @param age The patient's age.
+     * @param dateOfBirth The patient's date of birth.
+     * @param gender The patient's gender.
      * @param contactInformation The patient's contact information.
-     * @param bloodType         The patient's blood type.
+     * @param bloodType The patient's blood type.
      */
     public Patient(String patientId, String name, String password, int age, LocalDate dateOfBirth, Gender gender,
             String contactInformation, String bloodType) {
@@ -109,10 +109,9 @@ public class Patient implements Serializable {
     }
 
     // Getters and Setters
-
     /**
      * Returns the unique identifier of the patient.
-     * 
+     *
      * @return The patient ID.
      */
     public String getPatientId() {
@@ -121,7 +120,7 @@ public class Patient implements Serializable {
 
     /**
      * Sets the unique identifier of the patient.
-     * 
+     *
      * @param patientId The new patient ID.
      */
     public void setPatientId(String patientId) {
@@ -130,7 +129,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns the patient's full name.
-     * 
+     *
      * @return The patient's name.
      */
     public String getName() {
@@ -139,7 +138,7 @@ public class Patient implements Serializable {
 
     /**
      * Sets the patient's full name.
-     * 
+     *
      * @param name The new name.
      */
     public void setName(String name) {
@@ -148,7 +147,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns the patient's password.
-     * 
+     *
      * @return The password.
      */
     public String getPassword() {
@@ -157,7 +156,7 @@ public class Patient implements Serializable {
 
     /**
      * Sets the patient's password.
-     * 
+     *
      * @param password The new password.
      */
     public void setPassword(String password) {
@@ -166,7 +165,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns the patient's age.
-     * 
+     *
      * @return The patient's age.
      */
     public int getAge() {
@@ -175,7 +174,7 @@ public class Patient implements Serializable {
 
     /**
      * Sets the patient's age.
-     * 
+     *
      * @param age The new age.
      */
     public void setAge(int age) {
@@ -184,7 +183,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns the patient's date of birth.
-     * 
+     *
      * @return The date of birth.
      */
     public LocalDate getDateOfBirth() {
@@ -193,7 +192,7 @@ public class Patient implements Serializable {
 
     /**
      * Sets the patient's date of birth.
-     * 
+     *
      * @param dateOfBirth The new date of birth.
      */
     public void setDateOfBirth(LocalDate dateOfBirth) {
@@ -202,7 +201,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns the patient's gender.
-     * 
+     *
      * @return The gender.
      */
     public Gender getGender() {
@@ -211,7 +210,7 @@ public class Patient implements Serializable {
 
     /**
      * Sets the patient's gender.
-     * 
+     *
      * @param gender The new gender.
      */
     public void setGender(Gender gender) {
@@ -220,7 +219,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns the patient's contact information.
-     * 
+     *
      * @return The contact information.
      */
     public String getContactInformation() {
@@ -229,7 +228,7 @@ public class Patient implements Serializable {
 
     /**
      * Sets the patient's contact information.
-     * 
+     *
      * @param contactInformation The new contact information.
      */
     public void setContactInformation(String contactInformation) {
@@ -238,7 +237,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns the patient's blood type.
-     * 
+     *
      * @return The blood type.
      */
     public String getBloodType() {
@@ -247,7 +246,7 @@ public class Patient implements Serializable {
 
     /**
      * Sets the patient's blood type.
-     * 
+     *
      * @param bloodType The new blood type.
      */
     public void setBloodType(String bloodType) {
@@ -256,7 +255,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns the patient's appointment list.
-     * 
+     *
      * @return The appointment list.
      */
     public AppointmentList getAppointmentList() {
@@ -265,7 +264,7 @@ public class Patient implements Serializable {
 
     /**
      * Sets the patient's appointment list.
-     * 
+     *
      * @param appointList The new appointment list.
      */
     public void setAppointmentList(AppointmentList appointList) {
@@ -274,7 +273,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns the patient's medical record.
-     * 
+     *
      * @return The medical record.
      */
     public MedicalRecord getMedicalRecord() {
@@ -283,7 +282,7 @@ public class Patient implements Serializable {
 
     /**
      * Sets the patient's medical record.
-     * 
+     *
      * @param medicalRecord The new medical record.
      */
     public void setMedicalRecord(MedicalRecord medicalRecord) {
@@ -291,10 +290,9 @@ public class Patient implements Serializable {
     }
 
     // Overrides
-
     /**
      * Compares this patient with another object based on patient ID.
-     * 
+     *
      * @param obj The object to compare with.
      * @return {@code true} if the objects are equal, {@code false} otherwise.
      */
@@ -312,7 +310,7 @@ public class Patient implements Serializable {
 
     /**
      * Returns the hash code for the patient object, based on the patient ID.
-     * 
+     *
      * @return The hash code.
      */
     @Override

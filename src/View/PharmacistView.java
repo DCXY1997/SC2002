@@ -2,30 +2,32 @@ package src.View;
 
 import src.Controller.*;
 import src.Helper.Helper;
-import src.Model.Patient;
 import src.Model.Staff;
 import src.Repository.Repository;
 
 /**
- * The {@code PharmacistView} class represents the user interface for pharmacists in the
- * hospital management system. It provides options for pharmacists to manage prescriptions,
- * view appointment outcomes, handle inventory, and submit replenishment requests.
- * 
- * <p><b>Features:</b></p>
+ * The {@code PharmacistView} class represents the user interface for
+ * pharmacists in the hospital management system. It provides options for
+ * pharmacists to manage prescriptions, view appointment outcomes, handle
+ * inventory, and submit replenishment requests.
+ *
+ * <p>
+ * <b>Features:</b></p>
  * <ul>
- *   <li>View appointment outcome records.</li>
- *   <li>Update prescription statuses.</li>
- *   <li>Manage medication inventory.</li>
- *   <li>Submit replenishment requests for medications.</li>
- *   <li>Change account password.</li>
+ * <li>View appointment outcome records.</li>
+ * <li>Update prescription statuses.</li>
+ * <li>Manage medication inventory.</li>
+ * <li>Submit replenishment requests for medications.</li>
+ * <li>Change account password.</li>
  * </ul>
- * 
- * <p><b>Associated Views and Controllers:</b></p>
+ *
+ * <p>
+ * <b>Associated Views and Controllers:</b></p>
  * <ul>
- *   <li>{@link AppointmentOutcomeView}</li>
- *   <li>{@link InventoryView}</li>
- *   <li>{@link PaymentView}</li>
- *   <li>{@link PharmacistController}</li>
+ * <li>{@link AppointmentOutcomeView}</li>
+ * <li>{@link InventoryView}</li>
+ * <li>{@link PaymentView}</li>
+ * <li>{@link PharmacistController}</li>
  * </ul>
  *
  * @author Cheah Wei Jun
@@ -45,11 +47,6 @@ public class PharmacistView extends MainView {
     private InventoryView inventoryView = new InventoryView();
 
     /**
-     * Handles patient payments. Initialized when interacting with a patient.
-     */
-    private PaymentView paymentView;
-
-    /**
      * Displays the available actions for the pharmacist interface.
      */
     @Override
@@ -66,8 +63,8 @@ public class PharmacistView extends MainView {
     }
 
     /**
-     * Handles the main navigation for the pharmacist interface.
-     * Provides access to various functionalities like viewing outcomes, managing prescriptions, 
+     * Handles the main navigation for the pharmacist interface. Provides access
+     * to various functionalities like viewing outcomes, managing prescriptions,
      * handling inventory, and changing passwords.
      */
     @Override
@@ -110,8 +107,8 @@ public class PharmacistView extends MainView {
     }
 
     /**
-     * Prompts the pharmacist to change their password.
-     * Validates the login ID and current password before allowing the password change.
+     * Prompts the pharmacist to change their password. Validates the login ID
+     * and current password before allowing the password change.
      */
     private void promptChangePassword() {
         System.out.println("Verify your loginID: ");
@@ -140,14 +137,4 @@ public class PharmacistView extends MainView {
         }
     }
 
-    /**
-     * Prompts the pharmacist to enter a patient ID and initializes the {@link PaymentView}
-     * for the corresponding patient.
-     */
-    private void promptPatientId() {
-        System.out.println("Enter Patient ID: ");
-        String pid = Helper.readString();
-        Patient patient = Repository.PATIENT.get(pid);
-        paymentView = new PaymentView(patient);
-    }
 }

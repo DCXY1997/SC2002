@@ -4,21 +4,24 @@ import src.Helper.Helper;
 import src.Repository.Repository;
 
 /**
- * The HospitalManagementAppView class represents the main interface of the hospital management system.
+ * The HospitalManagementAppView class represents the main interface of the
+ * hospital management system.
  * <p>
  * This class serves as the entry point for the application, allowing users to:
  * </p>
  * <ul>
- *   <li>Log in as staff members.</li>
- *   <li>Log in as patients.</li>
- *   <li>Quit the application.</li>
+ * <li>Log in as staff members.</li>
+ * <li>Log in as patients.</li>
+ * <li>Quit the application.</li>
  * </ul>
  *
- * <p><b>Key Features:</b></p>
+ * <p>
+ * <b>Key Features:</b></p>
  * <ul>
- *   <li>Integrates with {@link LoginView} for authentication.</li>
- *   <li>Provides navigation options for staff and patients.</li>
- *   <li>Offers a clean and user-friendly interface for starting the application.</li>
+ * <li>Integrates with {@link LoginView} for authentication.</li>
+ * <li>Provides navigation options for staff and patients.</li>
+ * <li>Offers a clean and user-friendly interface for starting the
+ * application.</li>
  * </ul>
  *
  * @see LoginView
@@ -29,7 +32,6 @@ import src.Repository.Repository;
  * @version 1.0
  * @since 2024-11-17
  */
-
 public class HospitalManagementAppView extends MainView {
     
         /**

@@ -5,14 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@code Diagnosis} class represents a medical diagnosis for a patient. 
- * Each diagnosis is uniquely identified and can have multiple treatments associated with it.
+ * The {@code Diagnosis} class represents a medical diagnosis for a patient.
+ * Each diagnosis is uniquely identified and can have multiple treatments
+ * associated with it.
  *
- * <p>This class implements the {@link Serializable} interface, allowing it to be serialized for
- * data persistence. It maintains details about the diagnosis, such as its ID, name, description,
- * and a list of treatments.</p>
+ * <p>
+ * This class implements the {@link Serializable} interface, allowing it to be
+ * serialized for data persistence. It maintains details about the diagnosis,
+ * such as its ID, name, description, and a list of treatments.</p>
  *
- * @author Bryan
+ * @author Bryan, Darren Chia
  * @version 1.0
  * @since 2024-11-17
  */
@@ -41,11 +43,12 @@ public class Diagnosis implements Serializable {
     private List<Treatment> treatment;
 
     /**
-     * Constructs a new {@code Diagnosis} with the specified ID, name, and description.
+     * Constructs a new {@code Diagnosis} with the specified ID, name, and
+     * description.
      *
-     * @param diagnosisId   The unique identifier for the diagnosis.
+     * @param diagnosisId The unique identifier for the diagnosis.
      * @param diagnosisName The name of the diagnosis.
-     * @param description   A description of the diagnosis.
+     * @param description A description of the diagnosis.
      */
     public Diagnosis(int diagnosisId, String diagnosisName, String description) {
         this.diagnosisId = diagnosisId;
@@ -111,8 +114,8 @@ public class Diagnosis implements Serializable {
     /**
      * Adds a treatment to the list of treatments for this diagnosis.
      *
-     * @param treatment The {@link Treatment} to add.
-     *                  If {@code null}, the treatment will not be added.
+     * @param treatment The {@link Treatment} to add. If {@code null}, the
+     * treatment will not be added.
      */
     public void addTreatment(Treatment treatment) {
         if (treatment != null) {

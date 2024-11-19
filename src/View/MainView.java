@@ -1,19 +1,22 @@
 package src.View;
 
 /**
- * The MainView class is an abstract base class for all views in the hospital management system.
+ * The MainView class is an abstract base class for all views in the hospital
+ * management system.
  * <p>
- * This class defines the core structure and behavior shared by all views, including:
+ * This class defines the core structure and behavior shared by all views,
+ * including:
  * </p>
  * <ul>
- *   <li>Abstract methods for displaying actions and applications.</li>
- *   <li>A method for displaying breadcrumbs for navigation purposes.</li>
+ * <li>Abstract methods for displaying actions and applications.</li>
+ * <li>A method for displaying breadcrumbs for navigation purposes.</li>
  * </ul>
  *
- * <p><b>Key Features:</b></p>
+ * <p>
+ * <b>Key Features:</b></p>
  * <ul>
- *   <li>Provides a consistent structure for views.</li>
- *   <li>Includes a utility method for navigation breadcrumbs.</li>
+ * <li>Provides a consistent structure for views.</li>
+ * <li>Includes a utility method for navigation breadcrumbs.</li>
  * </ul>
  *
  * @see HospitalManagementAppView
@@ -39,8 +42,8 @@ public abstract class MainView {
     /**
      * Abstract method to display actions in the view.
      * <p>
-     * This method must be implemented by subclasses to define the specific actions
-     * available in the view.
+     * This method must be implemented by subclasses to define the specific
+     * actions available in the view.
      * </p>
      */
     protected abstract void printActions();
@@ -67,11 +70,12 @@ public abstract class MainView {
     /**
      * Prints navigation breadcrumbs for the current view.
      * <p>
-     * This method helps users understand their location within the application by
-     * displaying a breadcrumb trail at the top of the view.
+     * This method helps users understand their location within the application
+     * by displaying a breadcrumb trail at the top of the view.
      * </p>
      *
-     * @param breadcrumb A string representing the breadcrumb trail for the current view.
+     * @param breadcrumb A string representing the breadcrumb trail for the
+     * current view.
      */
     protected void printBreadCrumbs(String breadcrumb) {
         String spaces = String.format("%" + (105 - breadcrumb.length()) + "s", "");
@@ -82,4 +86,3 @@ public abstract class MainView {
                 "╚══════════════════════════════════════════════════════════════════════════════════════════════════════════╝");
     }
 }
-
