@@ -2,7 +2,6 @@ package src.View;
 
 import src.Controller.*;
 import src.Helper.Helper;
-import src.Model.Patient;
 import src.Model.Staff;
 import src.Repository.Repository;
 
@@ -46,11 +45,6 @@ public class PharmacistView extends MainView {
      * Manages the inventory interface.
      */
     private InventoryView inventoryView = new InventoryView();
-
-    /**
-     * Handles patient payments. Initialized when interacting with a patient.
-     */
-    private PaymentView paymentView;
 
     /**
      * Displays the available actions for the pharmacist interface.
@@ -143,14 +137,4 @@ public class PharmacistView extends MainView {
         }
     }
 
-    /**
-     * Prompts the pharmacist to enter a patient ID and initializes the
-     * {@link PaymentView} for the corresponding patient.
-     */
-    private void promptPatientId() {
-        System.out.println("Enter Patient ID: ");
-        String pid = Helper.readString();
-        Patient patient = Repository.PATIENT.get(pid);
-        paymentView = new PaymentView(patient);
-    }
 }
