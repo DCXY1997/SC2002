@@ -65,7 +65,7 @@ Who would you like to continue as?
 
 ```terminal
 ╔═════════════════════════════════════════════════════════════════╗
-║ Hotel App View > Database View                                  ║
+║ Hospital Management App View > Database View                    ║
 ╚═════════════════════════════════════════════════════════════════╝
 What would you like to do ?
 (1) Initialize guests
