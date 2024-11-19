@@ -91,7 +91,6 @@ Are you sure you want to reset the database? (yes/no)
 ╚═════════════════════════════════════════════════════════════════╝
 Are you sure you want to reset the database? (yes/no)
 yes
-Database cleared
 Database cleared. Returning to the main menu...
 ```
 
