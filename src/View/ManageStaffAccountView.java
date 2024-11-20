@@ -139,7 +139,6 @@ public class ManageStaffAccountView extends MainView {
 
         // Generate the hospital ID based on the role prefix
         String hospitalId = generateHospitalId(role);
-
         AdminController.addStaffAccount(name, password, gender, age, hospitalId, role);
         return true;
     }
@@ -164,7 +163,7 @@ public class ManageStaffAccountView extends MainView {
                 prefix = "A";
                 break;
         }
-        int uniqueId = Helper.generateUniqueId(Repository.STAFF);
+        int uniqueId = Helper.generateUniqueStaffId(Repository.STAFF);
         return prefix + String.format("%03d", uniqueId); // e.g., D001
     }
 

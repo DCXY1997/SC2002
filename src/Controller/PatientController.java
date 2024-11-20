@@ -209,14 +209,14 @@ public class PatientController {
                             System.out.println("    Treatments:");
                             for (Treatment treatment : treatments) {
                                 System.out.println("      Treatment ID: " + treatment.getTreatmentId());
-                                System.out.println("      Medicine Amount: " + treatment.getMedicineAmount());
 
                                 List<Medicine> medicines = treatment.getMedications();
                                 if (medicines != null && !medicines.isEmpty()) {
                                     System.out.println("      Medicines:");
-                                    for (Medicine medicine : medicines) {
-                                        System.out.println("        Medicine: " + medicine.getMedicineName());
-                                        System.out.println("        Description: " + medicine.getMedicineDescription());
+                                    for (int i = 0; i < treatment.getMedications().size(); i++) {
+                                        System.out.println("        Medicine: " + treatment.getMedications().get(i).getMedicineName());
+                                        System.out.println("        Description: " + treatment.getMedications().get(i).getMedicineDescription());
+                                        System.out.println("        Medicine Amount: " + treatment.getMedicineAmount().get(i));
                                     }
                                 } else {
                                     System.out.println("        No medicines prescribed.");

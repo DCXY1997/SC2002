@@ -211,6 +211,24 @@ public class Helper {
         return Integer.parseInt(maxId) + 1;
     }
 
+    public static <K, V> int generateUniqueStaffId(HashMap<K, V> database) {
+        int maxId = 0; // Initialize to 0 for the base case when the database is empty
+
+        for (K key : database.keySet()) {
+            if (key instanceof String) {
+                String currentKey = (String) key;
+                // Extract the numeric portion from the key
+                String numericPart = currentKey.replaceAll("\\D", ""); // Remove non-digit characters
+                if (!numericPart.isEmpty()) {
+                    int currentId = Integer.parseInt(numericPart); // Convert to integer
+                    maxId = Math.max(maxId, currentId); // Update max ID
+                }
+            }
+        }
+
+        return maxId + 1; // Return the next unique ID
+    }
+
     /**
      * Function to validate a date string in the format "yyyy-MM-dd".
      *

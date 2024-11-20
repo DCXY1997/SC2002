@@ -63,7 +63,7 @@ public class PharmacistView extends MainView {
     }
 
     /**
-     * Handles the main navigation for the pharmacist interface. Provides access
+     * Handles the main navigation for the pharmacist interface. Providesz access
      * to various functionalities like viewing outcomes, managing prescriptions,
      * handling inventory, and changing passwords.
      */

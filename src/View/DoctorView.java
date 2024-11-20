@@ -10,7 +10,6 @@ import src.Controller.AppointmentController;
 import src.Controller.AppointmentOutcomeController;
 import src.Controller.DoctorController;
 import src.Controller.PatientController;
-import src.Enum.AppointmentStatus;
 import src.Enum.ServiceType;
 import src.Helper.Helper;
 import src.Model.Appointment;
@@ -281,23 +280,6 @@ public class DoctorView extends MainView {
                 System.out.println();
             }
 
-            List<Appointment> appointmentRequests = AppointmentController.viewConfirmAppointments(doctor);
-
-            if (appointmentRequests.isEmpty()) {
-                System.out.println("No upcoming appointments for you.");
-            } else {
-                System.out.println("Your Upcoming Appointments:");
-
-                for (Appointment appointment : appointmentRequests) {
-                    if (appointment.getStatus() == AppointmentStatus.CONFIRMED) {
-                        System.out.println("Appointment - " + appointment.getAppointmentId() + ":");
-                        System.out.println("Patient: " + appointment.getPatient().getName());
-                        System.out.println("From: " + appointment.getAppointmentStartDate() + " to " + appointment.getAppointmentEndDate());
-                        System.out.println("Status: " + appointment.getStatus());
-                        System.out.println();
-                    }
-                }
-            }
         }
     }
 

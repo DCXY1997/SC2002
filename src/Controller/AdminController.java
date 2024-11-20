@@ -119,7 +119,7 @@ public class AdminController {
         } else {
             staff = new Staff(name, password, role, gender, age, hospitalId);
         }
-        //Update Hash Map
+        // Update Hash Map
         Repository.STAFF.put(staff.getHospitalId(), staff);
         // Persist data to file
         Repository.persistData(FileType.STAFF);
