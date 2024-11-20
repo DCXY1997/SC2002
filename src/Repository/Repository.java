@@ -128,40 +128,45 @@ public class Repository {
         persistData(FileType.DIAGNOSIS);
         persistData(FileType.TREATMENT);
     }
-
-    /**
-     * Clears the database by resetting all HashMaps and creating empty
-     * serialized files.
-     *
-     * @return {@code true} if the database was successfully cleared.
+        /**
+     * A method to clear out all the data in database.
+     * @return {@code true} if data is cleared successfully.
      */
     public static boolean clearDatabase() {
         // Initialize empty data
         STAFF = new HashMap<>();
-        PATIENT = new HashMap<>();
-        INVENTORY = new HashMap<>();
-        REPLENISHMENT_REQUEST = new HashMap<>();
-        MEDICINE = new HashMap<>();
-        APPOINTMENT_LIST = new HashMap<>();
-        APPOINTMENT_OUTCOME = new HashMap<>();
-        MEDICAL_RECORD = new HashMap<>();
-        DIAGNOSIS = new HashMap<>();
-        TREATMENT = new HashMap<>();
         writeSerializedObject(FileType.STAFF);
+
+        PATIENT = new HashMap<>();
         writeSerializedObject(FileType.PATIENT);
+
+        INVENTORY = new HashMap<>();
         writeSerializedObject(FileType.INVENTORY);
+
+        REPLENISHMENT_REQUEST = new HashMap<>();
         writeSerializedObject(FileType.REPLENISHMENT_REQUEST);
-        writeSerializedObject(FileType.APPOINTMENT_OUTCOME);
-        writeSerializedObject(FileType.APPOINTMENT_LIST);
+
+        MEDICINE = new HashMap<>();
         writeSerializedObject(FileType.MEDICINE);
+
+        APPOINTMENT_LIST = new HashMap<>();
+        writeSerializedObject(FileType.APPOINTMENT_LIST);
+
+        APPOINTMENT_OUTCOME = new HashMap<>();
+        writeSerializedObject(FileType.APPOINTMENT_OUTCOME);
+
+        MEDICAL_RECORD = new HashMap<>();
         writeSerializedObject(FileType.MEDICAL_RECORD);
+
+        DIAGNOSIS = new HashMap<>();
         writeSerializedObject(FileType.DIAGNOSIS);
+
+        TREATMENT = new HashMap<>();
         writeSerializedObject(FileType.TREATMENT);
+        
         return true;
-
     }
-
-    /**
+     /**
      * Writes the data of a specific file type to a serialized file.
      *
      * @param fileType The type of file to write, defined in {@link FileType}.
@@ -516,5 +521,4 @@ public class Repository {
         // Return true indicating dummy data is initialized*/
         return true;
     }
-
 }
