@@ -101,7 +101,7 @@ Database cleared. Returning to the main menu...
 ## UML Class Diagram
 The UML diagram is generated using Visual Paradigm.
 
-Alternatively, You can choose to refer to our 
+Alternatively, You can choose to refer to our HMS_UML.jpg
 
 # Contributors
 
