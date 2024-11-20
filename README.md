@@ -19,6 +19,8 @@ The Hospital Management System (HMS) is a Java console application developed usi
 .                
 ├── Doc                     # Javadocs generated as html
 ├── src                     # Source files (all the codes)
+├── HMS_UML                 # UML Class Diagram
+├── HMS_UML_ANNOTATE        # Annotated UML Class Diagram
 └── README.md
 ```
 
@@ -97,7 +99,7 @@ Database cleared. Returning to the main menu...
 `Database is cleared successfully if the above message is shown`
 
 ## UML Class Diagram
-The UML diagram is generated using 
+The UML diagram is generated using Visual Paradigm.
 
 Alternatively, You can choose to refer to our 
 
