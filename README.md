@@ -99,9 +99,9 @@ Database cleared. Returning to the main menu...
 `Database is cleared successfully if the above message is shown`
 
 ## UML Class Diagram
-The UML diagram is generated using Visual Paradigm.
+The UML diagram is generated using Visual Paradigm. [HMS_UML.jpg](https://github.com/DCXY1997/SC2002/blob/b5c1ebcedcd014ee5cff928e54bb2ab18e3b1eeb/HMS_UML.jpg)
 
-Alternatively, You can choose to refer to our [HMS_UML.jpg](https://github.com/DCXY1997/SC2002/blob/b5c1ebcedcd014ee5cff928e54bb2ab18e3b1eeb/HMS_UML.jpg)
+Alternatively, You can choose to refer to our 
 
 # Contributors
 
