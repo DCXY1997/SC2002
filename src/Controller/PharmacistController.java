@@ -110,6 +110,7 @@ public class PharmacistController {
 
         // Add the replenishment request to the repository
         Repository.REPLENISHMENT_REQUEST.put(replenishmentRequest.getRequestId(), replenishmentRequest);
+        Repository.persistData(FileType.REPLENISHMENT_REQUEST);
         System.out.println("Replenishment request is sent to the admin and pending approval.\n");
         Helper.pressAnyKeyToContinue();
     }
