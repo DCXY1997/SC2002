@@ -82,7 +82,8 @@ public class DoctorView extends MainView {
         System.out.println("(6) Record Appointment Outcome");
         System.out.println("(7) View Personal Information");
         System.out.println("(8) Add Specialization");
-        System.out.println("(9) Logout");
+        System.out.println("(9) Change Password");
+        System.out.println("(10) Logout");
     }
 
     /**
@@ -142,15 +143,47 @@ public class DoctorView extends MainView {
                     promptSpecialization(doctor);
                     break;
                 case 9:
+                    printBreadCrumbs("Hospital Management App View > Doctor View > Password Change View");
+                    promptChangePassword();
+                    break;
+                case 10:
                     break;
                 default:
                     System.out.println("Invalid option");
                     break;
             }
-            if (opt != 9) {
+            if (opt != 10) {
                 Helper.pressAnyKeyToContinue();
             }
-        } while (opt != 9);
+        } while (opt != 10);
+    }
+
+    /**
+     * Prompts the pharmacist to change their password. Validates the login ID
+     * and current password before allowing the password change.
+     */
+    private void promptChangePassword() {
+        System.out.println("Welcome, " + doctor.getName());
+
+        System.out.println("Verify your password: ");
+        String password = Helper.readString();
+
+        if (doctor != null && doctor.getPassword().equals(password)) {
+            System.out.println("Verification successful.");
+            System.out.println("Enter new password: ");
+            String newPassword = Helper.readString();
+            System.out.println("Re-enter new password: ");
+            String confirmPassword = Helper.readString();
+            // Use the controller to change the password
+            if (DoctorController.changePassword(doctor, newPassword, confirmPassword)) {
+                System.out.println("Password changed successfully!");
+            } else {
+                System.out.println("Passwords do not match.");
+            }
+        } else {
+            System.out.println("Verification failed. Either the user ID or password is incorrect.");
+        }
+
     }
 
     /**

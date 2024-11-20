@@ -251,4 +251,25 @@ public class DoctorController {
 
         return doctors;
     }
+
+    /**
+     * Changes the password of the specified doctor.
+     *
+     * @author Jasmine
+     * @param doctor The doctor whose password is being updated.
+     * @param password The new password.
+     * @param confirmPassword The confirmation of the new password.
+     * @return {@code true} if the password was successfully changed;
+     * {@code false} otherwise.
+     */
+    public static boolean changePassword(Doctor doctor, String password, String confirmPassword) {
+        if (password.equals(confirmPassword)) {
+            doctor.setPassword(confirmPassword);
+            Repository.STAFF.put(doctor.getHospitalId(), doctor);
+            Repository.persistData(FileType.STAFF);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

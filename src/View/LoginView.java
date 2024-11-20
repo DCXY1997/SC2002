@@ -160,11 +160,10 @@ public class LoginView extends MainView {
                             new ArrayList<>()
                     );
 
-                    System.out.println("Doctor Name: " + doc.getName());
-                    System.out.println("Doctor Role: " + doc.getRole());
                     DoctorView doctorView = new DoctorView(doc);
                     doctorView.viewApp();
                 } else if (staffType == StaffType.PHARMACIST) {
+                    loggedInStaff = StaffController.getStaffById(loginId);
                     pharmacistView.viewApp();
                 }
             } else {
